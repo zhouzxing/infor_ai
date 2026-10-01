@@ -1,0 +1,663 @@
+#!/usr/bin/env python3
+"""
+AI Daily Intelligence Aggregator - v6
+国内/国际分离：Hacker News, Google News, arXiv, Geeker等
+支持代理访问，各自按热度排序，分别保留100条。
+"""
+
+import json
+import os
+import re
+import subprocess
+from datetime import datetime, timedelta
+from pathlib import Path
+
+# ── config ────────────────────────────────────────────────────────
+BASE_DIR = Path(__file__).parent
+DB_FILE  = BASE_DIR / "ai_intel_cache.json"
+HTML_FILE = BASE_DIR / "index.html"
+MAX_ENTRIES = 100
+MAX_DAYS = 7
+
+# 代理配置
+PROXY_HTTP = "http://127.0.0.1:7897"
+PROXY_SOCKS = "socks5://127.0.0.1:7897"
+
+os.environ['http_proxy'] = PROXY_HTTP
+os.environ['https_proxy'] = PROXY_HTTP
+os.environ['all_proxy'] = PROXY_SOCKS
+
+# ── 国内数据源 ────────────────────────────────────────────────────
+def fetch_from_geeker():
+    """从极客网获取AI新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        urls = ["https://www.geekerhub.com/feed", "https://www.geekpark.net/rss"]
+        results = []
+        
+        for rss_url in urls:
+            try:
+                req = urllib.request.Request(rss_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                    content = resp.read().decode()
+                    import xml.etree.ElementTree as ET
+                    root = ET.fromstring(content)
+                    for item in root.findall(".//item")[:10]:
+                        title = item.findtext("title", "")
+                        link = item.findtext("link", "")
+                        desc = item.findtext("description", "") or ""
+                        if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义']):
+                            results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'GeekerHub', 'region': 'cn'})
+            except Exception as e:
+                print(f"[WARN] Geeker RSS failed: {e}")
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] Geeker fetch failed: {e}")
+        return []
+
+def fetch_from_huxiu():
+    """从虎嗅获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.huxiu.com/rss.xml", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:10]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义', '文心']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '虎嗅', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] Huxiu RSS failed: {e}")
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] Huxiu fetch failed: {e}")
+        return []
+
+def fetch_from_36kr():
+    """从36氪获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://36kr.com/feed-news.xml", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:10]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '36氪', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] 36kr RSS failed: {e}")
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] 36kr fetch failed: {e}")
+        return []
+
+def fetch_from_ithome():
+    """从IT之家获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://rsshub.app/ithome/it", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link:
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'IT之家', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] ithome RSS failed: {e}")
+        
+        # 过滤AI相关
+        filtered = [r for r in results if any(kw in r['title'].lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义', '文心'])][:10]
+        return filtered
+    except Exception as e:
+        print(f"[WARN] ithome fetch failed: {e}")
+        return []
+
+def fetch_from_leifeng():
+    """从雷锋网获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.leiphone.com/feed", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '机器人', '机器学习', '智能']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '雷锋网', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] leifeng RSS failed: {e}")
+        return results[:15]
+    except Exception as e:
+        print(f"[WARN] leifeng fetch failed: {e}")
+        return []
+
+def fetch_from_infoq():
+    """从InfoQ获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.infoq.cn/feed", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'machine learning', 'deepseek', 'generative', 'transformer', '神经网络']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'InfoQ', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] infoq RSS failed: {e}")
+        return results[:15]
+    except Exception as e:
+        print(f"[WARN] infoq fetch failed: {e}")
+        return []
+
+# ── 国际数据源 ────────────────────────────────────────────────────
+def fetch_from_hackernews():
+    """从Hacker News API获取最新AI相关话题"""
+    try:
+        result = subprocess.run(['curl', '-s', '--max-time', '8', '-x', PROXY_HTTP, 'https://hacker-news.firebaseio.com/v0/topstories.json'], capture_output=True, text=True)
+        if result.returncode != 0:
+            return []
+        
+        top_ids = json.loads(result.stdout)
+        ai_keywords = ['ai', 'openai', 'anthropic', 'claude', 'gpt', 'gemini', 'deepseek', 'hugging', 'machine learning', 'llm', 'artificial intelligence', 'neural', 'transformer']
+        results = []
+        
+        for story_id in top_ids[:20]:
+            story_url = f"https://hacker-news.firebaseio.com/v0/item/{story_id}.json"
+            r = subprocess.run(['curl', '-s', '--max-time', '3', '-x', PROXY_HTTP, story_url], capture_output=True, text=True)
+            if r.returncode != 0:
+                continue
+            try:
+                story = json.loads(r.stdout)
+                title = story.get('title', '').lower()
+                if any(kw in title for kw in ai_keywords):
+                    results.append({'title': story.get('title', ''), 'url': story.get('url', f"https://news.ycombinator.com/item?id={story_id}"), 'points': story.get('points', 0), 'source': 'Hacker News', 'region': 'int'})
+            except:
+                continue
+        return results
+    except Exception as e:
+        print(f"[WARN] HN fetch failed: {e}")
+        return []
+
+def fetch_from_google_news():
+    """从Google News RSS获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        rss_urls = [
+            "https://news.google.com/rss/search?q=AI+artificial+intelligence&hl=en-US&gl=US&ceid=US:en",
+            "https://news.google.com/rss/search?q=OpenAI+Anthropic&hl=en-US&gl=US&ceid=US:en",
+            "https://news.google.com/rss/search?q=AI+machine+learning&hl=en-US&gl=US&ceid=US:en",
+        ]
+        results = []
+        
+        for rss_url in rss_urls:
+            try:
+                req = urllib.request.Request(rss_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                    content = resp.read().decode()
+                    root = ET.fromstring(content)
+                    for item in root.findall(".//item")[:8]:
+                        title = item.findtext("title", "")
+                        link = item.findtext("link", "")
+                        desc = item.findtext("description", "")[:200]
+                        if title and link:
+                            results.append({'title': title, 'url': link, 'desc': desc, 'source': 'Google News', 'region': 'int'})
+            except Exception as e:
+                print(f"[WARN] Google News fetch failed: {e}")
+        return results[:20]
+    except Exception as e:
+        print(f"[WARN] Google News failed: {e}")
+        return []
+
+def fetch_from_arxiv():
+    """从arXiv获取最新AI论文"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        arxiv_url = "http://rss.arxiv.org/rss/cs.AI"
+        req = urllib.request.Request(arxiv_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+            content = resp.read().decode()
+            root = ET.fromstring(content)
+            results = []
+            for item in root.findall(".//item")[:10]:
+                title = item.findtext("title", "")
+                link = item.findtext("link", "")
+                desc = item.findtext("description", "")[:300]
+                results.append({'title': title, 'url': link, 'desc': desc, 'source': 'arXiv CS.AI', 'region': 'int'})
+            return results
+    except Exception as e:
+        print(f"[WARN] arXiv fetch failed: {e}")
+        return []
+
+# ── cache management ─────────────────────────────────────────────
+def load_cache():
+    if DB_FILE.exists():
+        try:
+            return json.loads(DB_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {"entries_int": [], "entries_cn": [], "meta": {"updated": None}}
+
+def save_cache(cache):
+    DB_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+
+def slug(title):
+    return re.sub(r"[^\w\s-]", "", title.lower()).strip().replace(" ", "-")[:60]
+
+def already_exists(entries, title):
+    s = slug(title)
+    return any(slug(e["title"]) == s for e in entries)
+
+def bump_heat(entries, title, source):
+    s = slug(title)
+    for e in entries:
+        if slug(e["title"]) == s:
+            e["heat"] = min(e.get("heat", 1) + 1, 5)
+            if "sources" not in e:
+                e["sources"] = []
+            if source not in e["sources"]:
+                e["sources"].append(source)
+            return True
+    return False
+
+def clean_and_trim(entries, now):
+    cutoff = (now - timedelta(days=MAX_DAYS)).isoformat()[:10]
+    kept = [e for e in entries if e.get("date", "") >= cutoff]
+    three_days_ago = (now - timedelta(days=3)).isoformat()[:10]
+    kept = [e for e in kept if not (e.get("heat", 0) <= 1 and e.get("date", "") < three_days_ago)]
+    if len(kept) > MAX_ENTRIES:
+        kept = kept[:MAX_ENTRIES]
+    all_sources = set()
+    for e in kept:
+        for s in e.get("sources", []):
+            all_sources.add(s)
+    return kept, list(all_sources)
+
+def sort_entries(entries):
+    entries.sort(key=lambda x: (-x.get("heat", 0), x.get("timestamp", "")))
+    return entries
+
+# ── render HTML ──────────────────────────────────────────────────
+def render_html(cache):
+    entries_int = cache.get("entries_int", [])
+    entries_cn = cache.get("entries_cn", [])
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    def render_cards(entries, is_cn=False):
+        cards = []
+        for e in entries:
+            heat = e.get("heat", 0)
+            stars = "★" * min(heat, 5) + "☆" * max(0, 5 - heat)
+            sources_list = e.get("sources", [])
+            tag_style = "color:#ff6b6b;background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.3);" if is_cn else "color:#00e5a0;background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);"
+            sources_html = "".join(f'<span class="source-tag" style="{tag_style}">{_esc(s)}</span>' for s in sources_list)
+            date_str = e.get("timestamp", e.get("date", ""))
+            excerpt = (e.get("excerpt", "") or e.get("summary", "") or "")[:200]
+            cards.append(f"""
+            <div class="card" data-heat="{heat}">
+                <div class="card-head"><span class="heat-badge">{stars}</span><span class="card-date">{date_str[:16]}</span></div>
+                <h2 class="card-title">{_esc(e.get("title", ""))}</h2>
+                <p class="card-summary">{_esc(excerpt)}</p>
+                <details class="card-body"><summary>展开正文</summary><div class="card-full">{_esc(e.get("body", ""))}</div></details>
+                <div class="card-sources">{sources_html}</div>
+            </div>""")
+        return "\n".join(cards) if cards else '<div class="empty">暂无情报数据</div>'
+    
+    int_cards = render_cards(entries_int, is_cn=False)
+    cn_cards = render_cards(entries_cn, is_cn=True)
+
+
+    # model families data (global + domestic major models)
+    model_families = [
+        {"name": "GPT-4", "family": "OpenAI", "params": "1.76T", "release": "2023", "modalities": ["text", "vision"], "pricing": "0.03/0.06 $ per 1K tokens", "free_tier": False},
+        {"name": "GPT-3.5 Turbo", "family": "OpenAI", "params": "175B", "release": "2022", "modalities": ["text"], "pricing": "0.001/0.002 $ per 1K tokens", "free_tier": True},
+        {"name": "Claude 3 Opus", "family": "Anthropic", "params": "100B", "release": "2024", "modalities": ["text"], "pricing": "0.05 $ per 1K prompt", "free_tier": False},
+        {"name": "Claude 3 Haiku", "family": "Anthropic", "params": "80B", "release": "2024", "modalities": ["text"], "pricing": "0.01 $ per 1K prompt", "free_tier": True},
+        {"name": "Gemini 1.5 Flash", "family": "Google", "params": "100B", "release": "2024", "modalities": ["text", "image"], "pricing": "0.0025 $ per 1K", "free_tier": True},
+        {"name": "Gemini 1.5 Pro", "family": "Google", "params": "100B", "release": "2024", "modalities": ["text", "image", "video"], "pricing": "0.0175 $ per 1K prompt", "free_tier": False},
+        {"name": "Llama 3 70B", "family": "Meta", "params": "70B", "release": "2024", "modalities": ["text"], "pricing": "self-hosted (free)", "free_tier": True},
+        {"name": "Llama 3.1 405B", "family": "Meta", "params": "405B", "release": "2024", "modalities": ["text", "image"], "pricing": "self-hosted (free)", "free_tier": True},
+        {"name": "Mistral Large 2", "family": "Mistral", "params": "123B", "release": "2024", "modalities": ["text"], "pricing": "0.02 $ per 1K", "free_tier": False},
+        {"name": "DeepSeek-V3", "family": "DeepSeek", "params": "685B", "release": "2024", "modalities": ["text", "code"], "pricing": "0.014 $ per 1M tokens", "free_tier": True},
+        {"name": "DeepSeek-R1", "family": "DeepSeek", "params": "685B", "release": "2025", "modalities": ["text", "code", "reasoning"], "pricing": "0.021 $ per 1M tokens", "free_tier": True},
+        {"name": "Qwen 2.5 72B", "family": "Tongyi (Alibaba)", "params": "72B", "release": "2024", "modalities": ["text"], "pricing": "free / self-hosted", "free_tier": True},
+        {"name": "Qwen 2.5 32B", "family": "Tongyi (Alibaba)", "params": "32B", "release": "2024", "modalities": ["text"], "pricing": "free / self-hosted", "free_tier": True},
+        {"name": "Ernie 3.5", "family": "Baidu", "params": "unknown", "release": "2023", "modalities": ["text", "image"], "pricing": "free tier with daily quota", "free_tier": True},
+        {"name": "Ernie X 1.0", "family": "Baidu", "params": "unknown", "release": "2025", "modalities": ["text", "image", "video"], "pricing": "pay-per-use", "free_tier": False},
+        {"name": "Doubao Pro 1.5", "family": "ByteDance", "params": "unknown", "release": "2024", "modalities": ["text", "image"], "pricing": "free tier with daily quota", "free_tier": True},
+        {"name": "Doubao 1.5 Pro 32K", "family": "ByteDance", "params": "unknown", "release": "2025", "modalities": ["text", "image", "code"], "pricing": "pay-per-use", "free_tier": False},
+        {"name": "Zhipu GLM-4", "family": "Zhipu AI", "params": "unknown", "release": "2024", "modalities": ["text", "image"], "pricing": "free tier with daily quota", "free_tier": True},
+        {"name": "Zhipu GLM-40B", "family": "Zhipu AI", "params": "40B", "release": "2024", "modalities": ["text"], "pricing": "self-hosted (free)", "free_tier": True},
+    ]
+
+    # generate model cards
+    model_cards = ""
+    for m in model_families:
+        heat = 5 if m["free_tier"] else 3
+        stars = "★" * min(heat, 5) + "☆" * max(0, 5 - heat)
+        model_cards += '<div class="card" data-heat="' + str(heat) + '"><div class="card-head"><span class="heat-badge">' + stars + '</span><span class="card-date">' + m["release"] + '</span></div><h2 class="card-title">' + m["name"] + ' (' + m["family"] + ')</h2><p class="card-summary">' + m["modalities"][0] + ' model, ' + m["params"] + ' parameters</p><details class="card-body"><summary>EXPAND</summary><div class="card-full">' + m["name"] + ' is a large language model.</div></details><div class="card-sources"><span class="source-tag" style="color:#00e5a0;background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);">' + m["family"] + '</span></div></div>'
+
+    # generate price cards (free vs paid)
+    price_cards = ""
+    for m in model_families:
+        if m["free_tier"]:
+            price_cards += '<div class="card" data-heat="5"><div class="card-head"><span class="heat-badge">★★★★★</span><span class="card-date">Free tier</span></div><h2 class="card-title">' + m["name"] + '</h2><p class="card-summary">Free tier available</p><details class="card-body"><summary>EXPAND</summary><div class="card-full">' + m["name"] + ' offers a free tier with limited tokens per month.</div></details><div class="card-sources"><span class="source-tag" style="color:#ff6b6b;background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.3);">Free</span></div></div>'
+        else:
+            price_cards += '<div class="card" data-heat="3"><div class="card-head"><span class="heat-badge">\u2605\u2605\u2605\u2606\u2606</span><span class="card-date">Paid</span></div><h2 class="card-title">' + m["name"] + '</h2><p class="card-summary">Paid pricing</p><details class="card-body"><summary>EXPAND</summary><div class="card-full">' + m["name"] + ' pricing: ' + m["pricing"] + '.</div></details><div class="card-sources"><span class="source-tag" style="color:#00e5a0;background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);">Paid</span></div></div>'
+        
+    js_code = """
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.getElementById('grid-int').style.display = tab === 'int' ? '' : 'none';
+  document.getElementById('grid-cn').style.display = tab === 'cn' ? '' : 'none';
+  document.getElementById('grid-model').style.display = tab === 'model' ? '' : 'none';
+  document.getElementById('grid-price').style.display = tab === 'price' ? '' : 'none';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var el = document.getElementById('last-updated');
+  if (el) el.textContent = new Date().toLocaleString('zh-CN', {hour12: false});
+});
+"""
+    
+    html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 情报日报 · 每小时滚动更新</title>
+<style>
+  :root {{ --bg:#0d0d0d;--surface:#1a1a1a;--border:#2a2a2a;--accent:#00e5a0;--accent2:#7c4dff;--accent-red:#ff6b6b;--text:#e8e8e8;--muted:#888;--card-radius:12px; }}
+  * {{ box-sizing:border-box;margin:0;padding:0; }}
+  body {{ background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;padding:24px;line-height:1.6; }}
+  .header {{ text-align:center;padding:40px 20px 24px;border-bottom:1px solid var(--border);margin-bottom:32px; }}
+  .header h1 {{ font-size:2rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px; }}
+  .header .meta {{ color:var(--muted);font-size:0.85rem; }}
+  .stats {{ display:flex;justify-content:center;gap:32px;margin-top:16px;flex-wrap:wrap; }}
+  .stat-item {{ text-align:center; }}
+  .stat-num {{ font-size:1.5rem;font-weight:700;color:var(--accent); }}
+  .stat-label {{ font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px; }}
+  .tab-nav {{ display:flex;justify-content:center;gap:16px;margin-bottom:32px; }}
+  .tab-btn {{ background:var(--surface);border:2px solid var(--border);color:var(--muted);padding:12px 32px;border-radius:24px;cursor:pointer;font-size:1rem;font-weight:600;transition:all 0.3s; }}
+  .tab-btn:hover {{ border-color:var(--accent);color:var(--text); }}
+  .tab-btn.int.active {{ border-color:var(--accent);background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(124,77,255,0.2));color:var(--accent); }}
+  .tab-btn.cn.active {{ border-color:var(--accent-red);background:rgba(255,107,107,0.2);color:var(--accent-red); }}
+  .tab-btn.model.active {{ border-color:var(--accent);background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(124,77,255,0.2));color:var(--accent); }}
+  .tab-btn.price.active {{ border-color:var(--accent-red);background:rgba(255,107,107,0.2);color:var(--accent-red); }}
+  .grid {{ display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;max-width:1400px;margin:0 auto; }}
+  .card {{ background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px;transition:border-color 0.2s,transform 0.2s;position:relative;overflow:hidden; }}
+  .card::before {{ content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity 0.2s; }}
+  .card:hover {{ border-color:#3a3a3a;transform:translateY(-2px); }}
+  .card:hover::before {{ opacity:1; }}
+  .card[data-heat="5"]::before {{ opacity:1; }}
+  .card[data-heat="4"]::before {{ opacity:0.8; }}
+  .card-head {{ display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }}
+  .heat-badge {{ font-size:0.85rem;letter-spacing:1px; }}
+  .card-date {{ font-size:0.75rem;color:var(--muted); }}
+  .card-title {{ font-size:1.05rem;font-weight:600;margin-bottom:8px;color:#fff; }}
+  .card-summary {{ font-size:0.88rem;color:var(--muted);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }}
+  .card-body {{ font-size:0.85rem;color:#bbb;margin-bottom:12px;white-space:pre-wrap; }}
+  .card-body summary {{ cursor:pointer;color:var(--accent);font-size:0.8rem;user-select:none; }}
+  .card-sources {{ display:flex;flex-wrap:wrap;gap:6px; }}
+  .source-tag {{ font-size:0.65rem;padding:2px 8px;border-radius:10px; }}
+  .source-tag.source-cn {{ background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#ff6b6b; }}
+  .empty {{ text-align:center;padding:60px;color:var(--muted); }}
+  footer {{ text-align:center;padding:40px 20px;color:var(--muted);font-size:0.75rem; }}
+  .section-title {{ font-size:1.2rem;color:var(--muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border); }}
+  .section-title.int {{ color:var(--accent);border-color:rgba(0,229,160,0.3); }}
+  .section-title.cn {{ color:var(--accent-red);border-color:rgba(255,107,107,0.3); }}
+  .section-title.model {{ color:var(--accent);border-color:rgba(0,229,160,0.3); }}
+  .section-title.price {{ color:var(--accent-red);border-color:rgba(255,107,107,0.3); }}
+  @media (max-width:480px) {{ .grid {{ grid-template-columns:1fr; }} .tab-nav {{ flex-direction:column;align-items:center; }} }}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>AI 情报日报</h1>
+  <div class="meta">每小时自动检索 &middot; 按热度排序 &middot; 国际/国内分别保留最多{MAX_ENTRIES}条 &middot; 保留最近{MAX_DAYS}天</div>
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num">{len(entries_int)}</div><div class="stat-label">国际情报</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--accent-red)">{len(entries_cn)}</div><div class="stat-label">国内情报</div></div>
+    <div class="stat-item"><div class="stat-num" id="last-updated">{now_str}</div><div class="stat-label">最后更新</div></div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn int active" onclick="switchTab('int')">🌍 国际情报 ({len(entries_int)})</button>
+  <button class="tab-btn cn" onclick="switchTab('cn')">🇨🇳 国内情报 ({len(entries_cn)})</button>
+  <button class="tab-btn model" onclick="switchTab('model')">🤖 模型家族特性对比</button>
+  <button class="tab-btn price" onclick="switchTab('price')">💰 免费收费对比</button>
+</div>
+
+<div id="grid-int" class="tab-content">
+  <h2 class="section-title int">国际情报</h2>
+  <div class="grid">{int_cards}</div>
+</div>
+
+<div id="grid-cn" class="tab-content" style="display:none">
+  <h2 class="section-title cn">国内情报</h2>
+  <div class="grid">{cn_cards}</div>
+</div>
+<div id="grid-model" class="tab-content" style="display:none">
+  <h2 class="section-title model">模型家族产品特性对比</h2>
+  <div class="grid">{model_cards}</div>
+</div>
+<div id="grid-price" class="tab-content" style="display:none">
+  <h2 class="section-title price">免费收费角度对比</h2>
+  <div class="grid">{price_cards}</div>
+</div>
+
+<footer>AI Daily Intel &middot; 数据每小时自动更新 &middot; 国际/国内分别保留最多{MAX_ENTRIES}条</footer>
+<script>{js_code}</script>
+</body>
+</html>"""
+    return html
+
+def _esc(s):
+    return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+# ── main ─────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    cache = load_cache()
+    now = datetime.now()
+    print(f"[AI Intel] Loaded: 国际{len(cache.get('entries_int', []))}条 | 国内{len(cache.get('entries_cn', []))}条")
+    
+    last_update = cache['meta'].get('updated')
+    need_refresh = False
+    if not last_update:
+        need_refresh = True
+    else:
+        last_dt = datetime.fromisoformat(last_update.replace("Z", "+00:00"))
+        hours_diff = (now - last_dt).total_seconds() / 3600
+        if hours_diff >= 1:
+            need_refresh = True
+    
+    new_int, new_cn = [], []
+    
+    if need_refresh:
+        print("[AI Intel] Fetching latest AI news from multiple sources...")
+        
+        # ── 国际数据源 ──
+        hn_items = fetch_from_hackernews()
+        print(f"[AI Intel] Found {len(hn_items)} AI stories from HN")
+        for item in hn_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_int", []), title):
+                heat = min(5, max(2, item.get('points', 0) // 50))
+                entry = {"title": title, "summary": f"HN热门话题，{item.get('points', 0)}赞", "body": f"来自Hacker News的热议话题。该讨论有{item.get('points', 0)}个赞。", "sources": [item.get('source', 'Hacker News')], "heat": heat, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_int", []).insert(0, entry)
+                new_int.append(title)
+            else:
+                bump_heat(cache["entries_int"], title, item.get('source', 'Hacker News'))
+        
+        google_items = fetch_from_google_news()
+        print(f"[AI Intel] Found {len(google_items)} news items from Google News")
+        for item in google_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_int", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', 'Google News')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_int", []).insert(0, entry)
+                new_int.append(title)
+            else:
+                bump_heat(cache["entries_int"], title, item.get('source', 'Google News'))
+        
+        arxiv_items = fetch_from_arxiv()
+        print(f"[AI Intel] Found {len(arxiv_items)} papers from arXiv")
+        for item in arxiv_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_int", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', 'arXiv CS.AI')], "heat": 3, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_int", []).insert(0, entry)
+                new_int.append(title)
+            else:
+                bump_heat(cache["entries_int"], title, item.get('source', 'arXiv CS.AI'))
+        
+        # ── 国内数据源 ──
+        geeker_items = fetch_from_geeker()
+        print(f"[AI Intel] Found {len(geeker_items)} news items from GeekerHub")
+        for item in geeker_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', 'GeekerHub')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', 'GeekerHub'))
+        
+        huxiu_items = fetch_from_huxiu()
+        print(f"[AI Intel] Found {len(huxiu_items)} news items from Huxiu")
+        for item in huxiu_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', '虎嗅')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', '虎嗅'))
+        
+        _36kr_items = fetch_from_36kr()
+        print(f"[AI Intel] Found {len(_36kr_items)} news items from 36Kr")
+        for item in _36kr_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', '36氪')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', '36氪'))
+        
+        ithome_items = fetch_from_ithome()
+        print(f"[AI Intel] Found {len(ithome_items)} news items from IT之家")
+        for item in ithome_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', 'IT之家')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', 'IT之家'))
+
+        leifeng_items = fetch_from_leifeng()
+        print(f"[AI Intel] Found {len(leifeng_items)} news items from 雷锋网")
+        for item in leifeng_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', '雷锋网')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', '雷锋网'))
+
+        infoq_items = fetch_from_infoq()
+        print(f"[AI Intel] Found {len(infoq_items)} news items from InfoQ")
+        for item in infoq_items:
+            title = item.get('title', '')
+            if not title: continue
+            if not already_exists(cache.get("entries_cn", []), title):
+                entry = {"title": title, "summary": item.get('desc', '')[:200], "body": title + "\n\n" + (item.get('desc', '') or ''), "sources": [item.get('source', 'InfoQ')], "heat": 2, "timestamp": now.isoformat(), "date": now.strftime("%Y-%m-%d")}
+                cache.setdefault("entries_cn", []).insert(0, entry)
+                new_cn.append(title)
+            else:
+                bump_heat(cache["entries_cn"], title, item.get('source', 'InfoQ'))
+    
+    cache["entries_int"] = clean_and_trim(cache.get("entries_int", []), now)[0]
+    cache["entries_cn"] = clean_and_trim(cache.get("entries_cn", []), now)[0]
+    cache["entries_int"] = sort_entries(cache["entries_int"])
+    cache["entries_cn"] = sort_entries(cache["entries_cn"])
+    cache["meta"]["updated"] = now.isoformat()
+    save_cache(cache)
+    
+    html = render_html(cache)
+    HTML_FILE.write_text(html, encoding="utf-8")
+    
+    print(f"[AI Intel] 国际: {len(cache['entries_int'])}条 | 国内: {len(cache['entries_cn'])}条")
+    print(f"[AI Intel] Updated: {cache['meta']['updated']}")
+    print(f"[AI Intel] HTML written to {HTML_FILE}")
+    if new_int:
+        print(f"[AI Intel] 国际新增 {len(new_int)} 条")
+    if new_cn:
+        print(f"[AI Intel] 国内新增 {len(new_cn)} 条")
+    if not new_int and not new_cn:
+        print("[AI Intel] 无新情报（网络可能不可用）")

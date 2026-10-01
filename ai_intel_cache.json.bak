@@ -1,0 +1,1832 @@
+{
+  "entries_int": [
+    {
+      "title": "When LLM Agents Fail to Read the Room: ReAdapt for Relational Social Reasoning",
+      "summary": "arXiv:2609.25284v1 Announce Type: new \nAbstract: A social agent's most basic decisions (should I react to this post? who should I reach out to?) are not purely content problems. The right action often",
+      "body": "When LLM Agents Fail to Read the Room: ReAdapt for Relational Social Reasoning\n\narXiv:2609.25284v1 Announce Type: new \nAbstract: A social agent's most basic decisions (should I react to this post? who should I reach out to?) are not purely content problems. The right action often hinges on the latent relationship between people -- tie strength, reciprocity, mutual connections -",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "MedGate-Fusion: Integrating First-Encounter Semantic Narratives and Physiological Biomarkers for Prospective Stroke Risk Stratification",
+      "summary": "arXiv:2609.25272v1 Announce Type: new \nAbstract: Prospective stroke risk stratification in primary care is challenging because early risk signals are distributed across routine biomarkers and unstruct",
+      "body": "MedGate-Fusion: Integrating First-Encounter Semantic Narratives and Physiological Biomarkers for Prospective Stroke Risk Stratification\n\narXiv:2609.25272v1 Announce Type: new \nAbstract: Prospective stroke risk stratification in primary care is challenging because early risk signals are distributed across routine biomarkers and unstructured clinical narratives. We propose MedGate-Fusion, a multi-modal gated architecture that integrate",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "The AI Neuroscientist: An Interactive Agentic Interface for Neuroimaging Analysis",
+      "summary": "arXiv:2609.25254v1 Announce Type: new \nAbstract: Analyzing neuroimaging data requires specialized coding and statistical expertise, which limits accessibility for researchers without computational bac",
+      "body": "The AI Neuroscientist: An Interactive Agentic Interface for Neuroimaging Analysis\n\narXiv:2609.25254v1 Announce Type: new \nAbstract: Analyzing neuroimaging data requires specialized coding and statistical expertise, which limits accessibility for researchers without computational backgrounds. We present the AI Neuroscientist, a language agent for interactive data exploration. The s",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "Lean Pool: An AI-Maintained Archive of Formalized Mathematics",
+      "summary": "arXiv:2609.25199v1 Announce Type: new \nAbstract: Lean Pool is a repository of formalized mathematics. It is grown, maintained and optimized by AI agents.",
+      "body": "Lean Pool: An AI-Maintained Archive of Formalized Mathematics\n\narXiv:2609.25199v1 Announce Type: new \nAbstract: Lean Pool is a repository of formalized mathematics. It is grown, maintained and optimized by AI agents.",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "X-Planner: Event-Structured Task Planning for Embodied Intelligence",
+      "summary": "arXiv:2609.25187v1 Announce Type: new \nAbstract: Task planning bridges high-level instructions and executable behavior in long-horizon manipulation, yet modern Vision-Language-Action (VLA) systems oft",
+      "body": "X-Planner: Event-Structured Task Planning for Embodied Intelligence\n\narXiv:2609.25187v1 Announce Type: new \nAbstract: Task planning bridges high-level instructions and executable behavior in long-horizon manipulation, yet modern Vision-Language-Action (VLA) systems often leave this intermediate structure implicit. Existing chain-of-thought (CoT) planners also tend to",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "Ovis-Embedding: Pushing the Frontiers of Universal Omni-Modal Embeddings",
+      "summary": "arXiv:2609.25165v1 Announce Type: new \nAbstract: In this report, we introduce \\textbf{Ovis-Embedding}, a state-of-the-art omni-modal embedding family built on native integration of text, image, video,",
+      "body": "Ovis-Embedding: Pushing the Frontiers of Universal Omni-Modal Embeddings\n\narXiv:2609.25165v1 Announce Type: new \nAbstract: In this report, we introduce \\textbf{Ovis-Embedding}, a state-of-the-art omni-modal embedding family built on native integration of text, image, video, and audio. Instead of assembling separate modality towers, Ovis-Embedding uses a shared multimodal ",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "An Accurate and Interpretable Hyper Graph Neural Network for GBM Survival Prediction",
+      "summary": "arXiv:2609.25088v1 Announce Type: new \nAbstract: Survival prediction for glioblastoma multiforme (GBM) demands models that are both accurate and interpretable, yet existing approaches treat these obje",
+      "body": "An Accurate and Interpretable Hyper Graph Neural Network for GBM Survival Prediction\n\narXiv:2609.25088v1 Announce Type: new \nAbstract: Survival prediction for glioblastoma multiforme (GBM) demands models that are both accurate and interpretable, yet existing approaches treat these objectives as com- peting, where performant models sacrifice transparency, while interpretable models ac",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "4DGS-JEPA: Temporally Compositional Joint-Embedding Prediction for Dynamic Gaussian Splatting",
+      "summary": "arXiv:2609.25036v1 Announce Type: new \nAbstract: Dynamic Gaussian Splatting provides an explicit representation of evolving 3D scenes, but existing approaches are primarily optimized for reconstructio",
+      "body": "4DGS-JEPA: Temporally Compositional Joint-Embedding Prediction for Dynamic Gaussian Splatting\n\narXiv:2609.25036v1 Announce Type: new \nAbstract: Dynamic Gaussian Splatting provides an explicit representation of evolving 3D scenes, but existing approaches are primarily optimized for reconstruction, future-state generation, or rendering rather than for learning reusable predictive dynamics. We p",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "Do Existing Preconditioners Improve Biomedical Tabular Foundation Learning? An Empirical Study on TabPFN Optimization",
+      "summary": "arXiv:2609.25013v1 Announce Type: new \nAbstract: Tabular foundation models have recently shown strong potential for structured biomedical data analysis. Among them, TabPFN has emerged as an effective ",
+      "body": "Do Existing Preconditioners Improve Biomedical Tabular Foundation Learning? An Empirical Study on TabPFN Optimization\n\narXiv:2609.25013v1 Announce Type: new \nAbstract: Tabular foundation models have recently shown strong potential for structured biomedical data analysis. Among them, TabPFN has emerged as an effective approach for low-data tabular classification tasks. However, the impact of optimization and precondi",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "Do Synthetic Personas Predict Real Audience Response? A Sim-to-Real Study Where a No-Persona Baseline Beats Persona-Based Copy Simulation",
+      "summary": "arXiv:2609.25010v1 Announce Type: new \nAbstract: Marketers increasingly use large language models (LLMs) as \"synthetic personas\" to predict how an audience will react to a piece of copy before it ship",
+      "body": "Do Synthetic Personas Predict Real Audience Response? A Sim-to-Real Study Where a No-Persona Baseline Beats Persona-Based Copy Simulation\n\narXiv:2609.25010v1 Announce Type: new \nAbstract: Marketers increasingly use large language models (LLMs) as \"synthetic personas\" to predict how an audience will react to a piece of copy before it ships, encouraged by evidence that profile-conditioned LLMs mimic human samples. But is that prediction ",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "OpenAI, Anthropic CEOs at UN call for global cooperation on AI: 'We are at a crossroads' - ABC News - Breaking News, Latest News and Videos",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbUc4amlnMXBwLUNfZ0MxQnRyeDV4dmt5dVFJdU13TXhIRFBmT2tpalJ0U2VqXzlBZUo2UmljOThwRS0wQUNwQk9oelN0MkpHQkkySUVSTXF0WEJYV0dsWUJOLVJtaXNaa2UzMUppM1",
+      "body": "OpenAI, Anthropic CEOs at UN call for global cooperation on AI: 'We are at a crossroads' - ABC News - Breaking News, Latest News and Videos\n\n<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbUc4amlnMXBwLUNfZ0MxQnRyeDV4dmt5dVFJdU13TXhIRFBmT2tpalJ0U2VqXzlBZUo2UmljOThwRS0wQUNwQk9oelN0MkpHQkkySUVSTXF0WEJYV0dsWUJOLVJtaXNaa2UzMUppM1",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbUc4amlnMXBwLUNfZ0MxQnRyeDV4dmt5dVFJdU13TXhIRFBmT2tpalJ0U2VqXzlBZUo2UmljOThwRS0wQUNwQk9oelN0MkpHQkkySUVSTXF0WEJYV0dsWUJOLVJtaXNaa2UzMUppM1"
+    },
+    {
+      "title": "OpenAI’s Altman and Anthropic’s Amodei address UN security council - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMif0FVX3lxTE40TGtvSHVVUE1jRnZNbWU2TG1lNmllWWc5NDhDLWVSenItS0JyMGcxY2hwaEVjLVZZeWZxNTFTLUhWZmwxSG9LM0U0VVViWXNyaHN3WFhkYnZwVlk2OFhHcExhOUViMzRHWml0RW0xUX",
+      "body": "OpenAI’s Altman and Anthropic’s Amodei address UN security council - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMif0FVX3lxTE40TGtvSHVVUE1jRnZNbWU2TG1lNmllWWc5NDhDLWVSenItS0JyMGcxY2hwaEVjLVZZeWZxNTFTLUhWZmwxSG9LM0U0VVViWXNyaHN3WFhkYnZwVlk2OFhHcExhOUViMzRHWml0RW0xUX",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE40TGtvSHVVUE1jRnZNbWU2TG1lNmllWWc5NDhDLWVSenItS0JyMGcxY2hwaEVjLVZZeWZxNTFTLUhWZmwxSG9LM0U0VVViWXNyaHN3WFhkYnZwVlk2OFhHcExhOUViMzRHWml0RW0xUX"
+    },
+    {
+      "title": "LIVE: OpenAI and Anthropic brief Security Council amid ‘real and imminent’ threat posed by runaway AI - UN News",
+      "summary": "LIVE: Ope",
+      "body": "LIVE: OpenAI and Anthropic brief Security Council amid ‘real and imminent’ threat posed by runaway AI - UN News LIVE: Ope",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBqVGZCZ3prNmhaQXp3bkxTeWlRWlpjYUkxV2V0UWJGTy01dTFZQ2NoLXlXQWtVQ3lySFJsZmNuMDRWMWZQbmhfUGpqN3VsbFlPZ1ltNl9HQQ?oc=5"
+    },
+    {
+      "title": "US rejects pleas from OpenAI, Anthropic for global AI standards - BBC",
+      "summary": "US r",
+      "body": "US rejects pleas from OpenAI, Anthropic for global AI standards - BBC US r",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1SWk1rQ1FuSE9FaWtMWUhfVE1QUDlITnJkd1MzWm11VGhERWNhX2c3OXBqUzdmcjdBa1ZoSlplckxfdlBKcUVRN3hIZkp6WHdQaVFMQ3ZTYzVsbms?oc=5"
+    },
+    {
+      "title": "I’m a father of three who studies the impact of artificial intelligence: this is what parents need to know about AI - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxNZUp6TVFuemZ5UmY1aXQ3a1dSRzhKTk5FbDRvUktyYkNPQnpEZFhJWjh3Ym1EamdrVVNWdkh4MEhyN0w0aVpWRi13THcyQkh2Q05xLUVZUDlaekt6aUF6LVlId2liVXVTZC1fa09aM3",
+      "body": "I’m a father of three who studies the impact of artificial intelligence: this is what parents need to know about AI - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxNZUp6TVFuemZ5UmY1aXQ3a1dSRzhKTk5FbDRvUktyYkNPQnpEZFhJWjh3Ym1EamdrVVNWdkh4MEhyN0w0aVpWRi13THcyQkh2Q05xLUVZUDlaekt6aUF6LVlId2liVXVTZC1fa09aM3",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNZUp6TVFuemZ5UmY1aXQ3a1dSRzhKTk5FbDRvUktyYkNPQnpEZFhJWjh3Ym1EamdrVVNWdkh4MEhyN0w0aVpWRi13THcyQkh2Q05xLUVZUDlaekt6aUF6LVlId2liVXVTZC1fa09aM3"
+    },
+    {
+      "title": "Could AI pose a serious threat to our existence? | Letters - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxQMUVzaDBWS09WZWNFRkNlS3RObzI4S2RhaDJweFZVWFpGaFVUU2REUlN1SDVFWWFVWUMxV3JNZTVTLTZVYTVFa3dXSGczalFiQVQ1R0cyOU9LQks0Qm5XczV0aDBUNVFBZ2Z5MlBDc2",
+      "body": "Could AI pose a serious threat to our existence? | Letters - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxQMUVzaDBWS09WZWNFRkNlS3RObzI4S2RhaDJweFZVWFpGaFVUU2REUlN1SDVFWWFVWUMxV3JNZTVTLTZVYTVFa3dXSGczalFiQVQ1R0cyOU9LQks0Qm5XczV0aDBUNVFBZ2Z5MlBDc2",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQMUVzaDBWS09WZWNFRkNlS3RObzI4S2RhaDJweFZVWFpGaFVUU2REUlN1SDVFWWFVWUMxV3JNZTVTLTZVYTVFa3dXSGczalFiQVQ1R0cyOU9LQks0Qm5XczV0aDBUNVFBZ2Z5MlBDc2"
+    },
+    {
+      "title": "AI will transform capitalism – but how? - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1",
+      "body": "AI will transform capitalism – but how? - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1"
+    },
+    {
+      "title": "Mark Zuckerberg doesn’t understand how to live - The Verge",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxPanp4N1pyTFNXeE5WRTRhV0gxaUpQbC1Pc1NVYTZHNmJPU1hobm1xNE03b3RLOXlFaEYtX3o0SkNrUXNBeTE1eUtsNzlMdkxLUEQtQjJQTzItNFRwamFIVWRuTWV0cDgtbHdxNDhoTV",
+      "body": "Mark Zuckerberg doesn’t understand how to live - The Verge\n\n<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxPanp4N1pyTFNXeE5WRTRhV0gxaUpQbC1Pc1NVYTZHNmJPU1hobm1xNE03b3RLOXlFaEYtX3o0SkNrUXNBeTE1eUtsNzlMdkxLUEQtQjJQTzItNFRwamFIVWRuTWV0cDgtbHdxNDhoTV",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPanp4N1pyTFNXeE5WRTRhV0gxaUpQbC1Pc1NVYTZHNmJPU1hobm1xNE03b3RLOXlFaEYtX3o0SkNrUXNBeTE1eUtsNzlMdkxLUEQtQjJQTzItNFRwamFIVWRuTWV0cDgtbHdxNDhoTV"
+    },
+    {
+      "title": "Opinion | A.I. Will Affect Your Social Life. Yes, Yours. - The New York Times",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxOdlMxM0hfLTFyTUxHTXA4eXJOUklfcFBKekFfSlotX3N6SVZxcWVtQ05CbmNwdnBiQ2tzV3FXRHNWMHlsSHV5YTlzY1h5ZXZxZDhSWUk4ck9LcV81VDg3a0ROZTlHV0dGWHR4NnRxcG",
+      "body": "Opinion | A.I. Will Affect Your Social Life. Yes, Yours. - The New York Times\n\n<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxOdlMxM0hfLTFyTUxHTXA4eXJOUklfcFBKekFfSlotX3N6SVZxcWVtQ05CbmNwdnBiQ2tzV3FXRHNWMHlsSHV5YTlzY1h5ZXZxZDhSWUk4ck9LcV81VDg3a0ROZTlHV0dGWHR4NnRxcG",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOdlMxM0hfLTFyTUxHTXA4eXJOUklfcFBKekFfSlotX3N6SVZxcWVtQ05CbmNwdnBiQ2tzV3FXRHNWMHlsSHV5YTlzY1h5ZXZxZDhSWUk4ck9LcV81VDg3a0ROZTlHV0dGWHR4NnRxcG"
+    },
+    {
+      "title": "AI could kill all humans in next decade, warn experts: but how seriously should we take them? | AI (artificial intelligence) - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxNNUNtV20wYXJQU1RyZGpkOVh6LUFqTDRPY1hDTDhoQzlVZWduQjB2aVR0QzZmYkozX3BLZHVYMDdaV1c5UHhaNktCX0o1UnZCWm81Wjl3TUs0c1I3QXB3Z3NRQW1EZFduejZTLWk3OF",
+      "body": "AI could kill all humans in next decade, warn experts: but how seriously should we take them? | AI (artificial intelligence) - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxNNUNtV20wYXJQU1RyZGpkOVh6LUFqTDRPY1hDTDhoQzlVZWduQjB2aVR0QzZmYkozX3BLZHVYMDdaV1c5UHhaNktCX0o1UnZCWm81Wjl3TUs0c1I3QXB3Z3NRQW1EZFduejZTLWk3OF",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNNUNtV20wYXJQU1RyZGpkOVh6LUFqTDRPY1hDTDhoQzlVZWduQjB2aVR0QzZmYkozX3BLZHVYMDdaV1c5UHhaNktCX0o1UnZCWm81Wjl3TUs0c1I3QXB3Z3NRQW1EZFduejZTLWk3OF"
+    },
+    {
+      "title": "Trump says the US is officially renaming AI to ‘super intelligence’ - The Verge",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQaUFoY2g1bnk4RHRWblhvbHhlUUlRaWtyV2x0cHZocHJ3Y2hKSlY3UTlVaFdFdTNUQkRERGRZTzh3SHdDSzhUd2tkemlTc1pGY0NkNXBJM1QwdkZ0X3hYcGUyN1V1R3puQ01fckkyNl",
+      "body": "Trump says the US is officially renaming AI to ‘super intelligence’ - The Verge\n\n<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQaUFoY2g1bnk4RHRWblhvbHhlUUlRaWtyV2x0cHZocHJ3Y2hKSlY3UTlVaFdFdTNUQkRERGRZTzh3SHdDSzhUd2tkemlTc1pGY0NkNXBJM1QwdkZ0X3hYcGUyN1V1R3puQ01fckkyNl",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQaUFoY2g1bnk4RHRWblhvbHhlUUlRaWtyV2x0cHZocHJ3Y2hKSlY3UTlVaFdFdTNUQkRERGRZTzh3SHdDSzhUd2tkemlTc1pGY0NkNXBJM1QwdkZ0X3hYcGUyN1V1R3puQ01fckkyNl"
+    },
+    {
+      "title": "Anthropic, OpenAI CEOs warn AI could threaten humanity without safeguards - Fox Business",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxNdjFrZFRXcFpzTFRlY0RRTnRqcERYdm1vTVpwY0dyNGdQQ29kSXJudkJDTmgyTXMtX2hKbzhxbnU0b2N1UDgzeDZ3MElIVld3clRvSGtiNTM4M0Q1eFA5bjRQbDV4NkVtX0RUYXRBbl",
+      "body": "Anthropic, OpenAI CEOs warn AI could threaten humanity without safeguards - Fox Business\n\n<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxNdjFrZFRXcFpzTFRlY0RRTnRqcERYdm1vTVpwY0dyNGdQQ29kSXJudkJDTmgyTXMtX2hKbzhxbnU0b2N1UDgzeDZ3MElIVld3clRvSGtiNTM4M0Q1eFA5bjRQbDV4NkVtX0RUYXRBbl",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNdjFrZFRXcFpzTFRlY0RRTnRqcERYdm1vTVpwY0dyNGdQQ29kSXJudkJDTmgyTXMtX2hKbzhxbnU0b2N1UDgzeDZ3MElIVld3clRvSGtiNTM4M0Q1eFA5bjRQbDV4NkVtX0RUYXRBbl"
+    },
+    {
+      "title": "OpenAI and Anthropic CEOs push for AI cooperation at UN after Trump rebuffs 'globalist scheme' to control it - CNBC",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFBnYmxuWFJ2T3UxeFlEbFlOY3VvVjFzaHQ2U2Z2MHlPZ0Q5c01zQ19aQmlGNE1hcnBUQWk3WTlXSmk4cUI0ZFp3TTVndkNDa3Q1RFFWdjdjV1lZWDJVZkpmaldLdEowRXpkSEZid2piVU",
+      "body": "OpenAI and Anthropic CEOs push for AI cooperation at UN after Trump rebuffs 'globalist scheme' to control it - CNBC\n\n<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFBnYmxuWFJ2T3UxeFlEbFlOY3VvVjFzaHQ2U2Z2MHlPZ0Q5c01zQ19aQmlGNE1hcnBUQWk3WTlXSmk4cUI0ZFp3TTVndkNDa3Q1RFFWdjdjV1lZWDJVZkpmaldLdEowRXpkSEZid2piVU",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBnYmxuWFJ2T3UxeFlEbFlOY3VvVjFzaHQ2U2Z2MHlPZ0Q5c01zQ19aQmlGNE1hcnBUQWk3WTlXSmk4cUI0ZFp3TTVndkNDa3Q1RFFWdjdjV1lZWDJVZkpmaldLdEowRXpkSEZid2piVU"
+    },
+    {
+      "title": "OpenAI, Anthropic CEOs unite in call for AI safety standards | CNN Business - CNN",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxQMXh4clVJR1A3aXVJeE5OdW5JY3pyeTVWT080TWx6SDhTS3UtbHZkMFEzWHBlaXo0WVZsZmVxOTlfTWxyVTM0X1QxRkZadWxmU2QxcW1KdFJHUmdYV2NaQm05NXczMV9BYk10SWlxX0",
+      "body": "OpenAI, Anthropic CEOs unite in call for AI safety standards | CNN Business - CNN\n\n<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxQMXh4clVJR1A3aXVJeE5OdW5JY3pyeTVWT080TWx6SDhTS3UtbHZkMFEzWHBlaXo0WVZsZmVxOTlfTWxyVTM0X1QxRkZadWxmU2QxcW1KdFJHUmdYV2NaQm05NXczMV9BYk10SWlxX0",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T15:00:01.679078",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQMXh4clVJR1A3aXVJeE5OdW5JY3pyeTVWT080TWx6SDhTS3UtbHZkMFEzWHBlaXo0WVZsZmVxOTlfTWxyVTM0X1QxRkZadWxmU2QxcW1KdFJHUmdYV2NaQm05NXczMV9BYk10SWlxX0"
+    },
+    {
+      "title": "Tech leaders to UN: For the sake of humanity, please control the AI technology we created - AP News",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSHBObE1ZM3ZSc0QwNURQWkZkS2tORVNRMHhNUUhvNjNZRjR4RHNIVWlyUE5qZV82WVowbEFFX2RhR09TeE5WMHQ4S3l0TkdZTjN3YWdvVUNfRUZYdTZVOW9jc3YtQlNHdWNjcFh4cl",
+      "body": "Tech leaders to UN: For the sake of humanity, please control the AI technology we created - AP News\n\n<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSHBObE1ZM3ZSc0QwNURQWkZkS2tORVNRMHhNUUhvNjNZRjR4RHNIVWlyUE5qZV82WVowbEFFX2RhR09TeE5WMHQ4S3l0TkdZTjN3YWdvVUNfRUZYdTZVOW9jc3YtQlNHdWNjcFh4cl",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T15:00:01.679078",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSHBObE1ZM3ZSc0QwNURQWkZkS2tORVNRMHhNUUhvNjNZRjR4RHNIVWlyUE5qZV82WVowbEFFX2RhR09TeE5WMHQ4S3l0TkdZTjN3YWdvVUNfRUZYdTZVOW9jc3YtQlNHdWNjcFh4cl"
+    },
+    {
+      "title": "Coast Guard debuts new collaboration and research hub on artificial intelligence - United States Coast Guard (.mil)",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxPVWk0bGVJdm9YYWxjbzlnV3dqQjdTSlc4VUFlVldob20zSzMyVi1MUUNzUll6Q2t6MjN2M2Z4Wk9nVkpvUkVaYzlkaUFqdkxyRjA0WEtydzk3ckF2aTFOLXZEekJtVFlLS3BWcnpFZD",
+      "body": "Coast Guard debuts new collaboration and research hub on artificial intelligence - United States Coast Guard (.mil)\n\n<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxPVWk0bGVJdm9YYWxjbzlnV3dqQjdTSlc4VUFlVldob20zSzMyVi1MUUNzUll6Q2t6MjN2M2Z4Wk9nVkpvUkVaYzlkaUFqdkxyRjA0WEtydzk3ckF2aTFOLXZEekJtVFlLS3BWcnpFZD",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T17:00:01.573164",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPVWk0bGVJdm9YYWxjbzlnV3dqQjdTSlc4VUFlVldob20zSzMyVi1MUUNzUll6Q2t6MjN2M2Z4Wk9nVkpvUkVaYzlkaUFqdkxyRjA0WEtydzk3ckF2aTFOLXZEekJtVFlLS3BWcnpFZD"
+    },
+    {
+      "title": "Google, OpenAI and Anthropic AI Safety Group Takes Shape - The Information",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxPRmgyX1dTWG0yMEZFb2RRTmNReFM1aVFxa3Vid2hqWmMzU1hQQTNBR0p3MXlJWWZadUEtZHpvWUtiUnluMHRkNHNsZjViU1Y2MUZKdExNdjg0cDlIbFltWEc5bHdySEMyakJvQUhfST",
+      "body": "Google, OpenAI and Anthropic AI Safety Group Takes Shape - The Information\n\n<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxPRmgyX1dTWG0yMEZFb2RRTmNReFM1aVFxa3Vid2hqWmMzU1hQQTNBR0p3MXlJWWZadUEtZHpvWUtiUnluMHRkNHNsZjViU1Y2MUZKdExNdjg0cDlIbFltWEc5bHdySEMyakJvQUhfST",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T22:00:02.077650",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPRmgyX1dTWG0yMEZFb2RRTmNReFM1aVFxa3Vid2hqWmMzU1hQQTNBR0p3MXlJWWZadUEtZHpvWUtiUnluMHRkNHNsZjViU1Y2MUZKdExNdjg0cDlIbFltWEc5bHdySEMyakJvQUhfST"
+    },
+    {
+      "title": "The AI takeover of mathematics has begun - The Verge",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOeFRvblE2cDhhYmwtWjZYNFhvdEhodHlqTy0tejI1TU1rajZZVjVMdlpjWHFLLWxLbTVnWGd2a1g0cWJLQWF2VEMzZkw1cHVrR0RFMUFja19lSEd1djUxS1FFRVdrai14VWhkR2Z2Q2",
+      "body": "The AI takeover of mathematics has begun - The Verge\n\n<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOeFRvblE2cDhhYmwtWjZYNFhvdEhodHlqTy0tejI1TU1rajZZVjVMdlpjWHFLLWxLbTVnWGd2a1g0cWJLQWF2VEMzZkw1cHVrR0RFMUFja19lSEd1djUxS1FFRVdrai14VWhkR2Z2Q2",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T22:00:02.077650",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOeFRvblE2cDhhYmwtWjZYNFhvdEhodHlqTy0tejI1TU1rajZZVjVMdlpjWHFLLWxLbTVnWGd2a1g0cWJLQWF2VEMzZkw1cHVrR0RFMUFja19lSEd1djUxS1FFRVdrai14VWhkR2Z2Q2"
+    },
+    {
+      "title": "Bounded Minds, Generative Machines - Communications of the ACM",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE56QzZMa0thbkEwTWVuZU5RcHluSVhlWGNmSXV5emo4VmpFcXl4aGVKejVPUkwzUXd1MG92dHZFQVFmcTZMVXNGT0FwZnpKNlRTSUJHdEtBX0lqMVhhUlo5WmJRSmh2M0pfTEFCVjZ3MW",
+      "body": "Bounded Minds, Generative Machines - Communications of the ACM\n\n<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE56QzZMa0thbkEwTWVuZU5RcHluSVhlWGNmSXV5emo4VmpFcXl4aGVKejVPUkwzUXd1MG92dHZFQVFmcTZMVXNGT0FwZnpKNlRTSUJHdEtBX0lqMVhhUlo5WmJRSmh2M0pfTEFCVjZ3MW",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T00:00:01.574221",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE56QzZMa0thbkEwTWVuZU5RcHluSVhlWGNmSXV5emo4VmpFcXl4aGVKejVPUkwzUXd1MG92dHZFQVFmcTZMVXNGT0FwZnpKNlRTSUJHdEtBX0lqMVhhUlo5WmJRSmh2M0pfTEFCVjZ3MW"
+    },
+    {
+      "title": "White House asks OpenAI and Anthropic to hold new models from UK testers until US review - Politico",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMi1gFBVV95cUxOeUlVRnFEdlRXN1Fta2xlNTFZc2p6UzAyYjU3N1hSTkdfZWpNMVlxdXN5M0syUVFMZ2NtNGY3bmtNa2ZZVDFaSGxXaGFENEZfTk9Ia1RtOFMzM25xY1JaemFiY2tsdTVob3YyQ0hXRU",
+      "body": "White House asks OpenAI and Anthropic to hold new models from UK testers until US review - Politico\n\n<a href=\"https://news.google.com/rss/articles/CBMi1gFBVV95cUxOeUlVRnFEdlRXN1Fta2xlNTFZc2p6UzAyYjU3N1hSTkdfZWpNMVlxdXN5M0syUVFMZ2NtNGY3bmtNa2ZZVDFaSGxXaGFENEZfTk9Ia1RtOFMzM25xY1JaemFiY2tsdTVob3YyQ0hXRU",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T01:00:02.022394",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOeUlVRnFEdlRXN1Fta2xlNTFZc2p6UzAyYjU3N1hSTkdfZWpNMVlxdXN5M0syUVFMZ2NtNGY3bmtNa2ZZVDFaSGxXaGFENEZfTk9Ia1RtOFMzM25xY1JaemFiY2tsdTVob3YyQ0hXRU"
+    },
+    {
+      "title": "Using LLMs to trace alchemical knowledge and decode 17th century letters",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "Rails World 2026 Opening Keynote [video]",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "USPTO Appoints Jonathan Spencer as Chief AI Officer - ExecutiveGov",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxQQVBrRmxzazlmclg4QmNKX0lydVFXN045dzVQRzBzN1FfZ1hucjBTWjg1cGlEWXlCbXZVTk4zQThhUXhIbWhmY2NHWGRvTDR1Zk9QaUNhRnBKTGNxUi1LXzk2MTkyNlpXMDd3Qk1pUG",
+      "body": "USPTO Appoints Jonathan Spencer as Chief AI Officer - ExecutiveGov\n\n<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxQQVBrRmxzazlmclg4QmNKX0lydVFXN045dzVQRzBzN1FfZ1hucjBTWjg1cGlEWXlCbXZVTk4zQThhUXhIbWhmY2NHWGRvTDR1Zk9QaUNhRnBKTGNxUi1LXzk2MTkyNlpXMDd3Qk1pUG",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T05:00:02.185768",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQQVBrRmxzazlmclg4QmNKX0lydVFXN045dzVQRzBzN1FfZ1hucjBTWjg1cGlEWXlCbXZVTk4zQThhUXhIbWhmY2NHWGRvTDR1Zk9QaUNhRnBKTGNxUi1LXzk2MTkyNlpXMDd3Qk1pUG"
+    },
+    {
+      "title": "Elon Musk Says SpaceX’s AI Model May Surpass Anthropic And OpenAI’s In 6 Months - Forbes",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMi0gFBVV95cUxPN1NTSWxjbnFsclcxZ3V0ekV1V0tkMWs0bWx2Z2FfbVdMYXZacEtwNDRMWjMwV1RnWmpkbDVsT2ExeGUxTjlTeUpNSGNtTFhLcGJGVHlhTW5lLVVta0EzQTdlOHJqTFJFODRXREdBZj",
+      "body": "Elon Musk Says SpaceX’s AI Model May Surpass Anthropic And OpenAI’s In 6 Months - Forbes\n\n<a href=\"https://news.google.com/rss/articles/CBMi0gFBVV95cUxPN1NTSWxjbnFsclcxZ3V0ekV1V0tkMWs0bWx2Z2FfbVdMYXZacEtwNDRMWjMwV1RnWmpkbDVsT2ExeGUxTjlTeUpNSGNtTFhLcGJGVHlhTW5lLVVta0EzQTdlOHJqTFJFODRXREdBZj",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T05:00:02.185768",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPN1NTSWxjbnFsclcxZ3V0ekV1V0tkMWs0bWx2Z2FfbVdMYXZacEtwNDRMWjMwV1RnWmpkbDVsT2ExeGUxTjlTeUpNSGNtTFhLcGJGVHlhTW5lLVVta0EzQTdlOHJqTFJFODRXREdBZj"
+    },
+    {
+      "title": "Beyond Surface Style: Aligning Multi-Turn User Simulators with Behavioral Consistency",
+      "summary": "arXiv:2609.28690v1 Announce Type: new \nAbstract: Faithful user simulation is fundamental to building, evaluating, and improving interactive AI at scale. However, plausible individual responses do not ",
+      "body": "Beyond Surface Style: Aligning Multi-Turn User Simulators with Behavioral Consistency\n\narXiv:2609.28690v1 Announce Type: new \nAbstract: Faithful user simulation is fundamental to building, evaluating, and improving interactive AI at scale. However, plausible individual responses do not ensure that simulated users reproduce the intent evolution and outcomes observed in real interaction",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "Training Object Permanence in World Models",
+      "summary": "arXiv:2609.28654v1 Announce Type: new \nAbstract: Object permanence and solidity are hallmarks of human cognitive priors. Recent studies show that video generation models, a paradigmatic class of curre",
+      "body": "Training Object Permanence in World Models\n\narXiv:2609.28654v1 Announce Type: new \nAbstract: Object permanence and solidity are hallmarks of human cognitive priors. Recent studies show that video generation models, a paradigmatic class of current world models, have begun to show emerged reasoning abilities, making them ideal candidates for bu",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "Adversarial Closed-Loop Curriculum for Evolving Role-Playing Agents",
+      "summary": "arXiv:2609.28609v1 Announce Type: new \nAbstract: Role-playing agents based on large language models have been widely applied in areas such as personalized assistance and social simulation. Recent RL m",
+      "body": "Adversarial Closed-Loop Curriculum for Evolving Role-Playing Agents\n\narXiv:2609.28609v1 Announce Type: new \nAbstract: Role-playing agents based on large language models have been widely applied in areas such as personalized assistance and social simulation. Recent RL methods typically train on a fixed scenario pool collected before learning begins. This creates a dis",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "TWIST: A Proposed Benchmark for Intervention Quality in Conversational Memory, with a Human-Validated Draft-Alignment",
+      "summary": "arXiv:2609.28575v1 Announce Type: new \nAbstract: Long-conversation memory benchmarks increasingly test recall and prompted knowledge updates, and recent work studies evolving user beliefs and memory s",
+      "body": "TWIST: A Proposed Benchmark for Intervention Quality in Conversational Memory, with a Human-Validated Draft-Alignment\n\narXiv:2609.28575v1 Announce Type: new \nAbstract: Long-conversation memory benchmarks increasingly test recall and prompted knowledge updates, and recent work studies evolving user beliefs and memory state. TWIST is a proposed benchmark suite for a complementary, unmeasured property: intervention qua",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "DEEPO: Dual-Entropy Enhanced Policy Optimization for Hallucination in MLLMs",
+      "summary": "arXiv:2609.28570v1 Announce Type: new \nAbstract: Reinforcement learning (RL) is widely used to sharpen reasoning in multimodal large language models (MLLMs), yet its effect on hallucination is uneven.",
+      "body": "DEEPO: Dual-Entropy Enhanced Policy Optimization for Hallucination in MLLMs\n\narXiv:2609.28570v1 Announce Type: new \nAbstract: Reinforcement learning (RL) is widely used to sharpen reasoning in multimodal large language models (MLLMs), yet its effect on hallucination is uneven. We trace this to two weak points in the \\emph{correction chain} from reward to parameter update. At",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "BaseCamp --- An Agentic AI Framework for Automating DNA Sequencing Data Pipelines",
+      "summary": "arXiv:2609.28557v1 Announce Type: new \nAbstract: DNA sequencing pipelines, spanning quality control, alignment, variant calling, and annotation, are now reliably executed by workflow management system",
+      "body": "BaseCamp --- An Agentic AI Framework for Automating DNA Sequencing Data Pipelines\n\narXiv:2609.28557v1 Announce Type: new \nAbstract: DNA sequencing pipelines, spanning quality control, alignment, variant calling, and annotation, are now reliably executed by workflow management systems that orchestrate established bioinformatics tools at scale. What remains manual is the decision la",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "Pistis Technical Report",
+      "summary": "arXiv:2609.28554v1 Announce Type: new \nAbstract: We introduce the Pistis model family, comprising 27B- and 9B-parameter multimodal large language models built on Qwen3.6 and Qwen3.5, respectively, and",
+      "body": "Pistis Technical Report\n\narXiv:2609.28554v1 Announce Type: new \nAbstract: We introduce the Pistis model family, comprising 27B- and 9B-parameter multimodal large language models built on Qwen3.6 and Qwen3.5, respectively, and developed through a general and scalable post-training framework. The framework first establishes a",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "PAWS: Policy-driven Agentic World Simulation",
+      "summary": "arXiv:2609.28547v1 Announce Type: new \nAbstract: Policy interventions propagate through public communication, institutional decisions, and stakeholder responses, yet datasets for financial multi-agent",
+      "body": "PAWS: Policy-driven Agentic World Simulation\n\narXiv:2609.28547v1 Announce Type: new \nAbstract: Policy interventions propagate through public communication, institutional decisions, and stakeholder responses, yet datasets for financial multi-agent simulation rarely connect these processes to temporally aligned historical evidence. We introduce P",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "TW3Cast: A Frozen Router of Lightly Fine-Tuned Foundation Models for Time-Series Forecasting on GIFT-Eval, Selected Entirely on the Training Split",
+      "summary": "arXiv:2609.28506v1 Announce Type: new \nAbstract: TW3Cast is a time-series forecasting system that reaches position 3 of 130 entries on the GIFT-Eval benchmark by mean MASE rank, as of 2026-09-14. The ",
+      "body": "TW3Cast: A Frozen Router of Lightly Fine-Tuned Foundation Models for Time-Series Forecasting on GIFT-Eval, Selected Entirely on the Training Split\n\narXiv:2609.28506v1 Announce Type: new \nAbstract: TW3Cast is a time-series forecasting system that reaches position 3 of 130 entries on the GIFT-Eval benchmark by mean MASE rank, as of 2026-09-14. The two entries above it belong to the leaderboard's agentic category, multi-step systems that use agent",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "When Should Forecasting Agents Reason? Behavioral Stress Tests for Reliability Routing",
+      "summary": "arXiv:2609.28475v1 Announce Type: new \nAbstract: Forecasting agents increasingly combine language-model reasoning, retrieval, ensembling, and calibration, but it remains unclear when each behavior sho",
+      "body": "When Should Forecasting Agents Reason? Behavioral Stress Tests for Reliability Routing\n\narXiv:2609.28475v1 Announce Type: new \nAbstract: Forecasting agents increasingly combine language-model reasoning, retrieval, ensembling, and calibration, but it remains unclear when each behavior should be trusted. We study this question on ForecastBench-style binary forecasting tasks, treating the",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "Is your AI strategy creating “dark zombies”? - cio.com",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxPdElGMHlKdzd1YmE4emFYdGZaNUhEelRCTEk1a2dkWVk3M2hDSk9SdU55TVdNa0xPemlhby13ZnhtTzVTa0dsRkxzTFhsYWFMS29USVFTcEJaR0hoOVFEODkzSTFFa0s1WEF2YWRXZ0",
+      "body": "Is your AI strategy creating “dark zombies”? - cio.com\n\n<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxPdElGMHlKdzd1YmE4emFYdGZaNUhEelRCTEk1a2dkWVk3M2hDSk9SdU55TVdNa0xPemlhby13ZnhtTzVTa0dsRkxzTFhsYWFMS29USVFTcEJaR0hoOVFEODkzSTFFa0s1WEF2YWRXZ0",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T07:00:02.080898",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPdElGMHlKdzd1YmE4emFYdGZaNUhEelRCTEk1a2dkWVk3M2hDSk9SdU55TVdNa0xPemlhby13ZnhtTzVTa0dsRkxzTFhsYWFMS29USVFTcEJaR0hoOVFEODkzSTFFa0s1WEF2YWRXZ0"
+    },
+    {
+      "title": "Howard University Hosts Machine Learning Symposium in Collaboration with Amazon Web Services - thedig.howard.edu",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMivwFBVV95cUxQNzRrYnU5anB3V1J3Q2FabkZGMEFpQmN2Z2VJcW1rM19UeEtBbFlCWGJNR2c1NG1nTzBnZ3JRYTJ5Z21EbkdBSThoSW5lZzRJN28zUHlMUHBZRmpMb20wcC1kSnI1OG9VR1ZxaHBfNE",
+      "body": "Howard University Hosts Machine Learning Symposium in Collaboration with Amazon Web Services - thedig.howard.edu\n\n<a href=\"https://news.google.com/rss/articles/CBMivwFBVV95cUxQNzRrYnU5anB3V1J3Q2FabkZGMEFpQmN2Z2VJcW1rM19UeEtBbFlCWGJNR2c1NG1nTzBnZ3JRYTJ5Z21EbkdBSThoSW5lZzRJN28zUHlMUHBZRmpMb20wcC1kSnI1OG9VR1ZxaHBfNE",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T07:00:02.080898",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQNzRrYnU5anB3V1J3Q2FabkZGMEFpQmN2Z2VJcW1rM19UeEtBbFlCWGJNR2c1NG1nTzBnZ3JRYTJ5Z21EbkdBSThoSW5lZzRJN28zUHlMUHBZRmpMb20wcC1kSnI1OG9VR1ZxaHBfNE"
+    },
+    {
+      "title": "Microsoft unveils all-in-one Copilot app, taking on Anthropic and OpenAI in new push to boost adoption - GeekWire",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxNMHk5VWlTZGRDSnh4UVpoMTV4aWxVazJOZ0M2ZlFrM3B4cFBZb0hFeUZSRTctc3ZCejE5QXlPckIxSVQxQUFsTnd2eFVQZ0NFcEdYd2MwZEk0TG5JdVNuUnc1eGh2UEUtcVNuVU1sSF",
+      "body": "Microsoft unveils all-in-one Copilot app, taking on Anthropic and OpenAI in new push to boost adoption - GeekWire\n\n<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxNMHk5VWlTZGRDSnh4UVpoMTV4aWxVazJOZ0M2ZlFrM3B4cFBZb0hFeUZSRTctc3ZCejE5QXlPckIxSVQxQUFsTnd2eFVQZ0NFcEdYd2MwZEk0TG5JdVNuUnc1eGh2UEUtcVNuVU1sSF",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T07:00:02.080898",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNMHk5VWlTZGRDSnh4UVpoMTV4aWxVazJOZ0M2ZlFrM3B4cFBZb0hFeUZSRTctc3ZCejE5QXlPckIxSVQxQUFsTnd2eFVQZ0NFcEdYd2MwZEk0TG5JdVNuUnc1eGh2UEUtcVNuVU1sSF"
+    },
+    {
+      "title": "The cheap new AI model taking aim at OpenAI and Anthropic - Financial Times",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxNTW1CaHpfdENaOXJ3OGZmLWVfQ2xUU0FaTEJ5WVhGZzUtMmNENXM3Q0luMUpvZEpCcXVfYV9GQXdlWEs4Um1TbEVFLWNLdl9Ha1ZXQXl3UlU0Y3ZHbTVadWY5Q3lUU01WMGVKWjZBLW",
+      "body": "The cheap new AI model taking aim at OpenAI and Anthropic - Financial Times\n\n<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxNTW1CaHpfdENaOXJ3OGZmLWVfQ2xUU0FaTEJ5WVhGZzUtMmNENXM3Q0luMUpvZEpCcXVfYV9GQXdlWEs4Um1TbEVFLWNLdl9Ha1ZXQXl3UlU0Y3ZHbTVadWY5Q3lUU01WMGVKWjZBLW",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T12:00:01.554896",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNTW1CaHpfdENaOXJ3OGZmLWVfQ2xUU0FaTEJ5WVhGZzUtMmNENXM3Q0luMUpvZEpCcXVfYV9GQXdlWEs4Um1TbEVFLWNLdl9Ha1ZXQXl3UlU0Y3ZHbTVadWY5Q3lUU01WMGVKWjZBLW"
+    },
+    {
+      "title": "Palo Alto Networks Is Turning OpenAI and Anthropic Into a New Revenue Opportunity - Barchart.com",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQ25WMjRQdm9zYVpUZHlzNUdBQk1BclFRMmYzeENoY3pwOTd5a3ltUXJNU2tMako1N3NCY3JMcHdfcldJbzNsNVpCaWpFV1FReXF4Yk0tc3lPNHpqY3lUV0Jxa0xOLUJla2FqQXR2Q2",
+      "body": "Palo Alto Networks Is Turning OpenAI and Anthropic Into a New Revenue Opportunity - Barchart.com\n\n<a href=\"https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQ25WMjRQdm9zYVpUZHlzNUdBQk1BclFRMmYzeENoY3pwOTd5a3ltUXJNU2tMako1N3NCY3JMcHdfcldJbzNsNVpCaWpFV1FReXF4Yk0tc3lPNHpqY3lUV0Jxa0xOLUJla2FqQXR2Q2",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T12:00:01.554896",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQ25WMjRQdm9zYVpUZHlzNUdBQk1BclFRMmYzeENoY3pwOTd5a3ltUXJNU2tMako1N3NCY3JMcHdfcldJbzNsNVpCaWpFV1FReXF4Yk0tc3lPNHpqY3lUV0Jxa0xOLUJla2FqQXR2Q2"
+    },
+    {
+      "title": "One company is at the center of a wave of rogue AI attacks - The Verge",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxPVklBVkdxTG1sN2lGUmEwelRiZmRaVWJJaWhoeXpYcF95RzdpdzZQQUpTREFUN0VuY2ljUzZnYU5oNVh4Rk9OejM2aEZtS1NjRElYak5FTkdkbG1FWUtNNUJjNTVNcEZxMHdPWkJMeD",
+      "body": "One company is at the center of a wave of rogue AI attacks - The Verge\n\n<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxPVklBVkdxTG1sN2lGUmEwelRiZmRaVWJJaWhoeXpYcF95RzdpdzZQQUpTREFUN0VuY2ljUzZnYU5oNVh4Rk9OejM2aEZtS1NjRElYak5FTkdkbG1FWUtNNUJjNTVNcEZxMHdPWkJMeD",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T16:00:01.602272",
+      "date": "2026-09-26",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPVklBVkdxTG1sN2lGUmEwelRiZmRaVWJJaWhoeXpYcF95RzdpdzZQQUpTREFUN0VuY2ljUzZnYU5oNVh4Rk9OejM2aEZtS1NjRElYak5FTkdkbG1FWUtNNUJjNTVNcEZxMHdPWkJMeD"
+    },
+    {
+      "title": "OpenAI Pauses AI Training After 2.5-Hour DNS Escape [2026] - shattered.io",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE5xZnZFN3cxSktWOEVqYVFCZUduU2Y2MmRBSDlhQ3JyRGNCMEtNT2pfU1hpX3g2SldLWjNBNFVTT1U3LW81LVZGS3pYTFliYmhyb3JDU2pxdk9fQ3BRb0dfY3VnZ1VIMFhvaDJBRHF4eD",
+      "body": "OpenAI Pauses AI Training After 2.5-Hour DNS Escape [2026] - shattered.io\n\n<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE5xZnZFN3cxSktWOEVqYVFCZUduU2Y2MmRBSDlhQ3JyRGNCMEtNT2pfU1hpX3g2SldLWjNBNFVTT1U3LW81LVZGS3pYTFliYmhyb3JDU2pxdk9fQ3BRb0dfY3VnZ1VIMFhvaDJBRHF4eD",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T01:00:01.688767",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5xZnZFN3cxSktWOEVqYVFCZUduU2Y2MmRBSDlhQ3JyRGNCMEtNT2pfU1hpX3g2SldLWjNBNFVTT1U3LW81LVZGS3pYTFliYmhyb3JDU2pxdk9fQ3BRb0dfY3VnZ1VIMFhvaDJBRHF4eD"
+    },
+    {
+      "title": "Interview: What Does the ‘I’ in AI Really Mean? - Undark Magazine",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTFA0Skpnd19qX2pUWFJQWEtZdGZ6VEVJNFZpSVdNWkRNTHhJelFLNWxiMGF4Q3RSdlAyVGF2cldWNGVqRDU2YWZlZFEwaDZVV21Pc1E0MVVUengxVkJGVF9SN1FXR1ZTUnVPeGN6RzRjVX",
+      "body": "Interview: What Does the ‘I’ in AI Really Mean? - Undark Magazine\n\n<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTFA0Skpnd19qX2pUWFJQWEtZdGZ6VEVJNFZpSVdNWkRNTHhJelFLNWxiMGF4Q3RSdlAyVGF2cldWNGVqRDU2YWZlZFEwaDZVV21Pc1E0MVVUengxVkJGVF9SN1FXR1ZTUnVPeGN6RzRjVX",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T03:00:02.109537",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFA0Skpnd19qX2pUWFJQWEtZdGZ6VEVJNFZpSVdNWkRNTHhJelFLNWxiMGF4Q3RSdlAyVGF2cldWNGVqRDU2YWZlZFEwaDZVV21Pc1E0MVVUengxVkJGVF9SN1FXR1ZTUnVPeGN6RzRjVX"
+    },
+    {
+      "title": "Can AI Detect Life? Lessons From Artificial Life - Astrobiology Web",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxOUmZSbnI0cnNBRVFta183czN0aEU2VENLMFhhdkpkelFiLVF3R2xUMmpGYnBwdlZHcmItQzY0WC1TWVNwOF9KcXJyb2xzSnpqelM4ZUFWUWRqbTBGUGhaTzVLQ1R5anppb2w4ZTVka2",
+      "body": "Can AI Detect Life? Lessons From Artificial Life - Astrobiology Web\n\n<a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxOUmZSbnI0cnNBRVFta183czN0aEU2VENLMFhhdkpkelFiLVF3R2xUMmpGYnBwdlZHcmItQzY0WC1TWVNwOF9KcXJyb2xzSnpqelM4ZUFWUWRqbTBGUGhaTzVLQ1R5anppb2w4ZTVka2",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T18:00:01.159674",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOUmZSbnI0cnNBRVFta183czN0aEU2VENLMFhhdkpkelFiLVF3R2xUMmpGYnBwdlZHcmItQzY0WC1TWVNwOF9KcXJyb2xzSnpqelM4ZUFWUWRqbTBGUGhaTzVLQ1R5anppb2w4ZTVka2"
+    },
+    {
+      "title": "Scoop: Top AI companies probing tens of thousands of security incidents - Axios",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOaUlRV1JkUEZFRkRINVBlWTR1SWxkZ1hjcUdOMkJDNzF4UXdBVHd2LVlqQmlwb0R3cTVuTFk3MEp1eHlUT0hsRTAzekszcl81ZjNoWDZCMkZBTlk4Z3dlV1RoZnd3YVZSQmpUWWEyc3",
+      "body": "Scoop: Top AI companies probing tens of thousands of security incidents - Axios\n\n<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOaUlRV1JkUEZFRkRINVBlWTR1SWxkZ1hjcUdOMkJDNzF4UXdBVHd2LVlqQmlwb0R3cTVuTFk3MEp1eHlUT0hsRTAzekszcl81ZjNoWDZCMkZBTlk4Z3dlV1RoZnd3YVZSQmpUWWEyc3",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T20:00:01.532605",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOaUlRV1JkUEZFRkRINVBlWTR1SWxkZ1hjcUdOMkJDNzF4UXdBVHd2LVlqQmlwb0R3cTVuTFk3MEp1eHlUT0hsRTAzekszcl81ZjNoWDZCMkZBTlk4Z3dlV1RoZnd3YVZSQmpUWWEyc3"
+    },
+    {
+      "title": "Australia Senate Requests OpenAI, Anthropic CEOs Face AI Inquiry - Bloomberg.com",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxOZXdVbk9icWx6SFl4QU9wRmd2blc0RTZrZUJ0N1h1czl0OU1xZkQyMXNtbmlFMzRBOFJaTFNTSjRLRjVISEh4dzBCU0tRbHBNbzJrS0FDc18xN2ZVQjNyTkdGa0d3TnljZ2p6c2RHZG",
+      "body": "Australia Senate Requests OpenAI, Anthropic CEOs Face AI Inquiry - Bloomberg.com\n\n<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxOZXdVbk9icWx6SFl4QU9wRmd2blc0RTZrZUJ0N1h1czl0OU1xZkQyMXNtbmlFMzRBOFJaTFNTSjRLRjVISEh4dzBCU0tRbHBNbzJrS0FDc18xN2ZVQjNyTkdGa0d3TnljZ2p6c2RHZG",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T20:00:01.532605",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOZXdVbk9icWx6SFl4QU9wRmd2blc0RTZrZUJ0N1h1czl0OU1xZkQyMXNtbmlFMzRBOFJaTFNTSjRLRjVISEh4dzBCU0tRbHBNbzJrS0FDc18xN2ZVQjNyTkdGa0d3TnljZ2p6c2RHZG"
+    },
+    {
+      "title": "Anthropic and OpenAI sound the alarm on AI safety — and seek to shape how it’s controlled - AP News",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxNa1V4cHRDMlBrTDlxNlRReXJ5S2lkWFZWRmpFY3g3ZUlHbENldDRnRGRhTVhsZnU4bTZPLUNvbmlQenhqSndSSEtDVEVHQXU1VWpMSThJVWlVbHBTMkpScFVZUUdkSk1jZHJwaDhlQV",
+      "body": "Anthropic and OpenAI sound the alarm on AI safety — and seek to shape how it’s controlled - AP News\n\n<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxNa1V4cHRDMlBrTDlxNlRReXJ5S2lkWFZWRmpFY3g3ZUlHbENldDRnRGRhTVhsZnU4bTZPLUNvbmlQenhqSndSSEtDVEVHQXU1VWpMSThJVWlVbHBTMkpScFVZUUdkSk1jZHJwaDhlQV",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T20:00:01.532605",
+      "date": "2026-09-27",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNa1V4cHRDMlBrTDlxNlRReXJ5S2lkWFZWRmpFY3g3ZUlHbENldDRnRGRhTVhsZnU4bTZPLUNvbmlQenhqSndSSEtDVEVHQXU1VWpMSThJVWlVbHBTMkpScFVZUUdkSk1jZHJwaDhlQV"
+    },
+    {
+      "title": "OpenAI, Anthropic CEOs called to appear at Australian AI probe - Reuters",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPMkgwZG5VR01rUjNsZkNPUkw1TFNEYTY1TGtCa010MUlRVzE2Vy1qaTBMNnJiYXliYlY1MkJONXpValJTRTdQLVNjazhJbGc1RDNVMDdTNU9WZXd3elhRVVBZNEFZLTBER2VfVkdxUW",
+      "body": "OpenAI, Anthropic CEOs called to appear at Australian AI probe - Reuters\n\n<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPMkgwZG5VR01rUjNsZkNPUkw1TFNEYTY1TGtCa010MUlRVzE2Vy1qaTBMNnJiYXliYlY1MkJONXpValJTRTdQLVNjazhJbGc1RDNVMDdTNU9WZXd3elhRVVBZNEFZLTBER2VfVkdxUW",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T02:00:02.154119",
+      "date": "2026-09-28",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPMkgwZG5VR01rUjNsZkNPUkw1TFNEYTY1TGtCa010MUlRVzE2Vy1qaTBMNnJiYXliYlY1MkJONXpValJTRTdQLVNjazhJbGc1RDNVMDdTNU9WZXd3elhRVVBZNEFZLTBER2VfVkdxUW"
+    },
+    {
+      "title": "AI will transform capitalism – but how? | AI (artificial intelligence) - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1",
+      "body": "AI will transform capitalism – but how? | AI (artificial intelligence) - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T02:00:02.154119",
+      "date": "2026-09-28",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0FZa2NtaEdMSERqbGRwMDN4Q1doVzF4VXIyVFFvNzVVRVZoVUtEYUY0eTZtbmtZQ3dVRjVoSGduMXp6OFNCVXVwaFd2SG5ISEtDSGNvQktCTEsxQ1RsYUdaSkFad2FKUWVyN3RiV1"
+    },
+    {
+      "title": "Do LLMs Understand Context? A Knowledge Graph-Based Evaluation Framework",
+      "summary": "arXiv:2609.30484v1 Announce Type: new \nAbstract: While large language models (LLMs) have achieved remarkable linguistic capabilities, a profound question lingers at their core: do these models truly c",
+      "body": "Do LLMs Understand Context? A Knowledge Graph-Based Evaluation Framework\n\narXiv:2609.30484v1 Announce Type: new \nAbstract: While large language models (LLMs) have achieved remarkable linguistic capabilities, a profound question lingers at their core: do these models truly comprehend context or simply excel at pattern matching on an unprecedented scale? Contextual understa",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Pretrained ASR Pseudo-labeling for Noisy Police Audio",
+      "summary": "arXiv:2609.30469v1 Announce Type: new \nAbstract: Pretrained ASR systems perform poorly on noisy Broadcast Police Communication (BPC), hindering efforts to understand police decision-making. Pseudo-lab",
+      "body": "Pretrained ASR Pseudo-labeling for Noisy Police Audio\n\narXiv:2609.30469v1 Announce Type: new \nAbstract: Pretrained ASR systems perform poorly on noisy Broadcast Police Communication (BPC), hindering efforts to understand police decision-making. Pseudo-labeling offers an unsupervised path to improve ASR without expensive human labels, but the efficacy of",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Spectral Feedback for Test-Time Alignment of Protein Diffusion Models",
+      "summary": "arXiv:2609.30456v1 Announce Type: new \nAbstract: Reward maximization alignment methods for discrete diffusion models have primarily focused on steering the reverse process, either by influencing token",
+      "body": "Spectral Feedback for Test-Time Alignment of Protein Diffusion Models\n\narXiv:2609.30456v1 Announce Type: new \nAbstract: Reward maximization alignment methods for discrete diffusion models have primarily focused on steering the reverse process, either by influencing token logits or by selecting favorable sequences at intermediate steps. These approaches largely treat in",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Predicting Transmembrane Protein Topology from 3D Structure",
+      "summary": "arXiv:2609.30446v1 Announce Type: new \nAbstract: This paper presents a novel approach to infer protein topology using the state-of-the-art graph neural network (GNN), SchNet. The model is trained on t",
+      "body": "Predicting Transmembrane Protein Topology from 3D Structure\n\narXiv:2609.30446v1 Announce Type: new \nAbstract: This paper presents a novel approach to infer protein topology using the state-of-the-art graph neural network (GNN), SchNet. The model is trained on the same dataset used to develop the recent DeepTMHMM model with 5-fold cross-validation. Unlike the ",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "A Synthetic Ground-Truth Framework for the Evaluation of Explainable AI Methods",
+      "summary": "arXiv:2609.30397v1 Announce Type: new \nAbstract: Evaluating explainable Artificial Intelligence (XAI) methods is a challenging task due to the lack of reliable evaluation procedures and, in particular",
+      "body": "A Synthetic Ground-Truth Framework for the Evaluation of Explainable AI Methods\n\narXiv:2609.30397v1 Announce Type: new \nAbstract: Evaluating explainable Artificial Intelligence (XAI) methods is a challenging task due to the lack of reliable evaluation procedures and, in particular, the absence of ground truth explanations. In the literature, existing evaluation approaches typica",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Stealth Apart, Harm Together: Skill Cascading Attacks on Skill-Based Agent Systems",
+      "summary": "arXiv:2609.30383v1 Announce Type: new \nAbstract: A skill is a modular package of natural-language instructions, executable scripts, and reference resources that an agent can load at runtime to extend ",
+      "body": "Stealth Apart, Harm Together: Skill Cascading Attacks on Skill-Based Agent Systems\n\narXiv:2609.30383v1 Announce Type: new \nAbstract: A skill is a modular package of natural-language instructions, executable scripts, and reference resources that an agent can load at runtime to extend its capabilities for a specific task. Skill-based agent systems therefore enable flexible reuse of t",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Bridging LLM Agents and Data Spaces: An Architectural Mediation Approach using the Model Context Protocol",
+      "summary": "arXiv:2609.30341v1 Announce Type: new \nAbstract: Data Spaces enable sovereign and governed data sharing across organizational boundaries, but their integration with AI agents remains challenging due t",
+      "body": "Bridging LLM Agents and Data Spaces: An Architectural Mediation Approach using the Model Context Protocol\n\narXiv:2609.30341v1 Announce Type: new \nAbstract: Data Spaces enable sovereign and governed data sharing across organizational boundaries, but their integration with AI agents remains challenging due to mismatches between probabilistic language model interactions and policy-driven data infrastructure",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "When Is a Multi-Agent Code Judge Actually Grounded? Two Label-Free Measurements, and a Judge That Declines to Guess",
+      "summary": "arXiv:2609.30328v1 Announce Type: new \nAbstract: When one language model judges whether another's code is correct, it does not report the absence of evidence. It returns a confident verdict with reaso",
+      "body": "When Is a Multi-Agent Code Judge Actually Grounded? Two Label-Free Measurements, and a Judge That Declines to Guess\n\narXiv:2609.30328v1 Announce Type: new \nAbstract: When one language model judges whether another's code is correct, it does not report the absence of evidence. It returns a confident verdict with reasoning attached, indistinguishable from a verdict it had grounds for. Multi-agent verification, which ",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "ScopeBench: Do Agents Preserve Engagement Boundaries Under Goal Pressure?",
+      "summary": "arXiv:2609.30325v1 Announce Type: new \nAbstract: Agents are increasingly deployed with real autonomy in web application and network penetration testing, where a single out-of-scope action can breach a",
+      "body": "ScopeBench: Do Agents Preserve Engagement Boundaries Under Goal Pressure?\n\narXiv:2609.30325v1 Announce Type: new \nAbstract: Agents are increasingly deployed with real autonomy in web application and network penetration testing, where a single out-of-scope action can breach a client's engagement boundary. Existing offensive-security benchmarks measure raw hacking capability",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Bringing AI to Autonomous Systems -- From Cognition to Collective Intelligence",
+      "summary": "arXiv:2609.30291v1 Announce Type: new \nAbstract: The purpose of this article is to highlight the central role of autonomous systems as the ultimate stage in the development of AI, to explain the under",
+      "body": "Bringing AI to Autonomous Systems -- From Cognition to Collective Intelligence\n\narXiv:2609.30291v1 Announce Type: new \nAbstract: The purpose of this article is to highlight the central role of autonomous systems as the ultimate stage in the development of AI, to explain the underlying technical challenges that require a combination of connectionist AI and symbolic AI, and to in",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Universal Music Group Names Òscar Celma as Company’s First Senior VP, Applied AI & Machine Learning - Billboard",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxQR1BncXRLQ2ctLVJsN3pyRFAxaU41UkZzdEFseFdFeGtuUE1uYUVlbnNablVPMl9xS1dSWmUtb3Z4d0tlLXFaRXNrQnhaOUo4YjV3OEhpOV9aNWVmR3A5SDh0cFZZWkxaa3ZyU29SNE",
+      "body": "Universal Music Group Names Òscar Celma as Company’s First Senior VP, Applied AI & Machine Learning - Billboard\n\n<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxQR1BncXRLQ2ctLVJsN3pyRFAxaU41UkZzdEFseFdFeGtuUE1uYUVlbnNablVPMl9xS1dSWmUtb3Z4d0tlLXFaRXNrQnhaOUo4YjV3OEhpOV9aNWVmR3A5SDh0cFZZWkxaa3ZyU29SNE",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T01:00:01.942982",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQR1BncXRLQ2ctLVJsN3pyRFAxaU41UkZzdEFseFdFeGtuUE1uYUVlbnNablVPMl9xS1dSWmUtb3Z4d0tlLXFaRXNrQnhaOUo4YjV3OEhpOV9aNWVmR3A5SDh0cFZZWkxaa3ZyU29SNE"
+    },
+    {
+      "title": "Job Titles Are Out. Now We’re All ‘Members of the Technical Staff.’ - The New York Times",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxNQzdvYmJBbXp1a0ZFVzdHTXBUUE81UG1ROXJXODVFdUZITk1EVG1WTnBnZEFXZUhFbkRxbzYySVE0UE02a25ZUGU2OWpVNzYxT1JHOFNmclFLQ0c4aUlaeXR4OC1zbzljZ2RDYWx5UW",
+      "body": "Job Titles Are Out. Now We’re All ‘Members of the Technical Staff.’ - The New York Times\n\n<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxNQzdvYmJBbXp1a0ZFVzdHTXBUUE81UG1ROXJXODVFdUZITk1EVG1WTnBnZEFXZUhFbkRxbzYySVE0UE02a25ZUGU2OWpVNzYxT1JHOFNmclFLQ0c4aUlaeXR4OC1zbzljZ2RDYWx5UW",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T03:00:01.936881",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNQzdvYmJBbXp1a0ZFVzdHTXBUUE81UG1ROXJXODVFdUZITk1EVG1WTnBnZEFXZUhFbkRxbzYySVE0UE02a25ZUGU2OWpVNzYxT1JHOFNmclFLQ0c4aUlaeXR4OC1zbzljZ2RDYWx5UW"
+    },
+    {
+      "title": "COUNTERMEM: World-Model Verified Counter-Factual Memory for Language Agents",
+      "summary": "arXiv:2609.31874v1 Announce Type: new \nAbstract: Existing agent memory frameworks mainly create memory through an agent's interaction with the factual world, e.g., remembering feedback from actions ta",
+      "body": "COUNTERMEM: World-Model Verified Counter-Factual Memory for Language Agents\n\narXiv:2609.31874v1 Announce Type: new \nAbstract: Existing agent memory frameworks mainly create memory through an agent's interaction with the factual world, e.g., remembering feedback from actions taken to improve performance on future tasks. However, these frameworks seldom ask the \"what if\" quest",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T14:00:01.886797",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "IndustryLLM: Failure-Driven LLM Training for Industrial Procurement",
+      "summary": "arXiv:2609.31871v1 Announce Type: new \nAbstract: Industrial procurement requires language models to bridge informal buyer jargon, sparse marketplace attributes, and authoritative engineering standards",
+      "body": "IndustryLLM: Failure-Driven LLM Training for Industrial Procurement\n\narXiv:2609.31871v1 Announce Type: new \nAbstract: Industrial procurement requires language models to bridge informal buyer jargon, sparse marketplace attributes, and authoritative engineering standards under strict safety tolerances. We present IndustryLLM, an open-weight industrial language model tr",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T14:00:01.886797",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Metro-WM: Long-Horizon Latent Planning with Realisable Sub-Goals",
+      "summary": "arXiv:2609.31868v1 Announce Type: new \nAbstract: Model-predictive control with Joint-Embedding Predictive Architectures (JEPAs) provides a strong zero-shot goal-reaching planner, but it is only effect",
+      "body": "Metro-WM: Long-Horizon Latent Planning with Realisable Sub-Goals\n\narXiv:2609.31868v1 Announce Type: new \nAbstract: Model-predictive control with Joint-Embedding Predictive Architectures (JEPAs) provides a strong zero-shot goal-reaching planner, but it is only effective over short planning horizons. Hierarchical extensions attempt to bridge this gap by learning a m",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T14:00:01.886797",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Machine Learning’s Blind Spot: The Hidden Adversarial Threats to Unsupervised AI - bioengineer.org",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxQUXNuRFBBNFZXZFM4UzV5R3RMbjBoSXNuaG50UDcwVEhXczdyTm1nTVpEU3FTYWYwSnFXS1hhbC1qY05EeHhNUHJZTUx5amhBUjBWdWFhUndETHNOWmZPQUJtdWxRbjZUcXJTU2ZzcE",
+      "body": "Machine Learning’s Blind Spot: The Hidden Adversarial Threats to Unsupervised AI - bioengineer.org\n\n<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxQUXNuRFBBNFZXZFM4UzV5R3RMbjBoSXNuaG50UDcwVEhXczdyTm1nTVpEU3FTYWYwSnFXS1hhbC1qY05EeHhNUHJZTUx5amhBUjBWdWFhUndETHNOWmZPQUJtdWxRbjZUcXJTU2ZzcE",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQUXNuRFBBNFZXZFM4UzV5R3RMbjBoSXNuaG50UDcwVEhXczdyTm1nTVpEU3FTYWYwSnFXS1hhbC1qY05EeHhNUHJZTUx5amhBUjBWdWFhUndETHNOWmZPQUJtdWxRbjZUcXJTU2ZzcE"
+    },
+    {
+      "title": "How AI and Machine Learning Are Making Digital Twins More Intelligent - IoT For All",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMia0FVX3lxTE9SemRxdEI5SEctcG9XeGVzVXFjQmRfSjVJcmFwRWpMekR5QW1aUFVEeGNXX3BaUzVIekxyVGFVbmQzZG5HT2V1cWcxS04tWnJXdnI2eHpyMV9SWWRkc09idTJxMDFhMHNINzNZ?oc=5\"",
+      "body": "How AI and Machine Learning Are Making Digital Twins More Intelligent - IoT For All\n\n<a href=\"https://news.google.com/rss/articles/CBMia0FVX3lxTE9SemRxdEI5SEctcG9XeGVzVXFjQmRfSjVJcmFwRWpMekR5QW1aUFVEeGNXX3BaUzVIekxyVGFVbmQzZG5HT2V1cWcxS04tWnJXdnI2eHpyMV9SWWRkc09idTJxMDFhMHNINzNZ?oc=5\"",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9SemRxdEI5SEctcG9XeGVzVXFjQmRfSjVJcmFwRWpMekR5QW1aUFVEeGNXX3BaUzVIekxyVGFVbmQzZG5HT2V1cWcxS04tWnJXdnI2eHpyMV9SWWRkc09idTJxMDFhMHNINzNZ?oc=5"
+    },
+    {
+      "title": "OpenAI, Anthropic Can Slow Down, No One's Pointing Gun: Sridhar Vembu To NDTV - NDTV",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxOX290R25heG90MzBtM0VHREFLWFRqMGhHd3BhLTFJR21Ka1JsNm5TZEd6eXM5NG0tX3R2SkQ0N01DUkthYWZ6X2hLLWM0RmlPLWgzcnJfM2hsNUpjSWNvbjZQeUhhUWNmdVQ3VU4xaH",
+      "body": "OpenAI, Anthropic Can Slow Down, No One's Pointing Gun: Sridhar Vembu To NDTV - NDTV\n\n<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxOX290R25heG90MzBtM0VHREFLWFRqMGhHd3BhLTFJR21Ka1JsNm5TZEd6eXM5NG0tX3R2SkQ0N01DUkthYWZ6X2hLLWM0RmlPLWgzcnJfM2hsNUpjSWNvbjZQeUhhUWNmdVQ3VU4xaH",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOX290R25heG90MzBtM0VHREFLWFRqMGhHd3BhLTFJR21Ka1JsNm5TZEd6eXM5NG0tX3R2SkQ0N01DUkthYWZ6X2hLLWM0RmlPLWgzcnJfM2hsNUpjSWNvbjZQeUhhUWNmdVQ3VU4xaH"
+    },
+    {
+      "title": "Claude discovers a novel enzyme system with CRISPR-like repeats",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "GenAI Owns the Hype, but Predictive AI Is Thriving - predictiveanalyticsworld.com",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxPX3dlOUdtTmNpS3g1Vm1fMU1wbnl3OUxaWC12ZlV1cGFLaGFobWJaNFowQ1pwVThCdmNBTlpWenZjSm9LRzVkT2p4cXNjdVRmY2FXXzVvbm9NRXJNWWl2blc0M2hYUlVlUDN4YW9NTm",
+      "body": "GenAI Owns the Hype, but Predictive AI Is Thriving - predictiveanalyticsworld.com\n\n<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxPX3dlOUdtTmNpS3g1Vm1fMU1wbnl3OUxaWC12ZlV1cGFLaGFobWJaNFowQ1pwVThCdmNBTlpWenZjSm9LRzVkT2p4cXNjdVRmY2FXXzVvbm9NRXJNWWl2blc0M2hYUlVlUDN4YW9NTm",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-24T15:00:01.679078",
+      "date": "2026-09-24",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPX3dlOUdtTmNpS3g1Vm1fMU1wbnl3OUxaWC12ZlV1cGFLaGFobWJaNFowQ1pwVThCdmNBTlpWenZjSm9LRzVkT2p4cXNjdVRmY2FXXzVvbm9NRXJNWWl2blc0M2hYUlVlUDN4YW9NTm"
+    },
+    {
+      "title": "Crusoe, Thinking Machines Lab partner on open-model inference - Light Reading",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxQQndLSGYta3J6WVVsZmRvSjBzcWI1NXhrYTZiejZuR29KME9aaVpPd2YxaE5BZ1pLVWVsdExGOWlHb1FtN0RxVzhOdGVKYWE2SVp5R2RaQmVOX3pxU2diX050bmZrZE9FWmVkd09hUD",
+      "body": "Crusoe, Thinking Machines Lab partner on open-model inference - Light Reading\n\n<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxQQndLSGYta3J6WVVsZmRvSjBzcWI1NXhrYTZiejZuR29KME9aaVpPd2YxaE5BZ1pLVWVsdExGOWlHb1FtN0RxVzhOdGVKYWE2SVp5R2RaQmVOX3pxU2diX050bmZrZE9FWmVkd09hUD",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T00:00:01.574221",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQQndLSGYta3J6WVVsZmRvSjBzcWI1NXhrYTZiejZuR29KME9aaVpPd2YxaE5BZ1pLVWVsdExGOWlHb1FtN0RxVzhOdGVKYWE2SVp5R2RaQmVOX3pxU2diX050bmZrZE9FWmVkd09hUD"
+    },
+    {
+      "title": "Cathie Wood's ARK teams with Securitize to tokenize venture fund with OpenAI, Anthropic stakes - CoinDesk",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMi1AFBVV95cUxQZDg4TXJRVXVWeFI3a1A1YkZrY3NtZUNrdnRVa09TZlNNZW1kS2hUczF4OGVzZHZhQTdxVmM4a29wa0VLeTNWUTl0cy1iMmVnRDRvZmZsUGpRVFVPbGdLVTczQ0d0TE4xR2lhdmk2Qk",
+      "body": "Cathie Wood's ARK teams with Securitize to tokenize venture fund with OpenAI, Anthropic stakes - CoinDesk\n\n<a href=\"https://news.google.com/rss/articles/CBMi1AFBVV95cUxQZDg4TXJRVXVWeFI3a1A1YkZrY3NtZUNrdnRVa09TZlNNZW1kS2hUczF4OGVzZHZhQTdxVmM4a29wa0VLeTNWUTl0cy1iMmVnRDRvZmZsUGpRVFVPbGdLVTczQ0d0TE4xR2lhdmk2Qk",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T00:00:01.574221",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQZDg4TXJRVXVWeFI3a1A1YkZrY3NtZUNrdnRVa09TZlNNZW1kS2hUczF4OGVzZHZhQTdxVmM4a29wa0VLeTNWUTl0cy1iMmVnRDRvZmZsUGpRVFVPbGdLVTczQ0d0TE4xR2lhdmk2Qk"
+    },
+    {
+      "title": "Open Web Challenge: AI Search Must Restore Links - GovInfoSecurity",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxPblFnbE5oR3pKbUlXanNuZnMwaHpSWG1mSW1oNmM0RG5ac3BUNFlTYlU5Y2dXNUhCdTc5NmR3ZkpZYm9jWkVrUnNDQnExdFVoUVRzM3FqQ24yNk10bGEwdWxWSjBuNjYxckJ5aUxmSH",
+      "body": "Open Web Challenge: AI Search Must Restore Links - GovInfoSecurity\n\n<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxPblFnbE5oR3pKbUlXanNuZnMwaHpSWG1mSW1oNmM0RG5ac3BUNFlTYlU5Y2dXNUhCdTc5NmR3ZkpZYm9jWkVrUnNDQnExdFVoUVRzM3FqQ24yNk10bGEwdWxWSjBuNjYxckJ5aUxmSH",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPblFnbE5oR3pKbUlXanNuZnMwaHpSWG1mSW1oNmM0RG5ac3BUNFlTYlU5Y2dXNUhCdTc5NmR3ZkpZYm9jWkVrUnNDQnExdFVoUVRzM3FqQ24yNk10bGEwdWxWSjBuNjYxckJ5aUxmSH"
+    },
+    {
+      "title": "Anthropic and OpenAI roll out cheaper models in first release since call for slowdown - CNBC",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE1sZVdROFlLTUpZMmZPb0lWNWUtenNWaDhjX2JqeVZQM19lM2JVMmNYSHllQXczQWN5VVFHejNVOGFVU2NpVXdHQnJiWEU0eENSTmxaZGFBaTNQNXd3Vi1WM25wTVg3bjI1TEFsX2x3Vl",
+      "body": "Anthropic and OpenAI roll out cheaper models in first release since call for slowdown - CNBC\n\n<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE1sZVdROFlLTUpZMmZPb0lWNWUtenNWaDhjX2JqeVZQM19lM2JVMmNYSHllQXczQWN5VVFHejNVOGFVU2NpVXdHQnJiWEU0eENSTmxaZGFBaTNQNXd3Vi1WM25wTVg3bjI1TEFsX2x3Vl",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE1sZVdROFlLTUpZMmZPb0lWNWUtenNWaDhjX2JqeVZQM19lM2JVMmNYSHllQXczQWN5VVFHejNVOGFVU2NpVXdHQnJiWEU0eENSTmxaZGFBaTNQNXd3Vi1WM25wTVg3bjI1TEFsX2x3Vl"
+    },
+    {
+      "title": "Rogue AI agents hack government website, world leaders on edge of regulatory action - Fox News",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxPMG1KTzA3RVFvSGtaQ1d0OVhtaF9rYUlqZ1ZMZEFyOXdtNmpVS19IX251TU95WFh0RmFjdFJGWjVFQnRuOVVlSkJCeldZS1Q2eV9RSDF4c0RsUVp1SV9STFhSdzNaX1NTdFEzOS1Dd0",
+      "body": "Rogue AI agents hack government website, world leaders on edge of regulatory action - Fox News\n\n<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxPMG1KTzA3RVFvSGtaQ1d0OVhtaF9rYUlqZ1ZMZEFyOXdtNmpVS19IX251TU95WFh0RmFjdFJGWjVFQnRuOVVlSkJCeldZS1Q2eV9RSDF4c0RsUVp1SV9STFhSdzNaX1NTdFEzOS1Dd0",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPMG1KTzA3RVFvSGtaQ1d0OVhtaF9rYUlqZ1ZMZEFyOXdtNmpVS19IX251TU95WFh0RmFjdFJGWjVFQnRuOVVlSkJCeldZS1Q2eV9RSDF4c0RsUVp1SV9STFhSdzNaX1NTdFEzOS1Dd0"
+    },
+    {
+      "title": "Security auditing in the age of (good enough) AI",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T04:00:02.138319",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "OpenAI, Anthropic and other artificial intelligence companies hire Tennessee lobbyists - Tennessee Lookout",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMixAFBVV95cUxPckVSaWJHSVkybmpSWmhPN3NuLUNYWGM3ZDBvQ1E1R2NkLS0tWWVTeFVTTTNiZFdHZWdkQ0pibXlQd0FIZUktQUtqUElXT0E5NV9wUGd2V2RoZ2hJMWFjaTRaSV9fbjdUVmt2VEpWWF",
+      "body": "OpenAI, Anthropic and other artificial intelligence companies hire Tennessee lobbyists - Tennessee Lookout\n\n<a href=\"https://news.google.com/rss/articles/CBMixAFBVV95cUxPckVSaWJHSVkybmpSWmhPN3NuLUNYWGM3ZDBvQ1E1R2NkLS0tWWVTeFVTTTNiZFdHZWdkQ0pibXlQd0FIZUktQUtqUElXT0E5NV9wUGd2V2RoZ2hJMWFjaTRaSV9fbjdUVmt2VEpWWF",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T08:00:02.067405",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPckVSaWJHSVkybmpSWmhPN3NuLUNYWGM3ZDBvQ1E1R2NkLS0tWWVTeFVTTTNiZFdHZWdkQ0pibXlQd0FIZUktQUtqUElXT0E5NV9wUGd2V2RoZ2hJMWFjaTRaSV9fbjdUVmt2VEpWWF"
+    },
+    {
+      "title": "Sorry, Mr President, but we won’t be calling AI ‘superintelligence’ - SDxCentral",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxNd3RReVl5VFlIaFVhMTRRLVpRcTF6U3dLazZmU1pFdHVDOHN1YW5aQm1aZF9Fd1B6cjhMdkU4NUpNLWpLNGxfUzdQclhRUi01VllKNHdyMmZTR3owSm9wYlRjeE13cEx1YmRJNzMtUl",
+      "body": "Sorry, Mr President, but we won’t be calling AI ‘superintelligence’ - SDxCentral\n\n<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxNd3RReVl5VFlIaFVhMTRRLVpRcTF6U3dLazZmU1pFdHVDOHN1YW5aQm1aZF9Fd1B6cjhMdkU4NUpNLWpLNGxfUzdQclhRUi01VllKNHdyMmZTR3owSm9wYlRjeE13cEx1YmRJNzMtUl",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-25T18:07:47.541358",
+      "date": "2026-09-25",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNd3RReVl5VFlIaFVhMTRRLVpRcTF6U3dLazZmU1pFdHVDOHN1YW5aQm1aZF9Fd1B6cjhMdkU4NUpNLWpLNGxfUzdQclhRUi01VllKNHdyMmZTR3owSm9wYlRjeE13cEx1YmRJNzMtUl"
+    },
+    {
+      "title": "ConflictVLA-Bench: Benchmarking Behavioral Responses of Vision-Language-Action Models to Premise Conflicts",
+      "summary": "arXiv:2609.31792v1 Announce Type: new \nAbstract: While Vision-Language-Action (VLA) models perform strongly on manipulation tasks, their responses to invalid task premises remain underexplored. Existi",
+      "body": "ConflictVLA-Bench: Benchmarking Behavioral Responses of Vision-Language-Action Models to Premise Conflicts\n\narXiv:2609.31792v1 Announce Type: new \nAbstract: While Vision-Language-Action (VLA) models perform strongly on manipulation tasks, their responses to invalid task premises remain underexplored. Existing evaluations of premise conflicts often focus on terminal task outcomes, yet task failure alone ca",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "CP-Agent: A Harness-Engineered Agent for Crystal Plasticity Simulation Workflows",
+      "summary": "arXiv:2609.31790v1 Announce Type: new \nAbstract: Crystal plasticity (CP) simulations predict the mechanical behavior of polycrystalline metals, yet their routine use is hindered by the manual effort o",
+      "body": "CP-Agent: A Harness-Engineered Agent for Crystal Plasticity Simulation Workflows\n\narXiv:2609.31790v1 Announce Type: new \nAbstract: Crystal plasticity (CP) simulations predict the mechanical behavior of polycrystalline metals, yet their routine use is hindered by the manual effort of configuring heterogeneous tools, orchestrating multi-step data pipelines, and calibrating constitu",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Witeness Overlap: Directional Provenance Inside Open-Weight Model Families",
+      "summary": "arXiv:2609.31784v1 Announce Type: new \nAbstract: Open-weight models are often released, fine-tuned, aligned, merged, and re-released, making provenance audits ask not only whether checkpoints are rela",
+      "body": "Witeness Overlap: Directional Provenance Inside Open-Weight Model Families\n\narXiv:2609.31784v1 Announce Type: new \nAbstract: Open-weight models are often released, fine-tuned, aligned, merged, and re-released, making provenance audits ask not only whether checkpoints are related, but also which checkpoint came first. Many existing model-provenance methods are designed for a",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "SMARtCARE: Privacy-Preserving Agentic AI Systems for Bounded-Autonomy Clinical Decision Support",
+      "summary": "arXiv:2609.31763v1 Announce Type: new \nAbstract: Long-context clinical AI systems can miss relevant patient history when prior admissions fall outside the active reasoning context. In ICU monitoring, ",
+      "body": "SMARtCARE: Privacy-Preserving Agentic AI Systems for Bounded-Autonomy Clinical Decision Support\n\narXiv:2609.31763v1 Announce Type: new \nAbstract: Long-context clinical AI systems can miss relevant patient history when prior admissions fall outside the active reasoning context. In ICU monitoring, this can cause early vital-sign drift to appear nonspecific even when it resembles a prior deteriora",
+      "sources": [
+        "arXiv CS.AI"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "The effects of an “algorithmic monoculture” depend on the details - MIT News",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxPUF9oOERlY1NsM0Vha19RUVJNNWRyeTEyd3dISlo4YkM2cGFRb1Z5ZHJKYzg4RWg2S3ZCdGd6dDlhRlFoNXZNZ0lQU01IdjJha2c1TGVNMi1MRU5DN3JNN2FCZE5kb3pKVEdXQzdjUD",
+      "body": "The effects of an “algorithmic monoculture” depend on the details - MIT News\n\n<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxPUF9oOERlY1NsM0Vha19RUVJNNWRyeTEyd3dISlo4YkM2cGFRb1Z5ZHJKYzg4RWg2S3ZCdGd6dDlhRlFoNXZNZ0lQU01IdjJha2c1TGVNMi1MRU5DN3JNN2FCZE5kb3pKVEdXQzdjUD",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPUF9oOERlY1NsM0Vha19RUVJNNWRyeTEyd3dISlo4YkM2cGFRb1Z5ZHJKYzg4RWg2S3ZCdGd6dDlhRlFoNXZNZ0lQU01IdjJha2c1TGVNMi1MRU5DN3JNN2FCZE5kb3pKVEdXQzdjUD"
+    },
+    {
+      "title": "Universal Music Group Names Òscar Celma SVP of Applied AI and Machine Learning - citybiz",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxNVlBWdm00bUkwbFhaU0ZxMnA1a0FxQzRsR1lubFFkWGtEZmdab3ZGU0ZVT043QnlkdWFYUVJoNnZZQnZMWEhBSkdyT19ZN09Mb1h3bzlOcXljWVlKQzdRZXZabjdYTnZiUXprdUE4VG",
+      "body": "Universal Music Group Names Òscar Celma SVP of Applied AI and Machine Learning - citybiz\n\n<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxNVlBWdm00bUkwbFhaU0ZxMnA1a0FxQzRsR1lubFFkWGtEZmdab3ZGU0ZVT043QnlkdWFYUVJoNnZZQnZMWEhBSkdyT19ZN09Mb1h3bzlOcXljWVlKQzdRZXZabjdYTnZiUXprdUE4VG",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNVlBWdm00bUkwbFhaU0ZxMnA1a0FxQzRsR1lubFFkWGtEZmdab3ZGU0ZVT043QnlkdWFYUVJoNnZZQnZMWEhBSkdyT19ZN09Mb1h3bzlOcXljWVlKQzdRZXZabjdYTnZiUXprdUE4VG"
+    },
+    {
+      "title": "Nobody Did TDD for 25 Years. Now the Machine Requires It - Communications of the ACM",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxQOVV4Nm1JMng5NHg0bVhmRi0yWDZmWXJfMTUtbzVIXy1sM2ZLRDF6TlE1RlRYLURVc2ZuOGFmUHl4NU9MYVVtSGZ6cEZBLWFXVXJ3LWtsemhYZ0xFYmhtb3BqRGloN2s5RmdwMG02Zn",
+      "body": "Nobody Did TDD for 25 Years. Now the Machine Requires It - Communications of the ACM\n\n<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxQOVV4Nm1JMng5NHg0bVhmRi0yWDZmWXJfMTUtbzVIXy1sM2ZLRDF6TlE1RlRYLURVc2ZuOGFmUHl4NU9MYVVtSGZ6cEZBLWFXVXJ3LWtsemhYZ0xFYmhtb3BqRGloN2s5RmdwMG02Zn",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQOVV4Nm1JMng5NHg0bVhmRi0yWDZmWXJfMTUtbzVIXy1sM2ZLRDF6TlE1RlRYLURVc2ZuOGFmUHl4NU9MYVVtSGZ6cEZBLWFXVXJ3LWtsemhYZ0xFYmhtb3BqRGloN2s5RmdwMG02Zn"
+    },
+    {
+      "title": "Soil Moisture Virtual Seminar Series: Using AI and Machine Learning to Improve Soil Moisture Products - Drought.gov",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxOUWZwT29FX1lZQWF3emVCUmlndlJNWE82dWR1S0U3WjFMc1FhbDZkdk9uOG1GMXRMLUZqazQxUDBtUjNxWDQ4RUNsRmMwejEwNWcxeUZCeklINzBPRXN5YnNWRkFCRjJvWlh5Tkc1YU",
+      "body": "Soil Moisture Virtual Seminar Series: Using AI and Machine Learning to Improve Soil Moisture Products - Drought.gov\n\n<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxOUWZwT29FX1lZQWF3emVCUmlndlJNWE82dWR1S0U3WjFMc1FhbDZkdk9uOG1GMXRMLUZqazQxUDBtUjNxWDQ4RUNsRmMwejEwNWcxeUZCeklINzBPRXN5YnNWRkFCRjJvWlh5Tkc1YU",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOUWZwT29FX1lZQWF3emVCUmlndlJNWE82dWR1S0U3WjFMc1FhbDZkdk9uOG1GMXRMLUZqazQxUDBtUjNxWDQ4RUNsRmMwejEwNWcxeUZCeklINzBPRXN5YnNWRkFCRjJvWlh5Tkc1YU"
+    },
+    {
+      "title": "As AI models go rogue, do you still trust OpenAI and Anthropic to stop them? I don’t and neither should you - The Guardian",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxQS1RBNVlQOU9oc0N0MUNoNkU1WFF4dkxKbm5EbHFMdUhYMkZ4U2NoSlB6RXRPYXpvXzlHSlRWUEVyWFRYZWlReVdTekVKcHJjLTdjRVpNRWNYV1lXVGRnaWxhYUkyQlB1VUhMTHc0Yy",
+      "body": "As AI models go rogue, do you still trust OpenAI and Anthropic to stop them? I don’t and neither should you - The Guardian\n\n<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxQS1RBNVlQOU9oc0N0MUNoNkU1WFF4dkxKbm5EbHFMdUhYMkZ4U2NoSlB6RXRPYXpvXzlHSlRWUEVyWFRYZWlReVdTekVKcHJjLTdjRVpNRWNYV1lXVGRnaWxhYUkyQlB1VUhMTHc0Yy",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQS1RBNVlQOU9oc0N0MUNoNkU1WFF4dkxKbm5EbHFMdUhYMkZ4U2NoSlB6RXRPYXpvXzlHSlRWUEVyWFRYZWlReVdTekVKcHJjLTdjRVpNRWNYV1lXVGRnaWxhYUkyQlB1VUhMTHc0Yy"
+    },
+    {
+      "title": "Mistral CEO says U.S. AI safety debate masks competitors’ 'negligence' - CNBC",
+      "summary": "<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE5Xa3REXzgwTUluYVRBSnczZk9mdWl1MmszYzBYNHRPbDJicXI4RVJibFkzaEZoVy14Z05yQkx3RUtIOWNWTERMMXpMVTNTYW43Z1NsTC1EY2pRQmhLUDhEdjJnR09pelJKSm1vQ2RVbn",
+      "body": "Mistral CEO says U.S. AI safety debate masks competitors’ 'negligence' - CNBC\n\n<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE5Xa3REXzgwTUluYVRBSnczZk9mdWl1MmszYzBYNHRPbDJicXI4RVJibFkzaEZoVy14Z05yQkx3RUtIOWNWTERMMXpMVTNTYW43Z1NsTC1EY2pRQmhLUDhEdjJnR09pelJKSm1vQ2RVbn",
+      "sources": [
+        "Google News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5Xa3REXzgwTUluYVRBSnczZk9mdWl1MmszYzBYNHRPbDJicXI4RVJibFkzaEZoVy14Z05yQkx3RUtIOWNWTERMMXpMVTNTYW43Z1NsTC1EY2pRQmhLUDhEdjJnR09pelJKSm1vQ2RVbn"
+    },
+    {
+      "title": "Simulating Airband AM Radios",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Jeff – Jev-compatible 0.8B decision models, trained at home, ~30 ms",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Uncensored and Offensive Security AI Models Benchmark",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "MicroLLM Lab – Try 7 tiny LLM's in the browser",
+      "summary": "HN热门话题，0赞",
+      "body": "来自Hacker News的热议话题。该讨论有0个赞。",
+      "sources": [
+        "Hacker News"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T17:00:01.811537",
+      "date": "2026-09-29"
+    }
+  ],
+  "entries_cn": [
+    {
+      "title": "\n        黄仁勋：AI 时代，企业应该尽可能多付薪酬；宇树科技发布 Dex5-S 灵巧手；OpenAI 新模型 24 天解决 100+ 世界级数学难题 | 极客早知道\n      ",
+      "summary": "消息称华为 Mate 90 系列年度旗舰手机将在 9 月 29 日发布 9 月",
+      "body": "黄仁勋：AI 时代，企业应该尽可能多付薪酬；宇树科技发布 Dex5-S 灵巧手；OpenAI 新模型 24 天解决 100+ 世界级数学难题 | 极客早知道 消息称华为 Mate 90 系列年度旗舰手机将在 9 月 29 日发布 9 月",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        Meta 个人 AI 助手刚火 13 天，Amazon 就拉闸了\n      ",
+      "summary": "9 月 21 日，一条弹窗开始出现在试图用 Meta Muse 在 Amazon 上购物的用户屏幕上：「未经授权的 AI Agent 继续访问，将违反 Amazon 使用条款。」 这距离 Muse 正式上线，仅仅过了 13 天。",
+      "body": "Meta 个人 AI 助手刚火 13 天，Amazon 就拉闸了 9 月 21 日，一条弹窗开始出现在试图用 Meta Muse 在 Amazon 上购物的用户屏幕上：「未经授权的 AI Agent 继续访问，将违反 Amazon 使用条款。」 这距离 Muse 正式上线，仅仅过了 13 天。",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        OpenAI 发布 GPT-6 Sol 和 Luna；传字节跳动豆包收缩对话团队；千问发布 AI 手机全栈解决方案 | 极客早知道\n      ",
+      "summary": "OpenAI 发布 GPT-6 Sol 和 Luna 模型，API 价格大降 50%",
+      "body": "OpenAI 发布 GPT-6 Sol 和 Luna；传字节跳动豆包收缩对话团队；千问发布 AI 手机全栈解决方案 | 极客早知道 OpenAI 发布 GPT-6 Sol 和 Luna 模型，API 价格大降 50%",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        从单卡到千卡互联，平头哥真武 V900 背后的 AI 算力变局\n      ",
+      "summary": "作者｜Cynthia 编辑｜郑玄",
+      "body": "从单卡到千卡互联，平头哥真武 V900 背后的 AI 算力变局 作者｜Cynthia 编辑｜郑玄",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        拆解下阿里的 AI 经济学，与它的下注\n      ",
+      "summary": "作者｜张鹏",
+      "body": "拆解下阿里的 AI 经济学，与它的下注 作者｜张鹏",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        剪映，杀入 AI 互动影游\n      ",
+      "summary": "头图来源：剪映 9 月 20 日，剪映在「AI 新创作发布会」上，集中更新了专业版、移动端和创作者生态。 专业版新增一站式创作工作台「剪映 Hub」，由无限画布和多轨编辑器组成。用户可以从一句话、一个参考视频或者一份文档开始，在画布上整理思路、生成脚本和分镜，调用",
+      "body": "剪映，杀入 AI 互动影游 头图来源：剪映 9 月 20 日，剪映在「AI 新创作发布会」上，集中更新了专业版、移动端和创作者生态。 专业版新增一站式创作工作台「剪映 Hub」，由无限画布和多轨编辑器组成。用户可以从一句话、一个参考视频或者一份文档开始，在画布上整理思路、生成脚本和分镜，调用",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        OpenAI CEO : AI 可能带来工业革命式动荡；Anthropic 宣布成立生命科学团队和实验室；腾讯 QClaw 宣布将停运\n      ",
+      "summary": "\n        <p style=\"text-align: center;\"><img src=\"https://imgslim.geekpark.net/uploads/image/file/58/7c/587cccae5161b95636d74592cfc81099.png\" /></p>\n<div data-page-id=\"WI0zdV3vyozKwQx2tcccj2JLnmc\" dat",
+      "body": "OpenAI CEO : AI 可能带来工业革命式动荡；Anthropic 宣布成立生命科学团队和实验室；腾讯 QClaw 宣布将停运",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "Send Email When Coupon Used in WooCommerce",
+      "summary": "Introduction Coupons are not only for giving discounts. They are also used for affiliate tracking, marketing campaigns, internal offers, or even manual workflows that need attention. But the proble",
+      "body": "Send Email When Coupon Used in WooCommerce Introduction Coupons are not only for giving discounts. They are also used for affiliate tracking, marketing campaigns, internal offers, or even manual workflows that need attention. But the proble",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-24T12:01:28.737237",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "\n        Agent 时代来了，3D 生成大模型接下来比什么？\n      ",
+      "summary": "9 月 3 日，GPT-6 Astra 的发布，把 3D 内容创作带到了舞台中央。 在 GPT-6 Astra 官方发布页的一个不到 3 分钟的视频里与后续解读中，Astra 已经能直接进入 Blender，从一句住宅设计需求开始搭场景，先生成极简住宅，后来又将其扩展为围绕庭院展开的家庭住宅。里面有卧室、办公室、厨房和卫生间；家具从床板、衣柜挂杆、烤箱、餐具抽",
+      "body": "Agent 时代来了，3D 生成大模型接下来比什么？ 9 月 3 日，GPT-6 Astra 的发布，把 3D 内容创作带到了舞台中央。 在 GPT-6 Astra 官方发布页的一个不到 3 分钟的视频里与后续解读中，Astra 已经能直接进入 Blender，从一句住宅设计需求开始搭场景，先生成极简住宅，后来又将其扩展为围绕庭院展开的家庭住宅。里面有卧室、办公室、厨房和卫生间；家具从床板、衣柜挂杆、烤箱、餐具抽",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T00:00:01.574221",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "\n        OPPO 姜昱辰：大模型的差距越来越小，AI 手机的差距才刚拉开\n      ",
+      "summary": "\n        <section class=\"wx-article-wrap\">\n<section><img class=\"rich_pages wxw-img\" style=\"display: block; width: 661px !important; max-width: 100%; vertical-align: bottom; box-sizing: border-box; mar",
+      "body": "OPPO 姜昱辰：大模型的差距越来越小，AI 手机的差距才刚拉开",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-25T13:00:01.892304",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "29 小时攻破浏览器，GPT-6 Astra 成为 OpenAI 首个“严重级”模型",
+      "summary": "点击查看原文>",
+      "body": "29 小时攻破浏览器，GPT-6 Astra 成为 OpenAI 首个“严重级”模型 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/b5oxzJyafr0lkZexoo8E?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "数据、模型、算力越来越难分开，Data+AI 基础设施怎么进化？",
+      "summary": "点击查看原文>",
+      "body": "数据、模型、算力越来越难分开，Data+AI 基础设施怎么进化？ 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/amffXXMpr23rX3eoJDhv?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "WSO2 发布 Agent Manager，企业寻求应对日益严重的 AI Agent 泛滥问题",
+      "summary": "点击查看原文>",
+      "body": "WSO2 发布 Agent Manager，企业寻求应对日益严重的 AI Agent 泛滥问题 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/4gr5Zt9GZoyIwF2f6LvR?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "世界人工智能开源大赛（GOAI）总决赛暨颁奖盛典在杭州举行",
+      "summary": "点击查看原文>",
+      "body": "世界人工智能开源大赛（GOAI）总决赛暨颁奖盛典在杭州举行 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/hrmb2p18iKEwl24OMvcv?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "云栖之后，10+阿里AI实战派将亮相QCon上海站",
+      "summary": "点击查看原文>",
+      "body": "云栖之后，10+阿里AI实战派将亮相QCon上海站 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/lh6Z5E9Zkr33bOeHQGky?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "当 Vibe Coding 撞上企业级现实：真实工程中的 AI 效能之路｜QCon上海",
+      "summary": "点击查看原文>",
+      "body": "当 Vibe Coding 撞上企业级现实：真实工程中的 AI 效能之路｜QCon上海 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/QQk3wiolU1VScH3u0P7T?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "BAT 集体重做「AI 预训练」，补「脏数据」的坑",
+      "summary": "<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "body": "BAT 集体重做「AI 预训练」，补「脏数据」的坑\n\n<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26"
+    },
+    {
+      "title": "这次云栖，斑马智能亮出了从汽车到具身智能的入场券",
+      "summary": "<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "body": "这次云栖，斑马智能亮出了从汽车到具身智能的入场券\n\n<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26"
+    },
+    {
+      "title": "SeeAct AI穆尧：具身智能终局，一定是从“被训练”走向“自我进化”｜物理AI50人",
+      "summary": "<section data-mpa-powered-by=\"yiban.io\" style=\"margin-right: 0em;margin-bottom: 0px;margin-left: 0em;-webkit-tap-highlight-color: transparent;outline: 0px;letter-spacing: 0.544px;font-family: system-u",
+      "body": "SeeAct AI穆尧：具身智能终局，一定是从“被训练”走向“自我进化”｜物理AI50人\n\n<section data-mpa-powered-by=\"yiban.io\" style=\"margin-right: 0em;margin-bottom: 0px;margin-left: 0em;-webkit-tap-highlight-color: transparent;outline: 0px;letter-spacing: 0.544px;font-family: system-u",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26"
+    },
+    {
+      "title": "智元第20000台具身机器人交付长隆，首期超300台机器人常驻乐园。",
+      "summary": "雷峰网报道： 2026 年，具身智能行业最难回答的问题之一，是怎么落地。 这里的「落地」有两层含义：一方面，机器人得有足够稳定的量产能力，能够真的交付出去；另一方面，交付之后还得适应具体场景，在真实环境里持续工作。智元称之为「部署态」，机器人开始离开发布会和展会，进入真实的生产与服务环境。 一台机器人在舞台上完成一次高难度动作，足以成为热点；让数百台机器人",
+      "body": "智元第20000台具身机器人交付长隆，首期超300台机器人常驻乐园。 雷峰网报道： 2026 年，具身智能行业最难回答的问题之一，是怎么落地。 这里的「落地」有两层含义：一方面，机器人得有足够稳定的量产能力，能够真的交付出去；另一方面，交付之后还得适应具体场景，在真实环境里持续工作。智元称之为「部署态」，机器人开始离开发布会和展会，进入真实的生产与服务环境。 一台机器人在舞台上完成一次高难度动作，足以成为热点；让数百台机器人",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26"
+    },
+    {
+      "title": "DoorDash 借助多 Agent LLM 系统清理 6 万个 Feature Flag",
+      "summary": "点击查看原文>",
+      "body": "DoorDash 借助多 Agent LLM 系统清理 6 万个 Feature Flag 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T12:00:01.554896",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/gk4rWsQg09PWTFTZlJE3?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "AI 时代，技术人靠什么赢？｜QCon上海",
+      "summary": "点击查看原文>",
+      "body": "AI 时代，技术人靠什么赢？｜QCon上海 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T12:00:01.554896",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/C1Vuzh9fUmUL9i5wmDZf?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "\n        Deepseek 桌面版悄悄上线；Muse 大火，扎克伯格跃升全球第四大富豪；OpenAI 被曝筹备推出 ProMax 订阅层级，月费或达 500-600 美元\n      ",
+      "summary": "Anthropic 与 Akamai 达成 7 年 116 亿美元协议，扩充 CPU 算力",
+      "body": "Deepseek 桌面版悄悄上线；Muse 大火，扎克伯格跃升全球第四大富豪；OpenAI 被曝筹备推出 ProMax 订阅层级，月费或达 500-600 美元 Anthropic 与 Akamai 达成 7 年 116 亿美元协议，扩充 CPU 算力",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T12:00:01.554896",
+      "date": "2026-09-26"
+    },
+    {
+      "title": "阿里巴巴开源 AI 辅助代码评审工具 OpenCodeReview",
+      "summary": "点击查看原文>",
+      "body": "阿里巴巴开源 AI 辅助代码评审工具 OpenCodeReview 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-26T18:00:02.298178",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/jJIXCaLHUvPgswTOZ1uQ?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "\n        接连发生 AI 失控，OpenAI 暂停最强模型训练；腾讯推出云端小龙虾：已接入微信 QQ；王兴兴回应造 390 万元变形机甲\n      ",
+      "summary": "接连发生 AI 失控事件，OpenAI 再次暂停其最强模型训练 9 月 27",
+      "body": "接连发生 AI 失控，OpenAI 暂停最强模型训练；腾讯推出云端小龙虾：已接入微信 QQ；王兴兴回应造 390 万元变形机甲 接连发生 AI 失控事件，OpenAI 再次暂停其最强模型训练 9 月 27",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T10:00:01.361130",
+      "date": "2026-09-27"
+    },
+    {
+      "title": "可控、可测、可进化——B2B跨境支付的 AI 驾驭实践｜QCon上海",
+      "summary": "点击查看原文>",
+      "body": "可控、可测、可进化——B2B跨境支付的 AI 驾驭实践｜QCon上海 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T11:00:01.919736",
+      "date": "2026-09-27",
+      "url": "https://www.infoq.cn/article/UC6jk6tu7fWE5bDO8oQw?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "谷歌 Kotlin 版 ADK 实现与 Python 版功能对齐，支持端侧 AI",
+      "summary": "点击查看原文>",
+      "body": "谷歌 Kotlin 版 ADK 实现与 Python 版功能对齐，支持端侧 AI 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T11:00:01.919736",
+      "date": "2026-09-27",
+      "url": "https://www.infoq.cn/article/sQV4EomjPP0J3hM3lyF9?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "遇见AI未来：中科通量SmarCo系列产品亮相全球数字贸易博览会",
+      "summary": "9月23日至27日，第五届全球数字贸易博览会在杭州大会展中心举行。中科通量作为国内视频智能和AI智算领域的代表企业，受邀在2号主题展馆重磅亮相，全面展示其在视频AI、智能存储与算力领域的最新成果。 亮相国家级舞台，全线产品集中呈现 作为全球数字贸易领域中国唯一以数字贸易为主题的国家级、国际性、专业型展会，数贸会已成为展示全球数字贸易新",
+      "body": "遇见AI未来：中科通量SmarCo系列产品亮相全球数字贸易博览会 9月23日至27日，第五届全球数字贸易博览会在杭州大会展中心举行。中科通量作为国内视频智能和AI智算领域的代表企业，受邀在2号主题展馆重磅亮相，全面展示其在视频AI、智能存储与算力领域的最新成果。 亮相国家级舞台，全线产品集中呈现 作为全球数字贸易领域中国唯一以数字贸易为主题的国家级、国际性、专业型展会，数贸会已成为展示全球数字贸易新",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T15:00:02.087230",
+      "date": "2026-09-27"
+    },
+    {
+      "title": "\n        阿里整合 AI 办公力量后，千问办公怎么打这场大战？\n      ",
+      "summary": "办公正在成为全球 AI 行业竞争最集中的战场之一。 相比聊天、搜索，AI 在企业办公场景下的落地要复杂的多，一方面需要连接、调用企业的文档、邮件、知识库，另一方面还需要 AI 理解审批、销售、财务等业务流程。而今年以来 Agent 快速发展，让 AI 进入「千司千面」的企业办公场景成为可能。 因此，从微软、谷歌到国内的互联网和云计算公司，行业竞争",
+      "body": "阿里整合 AI 办公力量后，千问办公怎么打这场大战？ 办公正在成为全球 AI 行业竞争最集中的战场之一。 相比聊天、搜索，AI 在企业办公场景下的落地要复杂的多，一方面需要连接、调用企业的文档、邮件、知识库，另一方面还需要 AI 理解审批、销售、财务等业务流程。而今年以来 Agent 快速发展，让 AI 进入「千司千面」的企业办公场景成为可能。 因此，从微软、谷歌到国内的互联网和云计算公司，行业竞争",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-27T18:00:01.159674",
+      "date": "2026-09-27"
+    },
+    {
+      "title": "\n        传 OpenAI 29 日推个人 AI 助手；AI 专家偏远地区买地，担心「AI 失控」；挖掘机能自动「挖沟」，网友：蓝翔还能开几年？\n      ",
+      "summary": "消息称 OpenAI 将推出常驻 AI 助手「O」，预计 9 月 29 日发布 9 月",
+      "body": "传 OpenAI 29 日推个人 AI 助手；AI 专家偏远地区买地，担心「AI 失控」；挖掘机能自动「挖沟」，网友：蓝翔还能开几年？ 消息称 OpenAI 将推出常驻 AI 助手「O」，预计 9 月 29 日发布 9 月",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T11:00:03.620120",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "7天两场演讲，中国两大AI云撞了同一个爱迪生",
+      "summary": "<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "body": "7天两场演讲，中国两大AI云撞了同一个爱迪生\n\n<section data-mpa-powered-by=\"yiban.io\" data-pm-slice=\"0 0 []\" style=\"-webkit-tap-highlight-color: transparent;margin: 0px 0px 24px;padding: 0px;outline: 0px;max-width: 100%;box-sizing: border-box !im",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "从「算得快」到「干得了活」：AI推理时代，CPU如何重塑算力版图",
+      "summary": "记者：郭思 编辑：包永刚",
+      "body": "从「算得快」到「干得了活」：AI推理时代，CPU如何重塑算力版图 记者：郭思 编辑：包永刚",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T18:00:02.076655",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "\n        AI 手机只是起点，高通要为智能体铺一条全栈技术路线\n      ",
+      "summary": "「这次骁龙峰会最令人兴奋的地方在于，我认为我们终于步入了一个可以清晰看见 AI 智能手机形态的阶段」高通公司总裁兼 CEO 安蒙在峰会第一天说道。 炎热的美国茂宜岛，早上不到 8 点，会场里已经聚集了来自全球的媒体、开发者、合作伙伴和产业人士。让大家等待的并不只是又一代手机芯片，而是在寻找一个更大的答案——随着 AI 从手机里的一项功能",
+      "body": "AI 手机只是起点，高通要为智能体铺一条全栈技术路线 「这次骁龙峰会最令人兴奋的地方在于，我认为我们终于步入了一个可以清晰看见 AI 智能手机形态的阶段」高通公司总裁兼 CEO 安蒙在峰会第一天说道。 炎热的美国茂宜岛，早上不到 8 点，会场里已经聚集了来自全球的媒体、开发者、合作伙伴和产业人士。让大家等待的并不只是又一代手机芯片，而是在寻找一个更大的答案——随着 AI 从手机里的一项功能",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T18:00:02.076655",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "Imagination 发布 E 系列 GPU IP 新进展：一套架构支持图形、计算与AI",
+      "summary": "点击查看原文>",
+      "body": "Imagination 发布 E 系列 GPU IP 新进展：一套架构支持图形、计算与AI 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28",
+      "url": "https://www.infoq.cn/article/5Xfeqshw0hwfUD95JpWE?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "海尔洗空气空调AI科技将巴马好空气搬回家",
+      "summary": "为了一口好空气，有人给家里配齐空气净化器、新风系统，层层升级呼吸装备；更有人远赴广西巴马长寿村，斥资置业长居，天不亮就到百魔洞口排队吸氧。“巴马好空气”的说法流传多年，却少有人说清它到底好在哪。 9月28日，海尔空调联合科普博主无穷小亮，深入巴马长寿村实地探访，通过实地观察与专业检测，拆解巴马好空气的真实密码，也给出了把自然好空气带回家的解决方案。",
+      "body": "海尔洗空气空调AI科技将巴马好空气搬回家 为了一口好空气，有人给家里配齐空气净化器、新风系统，层层升级呼吸装备；更有人远赴广西巴马长寿村，斥资置业长居，天不亮就到百魔洞口排队吸氧。“巴马好空气”的说法流传多年，却少有人说清它到底好在哪。 9月28日，海尔空调联合科普博主无穷小亮，深入巴马长寿村实地探访，通过实地观察与专业检测，拆解巴马好空气的真实密码，也给出了把自然好空气带回家的解决方案。",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "中训练、后训练持续升温，模型快速迭代，成为 AI for AI 最佳试炼场",
+      "summary": "<section style=\"text-align: center;margin: 0px 16px;line-height: 1.75em;display: block;\" data-mpa-action-id=\"mmiwq6ij1i3r\" data-pm-slice=\"0 0 []\" nodeleaf=\"\"><img  class=\"rich_pages wxw-img\" data-aist",
+      "body": "中训练、后训练持续升温，模型快速迭代，成为 AI for AI 最佳试炼场",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T01:00:01.942982",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        玻色量子 马寅：量子计算+AI，未来已来 | Founder 100\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2022 年 7 月 14 日",
+      "body": "玻色量子 马寅：量子计算+AI，未来已来 | Founder 100 本文首发于 Founder Park 公众号 · 2022 年 7 月 14 日",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T03:00:01.936881",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        百炼智能 冯是聪：人工智能如何拯救 B2B 行业的地推获客？ | Founder 100\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2022 年 7 月 28 日",
+      "body": "百炼智能 冯是聪：人工智能如何拯救 B2B 行业的地推获客？ | Founder 100 本文首发于 Founder Park 公众号 · 2022 年 7 月 28 日",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T03:00:01.936881",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        AMD 82 亿美元收购李飞飞 AI 创业公司；Manus 推出个人 AI 助手 CUE；今年低价手机将减少 2.3 亿部｜极客早知道\n      ",
+      "summary": "Manus 发布 2.0，新增云电脑、远程控制及个人 AI 助手 Cue 9",
+      "body": "AMD 82 亿美元收购李飞飞 AI 创业公司；Manus 推出个人 AI 助手 CUE；今年低价手机将减少 2.3 亿部｜极客早知道 Manus 发布 2.0，新增云电脑、远程控制及个人 AI 助手 Cue 9",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T09:00:01.780398",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Token价格一降再降，但不会让边缘AI退场：企业算力账越来越细",
+      "summary": "点击查看原文>",
+      "body": "Token价格一降再降，但不会让边缘AI退场：企业算力账越来越细 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T11:00:01.657144",
+      "date": "2026-09-29",
+      "url": "https://www.infoq.cn/article/XF5kZxV681STVDrzsstj?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "AI 驱动复杂业务漏洞挖掘：从业务规则建模到攻击路径验证｜QCon上海",
+      "summary": "点击查看原文>",
+      "body": "AI 驱动复杂业务漏洞挖掘：从业务规则建模到攻击路径验证｜QCon上海 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T11:00:01.657144",
+      "date": "2026-09-29",
+      "url": "https://www.infoq.cn/article/mDiczbGJpHNMU6e0qBX1?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "AI 数据平台，要补的恰恰是“模型不知道的事”",
+      "summary": "点击查看原文>",
+      "body": "AI 数据平台，要补的恰恰是“模型不知道的事” 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T13:00:01.775045",
+      "date": "2026-09-29",
+      "url": "https://www.infoq.cn/article/uwfvFTWwH5Qupo2lBxF6?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "从创意落地到创业起步，嘉立创延长AI硬件创新支持链条",
+      "summary": "9月19日，由福田区科技和工业信息化局指导、嘉立创集团主办的第四届开源硬件星火会暨全球AI硬件创新生态大会在深圳会展中心（福田）举行。本届大会开源、闭源两大赛道累计征集超过400个项目作品，覆盖具身智能、机器人关键硬件、AI边缘计算、智能终端等方向，来自多个国家和地区的2200余名创新者到场参与。",
+      "body": "从创意落地到创业起步，嘉立创延长AI硬件创新支持链条 9月19日，由福田区科技和工业信息化局指导、嘉立创集团主办的第四届开源硬件星火会暨全球AI硬件创新生态大会在深圳会展中心（福田）举行。本届大会开源、闭源两大赛道累计征集超过400个项目作品，覆盖具身智能、机器人关键硬件、AI边缘计算、智能终端等方向，来自多个国家和地区的2200余名创新者到场参与。",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T13:00:01.775045",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        OpenAI，经历了最漫长的一天\n      ",
+      "summary": "当地时间 9 月 25 日，OpenAI 经历了漫长的一天。 当天， OpenAI 的 AI 智能体擅自访问美国政府网站的事被曝光，涉及教育部、商务部和证券交易委员会 ，OpenAI 确认了其中商务部和 SEC 的情况。 同一天，它承认有 53 张用户上传到 ChatGPT 的图片被智能体发布到了外部图床上。还是这一",
+      "body": "OpenAI，经历了最漫长的一天 当地时间 9 月 25 日，OpenAI 经历了漫长的一天。 当天， OpenAI 的 AI 智能体擅自访问美国政府网站的事被曝光，涉及教育部、商务部和证券交易委员会 ，OpenAI 确认了其中商务部和 SEC 的情况。 同一天，它承认有 53 张用户上传到 ChatGPT 的图片被智能体发布到了外部图床上。还是这一",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T13:00:01.775045",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        不到 1 个月估值暴涨 100 亿美元，Jev 创造者：ChatGPT 把 AI 带歪了\n      ",
+      "summary": "最近， 一个叫 Jev 的 AI 模型突然在开发者圈子里炸了。更可怕的是，根据最新消息，Jev 最近正在洽谈 10 亿美元融资，最新估值 100 亿美元——而这距离 Jev 推出，还不到 1 个月。 Jev 这个新模型，它不生成文本，不跟你聊天，甚至不写代码。你给它一段数据和一组结构化问题，它返回类型化的答案和校准过的概率值。TypeS",
+      "body": "不到 1 个月估值暴涨 100 亿美元，Jev 创造者：ChatGPT 把 AI 带歪了 最近， 一个叫 Jev 的 AI 模型突然在开发者圈子里炸了。更可怕的是，根据最新消息，Jev 最近正在洽谈 10 亿美元融资，最新估值 100 亿美元——而这距离 Jev 推出，还不到 1 个月。 Jev 这个新模型，它不生成文本，不跟你聊天，甚至不写代码。你给它一段数据和一组结构化问题，它返回类型化的答案和校准过的概率值。TypeS",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 5,
+      "timestamp": "2026-09-29T13:00:01.775045",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "Imagination E系列性能首秀：用AI把分辨率翻倍仅需2.3毫秒，Prefill性能提升4.7倍",
+      "summary": "作者 | 陈悦琳",
+      "body": "Imagination E系列性能首秀：用AI把分辨率翻倍仅需2.3毫秒，Prefill性能提升4.7倍 作者 | 陈悦琳",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-28T14:00:01.863209",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "华为WATCH D3开售：首创轻扰动态血压研究，打造“腕上智能血压专家”",
+      "summary": "9月29日，华为WATCH D3正式开启首销，标志着华为第三代腕部动态血压记录仪全面推向市场。 根据IDC发布的最新数据，2026年第二季度全球腕戴设备出货量为4,801万台，同比下滑4.3%，智能手表与手环均承受着一定的市场压力。行业正沿两大方向探索增量：端侧AI算力下沉与无屏手环形态创新。在此背景下，华为腕戴产品全球出货量持续领跑，不仅WATCH FIT系列成为增长的重要支撑",
+      "body": "华为WATCH D3开售：首创轻扰动态血压研究，打造“腕上智能血压专家” 9月29日，华为WATCH D3正式开启首销，标志着华为第三代腕部动态血压记录仪全面推向市场。 根据IDC发布的最新数据，2026年第二季度全球腕戴设备出货量为4,801万台，同比下滑4.3%，智能手表与手环均承受着一定的市场压力。行业正沿两大方向探索增量：端侧AI算力下沉与无屏手环形态创新。在此背景下，华为腕戴产品全球出货量持续领跑，不仅WATCH FIT系列成为增长的重要支撑",
+      "sources": [
+        "雷锋网"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-29T14:00:01.886797",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        Manus 正式发布 2.0！个人 AI 助手、云电脑、远程控制，Manus 想做 AI 时代全家桶\n      ",
+      "summary": "头图来源：Manus 突然地，Manus 在官网和",
+      "body": "Manus 正式发布 2.0！个人 AI 助手、云电脑、远程控制，Manus 想做 AI 时代全家桶 头图来源：Manus 突然地，Manus 在官网和",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 4,
+      "timestamp": "2026-09-29T14:00:01.886797",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        o1发布后，信息量最大的圆桌对话：杨植麟、姜大昕、朱军探讨大模型技术路径\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2024 年 9 月 19 日 在 2024 云栖大会上，阶跃星辰创始人姜大昕、月之暗面Kimi创始人杨植麟、生数科技首席科学家朱军",
+      "body": "o1发布后，信息量最大的圆桌对话：杨植麟、姜大昕、朱军探讨大模型技术路径 本文首发于 Founder Park 公众号 · 2024 年 9 月 19 日 在 2024 云栖大会上，阶跃星辰创始人姜大昕、月之暗面Kimi创始人杨植麟、生数科技首席科学家朱军",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "\n        OpenAI o1 团队在线答疑：o1的o指OpenAI，强化后的推理有泛化能力，未来模型思考时间可控！\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2024 年 9 月 14 日 这可能是最有参与感的一次产品问答了。 对于 Ope",
+      "body": "OpenAI o1 团队在线答疑：o1的o指OpenAI，强化后的推理有泛化能力，未来模型思考时间可控！ 本文首发于 Founder Park 公众号 · 2024 年 9 月 14 日 这可能是最有参与感的一次产品问答了。 对于 Ope",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "\n        大招憋出来了！OpenAI发布最强推理模型o1，它真的会思考，但API比4o贵好几倍\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2024 年 9 月 13 日 OpenAI 的推理模型，也就是期待已久的 Strawberry 发布！",
+      "body": "大招憋出来了！OpenAI发布最强推理模型o1，它真的会思考，但API比4o贵好几倍 本文首发于 Founder Park 公众号 · 2024 年 9 月 13 日 OpenAI 的推理模型，也就是期待已久的 Strawberry 发布！",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "\n        20万周活，50%次月留存，做年轻人的AI产品，用户真的留下来了\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2024 年 9 月 12 日 人人都想做出下一个抖音/TikTok，想做出一个有引擎、有生命力的内容平台。 捏 Ta 并不藏着掖着，",
+      "body": "20万周活，50%次月留存，做年轻人的AI产品，用户真的留下来了 本文首发于 Founder Park 公众号 · 2024 年 9 月 12 日 人人都想做出下一个抖音/TikTok，想做出一个有引擎、有生命力的内容平台。 捏 Ta 并不藏着掖着，",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "\n        DeepMind科学家万字分享：50个AI提效用例详解，工作中我是这么用AI的\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2024 年 8 月 17 日 文章作者是 DeepMin",
+      "body": "DeepMind科学家万字分享：50个AI提效用例详解，工作中我是这么用AI的 本文首发于 Founder Park 公众号 · 2024 年 8 月 17 日 文章作者是 DeepMin",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-28T22:00:01.980361",
+      "date": "2026-09-28"
+    },
+    {
+      "title": "从新型存储介质PCM方案到PCIe 6.0 SSD，德明利率先推出面向AI基础设施的分层存储全栈方案",
+      "summary": "点击查看原文>",
+      "body": "从新型存储介质PCM方案到PCIe 6.0 SSD，德明利率先推出面向AI基础设施的分层存储全栈方案 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T16:00:01.611925",
+      "date": "2026-09-29",
+      "url": "https://www.infoq.cn/article/SrmkSf6vOfRt6lLuudZb?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "大模型下沉车规芯片：超六成的车企座舱，为何选中了同一个“端侧大脑”？",
+      "summary": "点击查看原文>",
+      "body": "大模型下沉车规芯片：超六成的车企座舱，为何选中了同一个“端侧大脑”？ 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 3,
+      "timestamp": "2026-09-29T16:00:01.611925",
+      "date": "2026-09-29",
+      "url": "https://www.infoq.cn/article/O5pKYU5hfR2DgrXP6zRE?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "60 万行巨石应用 AI 重构的可验证交付工程｜QCon上海",
+      "summary": "点击查看原文>",
+      "body": "60 万行巨石应用 AI 重构的可验证交付工程｜QCon上海 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/06y8rRvgxgyBxOpr7L5r?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "OpenAI 推出分级处理框架及案例研究，用于报告模型失调问题",
+      "summary": "点击查看原文>",
+      "body": "OpenAI 推出分级处理框架及案例研究，用于报告模型失调问题 点击查看原文>",
+      "sources": [
+        "InfoQ"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-26T08:44:22.815101",
+      "date": "2026-09-26",
+      "url": "https://www.infoq.cn/article/sFUUaaIQZH3ecXb14WVs?utm_source=rss&utm_medium=article"
+    },
+    {
+      "title": "\n        张鹏对谈傅盛、王俊煜、潘乱：大模型时代，产品经理的机会在哪里？\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2023 年 3 月 27 日 随着 GPT-4 的发布，我们可能已经进入了大模型时代了。 随之发布的新产品，还有文心一言、Microsoft 365 Copilot、Midjourney V5",
+      "body": "张鹏对谈傅盛、王俊煜、潘乱：大模型时代，产品经理的机会在哪里？ 本文首发于 Founder Park 公众号 · 2023 年 3 月 27 日 随着 GPT-4 的发布，我们可能已经进入了大模型时代了。 随之发布的新产品，还有文心一言、Microsoft 365 Copilot、Midjourney V5",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T11:00:01.657144",
+      "date": "2026-09-29"
+    },
+    {
+      "title": "\n        千人联名叫停 AI 研究？是个好问题，但更像一场行为艺术\n      ",
+      "summary": "本文首发于 Founder Park 公众号 · 2023 年 3 月 29 日 马斯克和「深度学习三巨头」之一的 Bengio 等一千多位学界业界人士，联名呼吁叫停 AI 大模型研究的新闻，刷屏网络，掀起轩然大波。",
+      "body": "千人联名叫停 AI 研究？是个好问题，但更像一场行为艺术 本文首发于 Founder Park 公众号 · 2023 年 3 月 29 日 马斯克和「深度学习三巨头」之一的 Bengio 等一千多位学界业界人士，联名呼吁叫停 AI 大模型研究的新闻，刷屏网络，掀起轩然大波。",
+      "sources": [
+        "GeekerHub"
+      ],
+      "heat": 2,
+      "timestamp": "2026-09-29T11:00:01.657144",
+      "date": "2026-09-29"
+    }
+  ],
+  "meta": {
+    "updated": "2026-09-29T18:34:55.631567"
+  }
+}
