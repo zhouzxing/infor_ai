@@ -62,8 +62,8 @@
                                                       ▼  render_page(cache, ...)
                     ┌─────────────────────────────────┴─────────────┐
                     │            ai_intel_render.py                 │
-                    │  资讯流 + 能力大盘 + 模型库 + Agent库 + GitHub榜 │
-                    │  + 内联 CSS/JS + 5 个 nav tab                  │
+                    │  资讯流 + 能力大盘 + 模型库 + Agent库 + GitHub榜 + 监控中心 │
+                    │  + 内联 CSS/JS + 6 个 nav tab                  │
                     └─────────────────────────────────┬─────────────┘
                                                       ▼
                                             index.html (自包含, 离线)
@@ -123,7 +123,7 @@ RSS 的 `description` 常带整段 HTML，直接截断会得到 `"<section style
 ### 4.1 入口 `render_page(cache, model_registry, agent_platforms, max_entries, max_days)`（L189）
 纯函数：输入缓存 + 两张静态表 → 输出完整 HTML 字符串。无副作用，便于单测。
 
-### 4.2 五个导航 tab（`nav` ~L425）
+### 4.2 六个导航 tab（`nav` ~L425）
 | key | 标签 | 数据来源 |
 |---|---|---|
 | `news` | 资讯聚合 | `cache.entries_int/cn` |
@@ -131,6 +131,7 @@ RSS 的 `description` 常带整段 HTML，直接截断会得到 `"<section style
 | `models` | 模型库 | `MODEL_REGISTRY` |
 | `agents` | Agent 平台 | `AGENT_PLATFORMS` |
 | `github` | GitHub 热榜 ★ | `cache.github_repos` |
+| `monitor` | 监控中心 ★ | `cache.meta.*`（sources_status / sources_history / run_log） |
 
 ### 4.3 六维能力打分（模型库）
 `DIM_W = {ctx:.18, mm:.18, open:.16, cost:.22, scale:.12, fresh:.14}`，`score_product` 逐维归一 0–100，`composite` 加权求综合分。渲染为迷你柱状条 + 雷达图（`_radar_svg`）。
@@ -145,6 +146,16 @@ RSS 的 `description` 常带整段 HTML，直接截断会得到 `"<section style
 
 ### 4.6 zhouzxing 宣传位（3 处，内联 octicon）
 顶栏常驻徽章 / GitHub 页作者 CTA 卡 / 页脚署名，均链向 `github.com/zhouzxing`。改头像/账号只需全局替换该 URL。
+
+### 4.7 监控中心视图（`view-monitor` ~L760）
+三层结构，全部只读 `cache.meta`，无运行时网络请求：
+- **资讯监控 KPI**：资讯总量（国际/国内分列）、24h 新增（按 entry.timestamp 窗口）、渠道活跃 x/38、连败+失联渠道数。
+- **四面板**（`monitor-grid`）：
+  - 资讯热度分布：heat 0–5 六档横向条（`cmp-row`）。
+  - 来源贡献 TOP10：按 entry.sources 去重计数取前十，横向条。
+  - 爬取技术栈：7 张说明卡（HTTP 双兜底 / RSS-Atom 双格式 / 关键词过滤 / 正文三轮抓取 / 热度累加 / GitHub API / 渠道稳定性自身），状态点取自各子系统健康度。
+  - 管线运行日志：`meta.run_log`（每轮一行，保留 48 条）显示最近 12 条；跳过轮标「跳过抓取」灰签。
+- **渠道稳定性表**：38 行 × 8 列（渠道/区域/爬取策略/协议/成功率/连败/状态/最近错误），复用 `[data-table-search="mon-src-table"]` 通用模糊检索（行上 `data-search` 只含名/策略/格式/错误，**不含 URL**——镜像源 URL 普遍带 rsshub，混入会让检索命中全表）。协议徽章 `.mfmt`：rss2 绿 / atom 紫 / unknown 灰。
 
 ---
 

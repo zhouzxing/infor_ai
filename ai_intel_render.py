@@ -423,7 +423,7 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
 
     # ── 8. 页面骨架 ─────────────────────────────────────────────
     nav = [("news", "资讯聚合"), ("dash", "能力大盘"),
-           ("models", "模型库"), ("agents", "Agent 平台"), ("github", "GitHub 热榜")]
+           ("models", "模型库"), ("agents", "Agent 平台"), ("github", "GitHub 热榜"), ("monitor", "监控中心")]
 
     topbar = f'''<header class="topbar">
   <div class="tb-inner">
@@ -677,6 +677,167 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
   </div>
 </section>'''
 
+    # ── 10. 监控中心视图 ───────────────────────────────────────
+    mon = cache.get("meta", {}) or {}
+    mon_src_status = mon.get("sources_status", {}) or {}
+    mon_history = mon.get("sources_history", {}) or {}
+    mon_runlog = mon.get("run_log", []) or []
+
+    # 10a. 渠道稳定性: 全渠道汇总
+    mon_ch_total = len(mon_src_status)
+    mon_ch_good = sum(1 for v in mon_src_status.values() if v.get("dot") == "good")
+    mon_ch_retry = sum(1 for v in mon_src_status.values() if v.get("dot") == "bad" and not v.get("stale"))
+    mon_ch_stale = sum(1 for v in mon_src_status.values() if v.get("stale"))
+    mon_hist_ok = sum(v.get("history_ok", 0) for v in mon_src_status.values())
+    mon_hist_tot = sum(v.get("history_total", 0) for v in mon_src_status.values())
+    mon_rate = round(mon_hist_ok / mon_hist_tot * 100, 1) if mon_hist_tot else 0.0
+    mon_fail_streak = [n for n, v in mon_src_status.items() if v.get("streak_fail", 0) >= 2]
+
+    def _src_row(name, v):
+        region = v.get("region", "int")
+        reg_tag = ('<span class="tag src">国际</span>' if region == "int" else '<span class="tag cn">国内</span>')
+        strat = v.get("strategy") or "RSS 直连"
+        kw = "关键词过滤" if "关键词" in strat else "垂直频道"
+        fmt = v.get("fmt", "unknown")
+        fmt_tag = {"rss2": '<span class="mfmt f-rss2">RSS</span>', "atom": '<span class="mfmt f-atom">Atom</span>'}.get(fmt, '<span class="mfmt f-unk">?</span>')
+        ho, ht = v.get("history_ok", 0), v.get("history_total", 0)
+        prate = round(ho / ht * 100, 0) if ht else None
+        if prate is None:
+            rate_cell = '<span class="muted">—</span>'
+        else:
+            cls = "m-ok" if prate >= 90 else ("m-warn" if prate >= 60 else "m-bad")
+            rate_cell = '<span class="mr %s">%d%%</span>' % (cls, prate)
+        streak = v.get("streak_fail", 0)
+        streak_cell = ('<span class="mr m-bad">连败%d</span>' % streak) if streak >= 2 else '<span class="muted">—</span>'
+        blob = " ".join([name, strat, kw, fmt, (v.get("last_err") or "")]).lower()
+        # 注意: 不含 url — 镜像源的 url 普遍带 rsshub, 会让检索命中所有渠道
+        return (f'<tr data-search="{esc(blob)}">'
+                f'<td class="m-name">{esc(name)}</td><td>{reg_tag}</td>'
+                f'<td class="m-strat">{esc(strat.split(" + ")[0])} <span class="m-kw">{kw}</span></td>'
+                f'<td>{fmt_tag}</td>'
+                f'<td class="m-c">{rate_cell}</td>'
+                f'<td class="m-c">{streak_cell}</td>'
+                f'<td class="m-c"><span class="dot {v.get("dot","muted")}"></span> {esc(v.get("status",""))}</td>'
+                f'<td class="m-err" title="{esc(v.get("last_err",""))}">{esc((v.get("last_err") or "正常")[:34])}</td></tr>')
+
+    mon_src_rows = "".join(_src_row(n, v) for n, v in mon_src_status.items())
+
+    # 10b. 管线运行日志 (最近 12 条, 新→旧)
+    def _log_row(e):
+        t = (e.get("t") or "")[:16].replace("T", " ")
+        skip = ' <span class="ml-skip">跳过抓取</span>' if e.get("skipped") else ""
+        ok, tot = e.get("src_ok", 0), e.get("src_total", 0)
+        okcls = "m-ok" if (tot and ok / tot >= .9) else ("m-warn" if (tot and ok / tot >= .6) else "m-bad")
+        gh = e.get("gh_items", 0)
+        gher = '<span class="mr m-bad">GH有错</span>' if e.get("gh_err") else '<span class="muted">GH ok</span>'
+        blob = " ".join([t, "跳过" if e.get("skipped") else "抓取", "gh", gher]).lower()
+        return (f'<tr data-search="{esc(blob)}">'
+                f'<td class="m-c">{esc(t)}{skip}</td>'
+                f'<td class="m-c"><span class="mr {okcls}">{ok}/{tot}</span></td>'
+                f'<td class="m-c">{e.get("items_new", 0)}</td>'
+                f'<td class="m-c">{gh}</td>'
+                f'<td class="m-c">{gher}</td></tr>')
+    mon_log_rows = "".join(_log_row(e) for e in list(reversed(mon_runlog))[:12]) or \
+        '<tr><td colspan="5" class="c-empty">暂无运行日志（待下次管线运行产生）</td></tr>'
+
+    # 10c. 爬取技术说明卡
+    mon_tech = [
+        ("HTTP 双兜底", "requests → stdlib urllib", "统一 _http_get; 无 requests 的 cron 环境自动降级, 代理 127.0.0.1:7897 必配", "good"),
+        ("RSS 2.0 / Atom 双格式", "38 源 · fetch_rss_feed", "运行时探测 <feed>/<item> 自适应, 逐源登记格式到 sources_status.fmt", "good"),
+        ("AI 关键词过滤", "标题+描述命中", "非垂直频道按 SOURCE_REGISTRY 关键词列表过滤, 降低噪音", "good"),
+        ("正文三轮抓取", "并发24线程→重试→补抓", "420s 时间预算, 密度打分选最密段落, 5W1H 摘要", "good"),
+        ("热度累加", "多源重复 +1 (cap5)", "论文/官方大厂发布初始 heat=3, 其余 heat=2", "good"),
+        ("GitHub Search API", "gh CLI · 3h TTL", "5 主题榜+新星+8 组织精选, _gh_is_ai 二次筛除非 AI 噪音", "good" if not (cache.get("github_repos") or {}).get("errors") else "bad"),
+        ("渠道稳定性监控", "成功率/连败/四态", "逐源 history 48 条累积, 24h 未成功判失联, 本轮新增", "good"),
+    ]
+    mon_tech_html = "".join(
+        f'<div class="mtech"><span class="dot {d}"></span><b>{esc(t)}</b><span class="muted">{esc(sub)}</span>'
+        f'<p>{esc(desc)}</p></div>'
+        for t, sub, desc, d in mon_tech)
+
+    # 10d. 资讯监控: 总量 / 24h 新增 / 热度分布 / 来源贡献 TOP10
+    all_news = list(news)  # (entry, region)
+    mon_news_total = len(all_news)
+    _now_dt = datetime.now()
+    mon_news_24h = 0
+    for e, _r in all_news:
+        try:
+            if (_now_dt - datetime.fromisoformat(e.get("timestamp") or e.get("date"))).total_seconds() <= 86400:
+                mon_news_24h += 1
+        except Exception:
+            pass
+    heat_dist = [0] * 6  # heat 0..5
+    for e, _r in all_news:
+        heat_dist[min(int(e.get("heat", 0) or 0), 5)] += 1
+    mon_heat_max = max(heat_dist) or 1
+    heat_html = "".join(
+        f'<div class="cmp-row"><div class="cmp-label">热度 {h}</div>'
+        f'<div class="cmp-bars"><div class="cmp-bar"><span style="width:{max(2, heat_dist[h] / mon_heat_max * 100):.1f}%"></span></div></div>'
+        f'<div class="cmp-val">{heat_dist[h]}</div></div>'
+        for h in range(6))
+    src_contrib = {}
+    for e, _r in all_news:
+        for s in (e.get("sources") or []):
+            src_contrib[s] = src_contrib.get(s, 0) + 1
+    top_contrib = sorted(src_contrib.items(), key=lambda x: -x[1])[:10]
+    tc_max = top_contrib[0][1] if top_contrib else 1
+    contrib_html = "".join(
+        f'<div class="cmp-row"><div class="cmp-label" title="{esc(s)}">{esc(s[:14])}</div>'
+        f'<div class="cmp-bars"><div class="cmp-bar"><span style="width:{n / tc_max * 100:.1f}%"></span></div></div>'
+        f'<div class="cmp-val">{n}</div></div>'
+        for s, n in top_contrib) or '<p class="muted">暂无</p>'
+
+    monitor_view = f'''<section class="view" id="view-monitor">
+  <div class="sec-head"><h2>监控中心</h2>
+    <p>资讯管线 · 渠道稳定性 · 爬取技术栈 — 数据源状态更新于 {(mon.get("last_source_refresh") or "")[:16].replace("T"," ") or "—"}</p></div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">{mon_news_total}</div><div class="kpi-l">资讯总量</div><div class="kpi-s">国际 {len(entries_int)} · 国内 {len(entries_cn)}</div></div>
+    <div class="kpi"><div class="kpi-v">{mon_news_24h}</div><div class="kpi-l">24h 新增</div><div class="kpi-s">近一日入库</div></div>
+    <div class="kpi"><div class="kpi-v">{mon_ch_good}<small>/{mon_ch_total}</small></div><div class="kpi-l">渠道活跃</div><div class="kpi-s">成功率 {mon_rate}%</div></div>
+    <div class="kpi"><div class="kpi-v">{len(mon_fail_streak)}<small>+{mon_ch_stale}</small></div><div class="kpi-l">连败 / 失联渠道</div><div class="kpi-s">连败≥2 / &gt;24h</div></div>
+  </div>
+
+  <div class="monitor-grid">
+    <div class="panel">
+      <div class="panel-h"><span>资讯热度分布</span><span class="muted">heat 0–5</span></div>
+      {heat_html}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>来源贡献 TOP 10</span><span class="muted">按入库条数</span></div>
+      {contrib_html}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>爬取技术栈</span><span class="muted">{len(mon_tech)} 项</span></div>
+      <div class="mtech-list">{mon_tech_html}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>管线运行日志</span><span class="muted">最近 {min(len(mon_runlog),12)}/{len(mon_runlog)}</span></div>
+      <div class="table-wrap" style="max-height:300px">
+        <table class="dtable" id="mon-log-table">
+          <thead><tr><th>时间</th><th>渠道OK</th><th>新增资讯</th><th>GH 项目</th><th>GH 状态</th></tr></thead>
+          <tbody>{mon_log_rows}</tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>渠道稳定性监控</h2>
+    <p>{mon_ch_total} 个渠道 × 爬取策略 × 协议格式 × 成功率 × 连败 — 搜索可过滤</p></div>
+  <div class="toolbar">
+    <div class="tb-search inline">
+      <input type="search" data-table-search="mon-src-table" placeholder="模糊检索渠道 / 策略 / 错误…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{mon_ch_total}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable" id="mon-src-table">
+      <thead><tr><th>渠道</th><th>区域</th><th>爬取策略</th><th>协议</th><th>成功率</th><th>连败</th><th>状态</th><th>最近错误</th></tr></thead>
+      <tbody>{mon_src_rows}</tbody>
+    </table>
+  </div>
+</section>'''
+
     footer = (f'<footer>AI 情报聚合 v7 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
               f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str} · '
               f'由 <a class="footer-gh" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">@zhouzxing</a> 构建 &amp; 维护</footer>')
@@ -684,7 +845,7 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
             "<title>AI 情报聚合 · 模型能力大盘</title>\n<style>\n" + CSS + "\n</style>\n</head>\n<body>\n"
-            + topbar + "<main class=\"wrap\">" + news_view + dash_view + models_view + agents_view + github_view
+            + topbar + "<main class=\"wrap\">" + news_view + dash_view + models_view + agents_view + github_view + monitor_view
             + "</main>" + footer + "\n<script>\n" + JS + "\n</script>\n</body>\n</html>")
     return html
 
@@ -942,6 +1103,32 @@ footer{max-width:1440px;margin:34px auto 0;padding:22px;color:var(--muted);font-
 .gh-author-cta:hover{filter:brightness(1.12)}
 .footer-gh{color:var(--accent);text-decoration:none;font-weight:650;font-family:ui-monospace,Menlo,monospace}
 .footer-gh:hover{text-decoration:underline}
+
+/* monitor tab */
+.monitor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:8px}
+.mtech-list{display:flex;flex-direction:column;gap:8px}
+.mtech{display:flex;flex-direction:column;gap:3px;padding:9px 11px;border:1px solid var(--border);
+  border-radius:10px;background:rgba(255,255,255,.02);position:relative;padding-left:26px}
+.mtech .dot{position:absolute;left:11px;top:13px}
+.mtech b{font-size:.85rem}
+.mtech span{font-size:.72rem}
+.mtech p{margin:2px 0 0;font-size:.72rem;color:var(--muted);line-height:1.4}
+.ml-skip{font-size:.62rem;color:var(--muted);border:1px solid var(--border2);padding:0 5px;border-radius:5px}
+.m-name{font-weight:650;white-space:nowrap}
+.m-strat{font-size:.76rem}
+.m-kw{font-size:.64rem;color:var(--warn);border:1px solid rgba(255,176,32,.35);
+  background:rgba(255,176,32,.1);padding:0 5px;border-radius:5px;margin-left:4px}
+.m-c{white-space:nowrap}
+.m-err{font-size:.72rem;color:var(--dim);max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.mfmt{display:inline-block;font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:5px}
+.mfmt.f-rss2{background:rgba(53,224,161,.13);color:var(--accent);border:1px solid rgba(53,224,161,.35)}
+.mfmt.f-atom{background:rgba(124,92,255,.14);color:#b3a1ff;border:1px solid rgba(124,92,255,.4)}
+.mfmt.f-unk{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+.mr{display:inline-block;font-size:.74rem;font-weight:700;min-width:34px;text-align:center}
+.mr.m-ok{color:var(--accent)}.mr.m-warn{color:var(--warn)}.mr.m-bad{color:var(--danger)}
+.tag.cn{background:rgba(255,122,89,.14);color:var(--cn);border:1px solid rgba(255,122,89,.35)}
+#view-monitor .cmp-row{grid-template-columns:96px 1fr 40px}
+#view-monitor .cmp-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 @media(max-width:1080px){
   .layout{grid-template-columns:1fr}

@@ -21,15 +21,22 @@
 | `last_source_refresh` | ISO8601 | 最近一次 `cache_sources` 固化时间 |
 | `sources_history` | `{源名: hist_ev[]}` | 每源保留最近 48 条抓取结果 |
 | `sources_status` | `{源名: status_obj}` | 由 history 派生的当前活跃度面板数据 |
+| `run_log` | `run_ev[]` | 管线运行日志，保留最近 48 条（`append_run_log`），监控中心 tab 消费 |
 
 `hist_ev`：`{ "t": ISO, "n": int(条目数), "ok": bool, "err": str(≤120) }`
+
+`run_ev`：`{ "t": ISO, "skipped": bool, "src_ok": int, "src_total": int, "items_new": int, "gh_items": int, "gh_err": bool }`
+（`skipped=true` 表示该轮未走 RSS 抓取——缓存 1h TTL 内重复调用或数据新鲜时直接跳过，监控日志上标「跳过抓取」。）
 
 `status_obj`：
 ```jsonc
 { "region":"int|cn","url":str,"total_items":int,
   "status":"活跃|重试中|失联|待同步", "dot":"good|bad|muted",
   "last_ok":bool,"last_ok_t":ISO,"last_err":str,"stale":bool,
-  "history_ok":int,"history_total":int }
+  "history_ok":int,"history_total":int,
+  "strategy":str,            // "RSS 直连" / "RSSHub 镜像" / "+ 关键词×N"（_source_strategy 归类）
+  "fmt":"rss2|atom|unknown",  // fetch_rss_feed 运行时探测(_LAST_FORMATS)；skipped 轮沿用上一轮值
+  "streak_fail":int }        // history 末尾连续失败次数（≥2 在监控面板标「连败」）
 ```
 判定：`last_ok && !stale`→活跃；`!last_ok && last_err`→重试中；`stale(>24h)`→失联；否则→待同步。
 

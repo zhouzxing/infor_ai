@@ -347,6 +347,7 @@ def fetch_rss_feed(name, url, keywords=None, max_items=12):
             report_fetch_error(name, f"XML 解析失败: {str(pe)[:60]}")
             return []
         is_atom = root.tag.lower().endswith("feed") or "atom" in root.tag.lower()
+        report_source_format(name, "atom" if is_atom else "rss2")
         ns_atom = "{http://www.w3.org/2005/Atom}"
         cn_names = ("中文", "量子位", "爱范儿", "少数派", "IT之家", "极客公园", "雷锋网", "InfoQ", "钛媒体", "虎嗅", "36氪", "V2EX")
         if is_atom:
@@ -418,14 +419,20 @@ def record_source_status(cache, name, region, n, error="", now_iso=""):
         del h[:-48]
 
 _LAST_FETCH_ERRORS = {}   # 数据源名 -> 最近一次抓取的原始错误信息，由 fetch 函数上报
+_LAST_FORMATS = {}        # 数据源名 -> rss2|atom, fetch_rss_feed 运行时探测后登记
 
 def report_fetch_error(name, err):
     """fetch 函数内部捕获到异常时上报，供数据源活跃度面板展示真实失败原因"""
     _LAST_FETCH_ERRORS[name] = str(err)[:150]
 
+def report_source_format(name, fmt):
+    """登记该源本轮探测到的真实格式 (rss2/atom), 监控面板据此展示渠道爬取技术。"""
+    _LAST_FORMATS[name] = fmt
+
 def cache_sources(cache):
     """把本轮抓取的状态固化进 cache['meta']['sources_status']，供渲染面板使用"""
     hist = cache.setdefault("meta", {}).get("sources_history", {})
+    prev_status = cache.get("meta", {}).get("sources_status", {})
     now_iso = datetime.now().isoformat()
     last_refresh = cache.get("meta", {}).get("last_source_refresh")
     status = {}
@@ -455,14 +462,41 @@ def cache_sources(cache):
             cur, dot = "失联", "bad"
         else:
             cur, dot = "待同步", "muted"
+        streak = 0
+        for ev in reversed(h):
+            if ev.get("ok"):
+                break
+            streak += 1
         status[name] = {"region": region, "url": url, "total_items": last_n,
                         "status": cur, "dot": dot, "last_ok": last_ok,
                         "last_ok_t": last_ok_t, "last_err": last_err, "stale": stale,
                         "history_ok": sum(1 for e in h if e.get("ok")),
-                        "history_total": len(h)}
+                        "history_total": len(h),
+                        # ── 监控板块: 爬取策略 + 运行时探测格式 + 连败 ──
+                        "strategy": _source_strategy(name, url, kws),
+                        # skipped 运行时 _LAST_FORMATS 为空, 沿用上一轮探测到的格式, 避免被 unknown 洗掉
+                        "fmt": _LAST_FORMATS.get(name) or prev_status.get(name, {}).get("fmt", "unknown"),
+                        "streak_fail": streak}
     cache["meta"]["sources_status"] = status
     cache["meta"]["last_source_refresh"] = now_iso
     return status
+
+def _source_strategy(name, url, kws):
+    """渠道爬取策略归类 (监控面板展示): RSS 直连 / RSSHub 镜像 / +关键词过滤。
+    9 个 fetch_from_* 专用抓取器为 v1 遗留 (主流程未调用), 当前 38 源统一走 fetch_rss_feed。"""
+    via_mirror = "rsshub." in (url or "")
+    base = "RSSHub 镜像" if via_mirror else "RSS 直连"
+    if kws:
+        return "%s + 关键词×%d" % (base, len(kws))
+    return base + "（垂直频道）" if not via_mirror else base
+
+def append_run_log(cache, n_ok, n_total, n_items, gh_n, gh_err, skipped=False):
+    """管线运行日志: 每小时一行, 保留最近 48 条 -> 监控面板趋势用。"""
+    log = cache.setdefault("meta", {}).setdefault("run_log", [])
+    log.append({"t": datetime.now().isoformat(), "skipped": skipped,
+                "src_ok": n_ok, "src_total": n_total, "items_new": n_items,
+                "gh_items": gh_n, "gh_err": gh_err})
+    del log[:-48]
 
 # ── 国内数据源 ────────────────────────────────────────────────────
 def fetch_from_geeker():
@@ -1239,6 +1273,11 @@ if __name__ == "__main__":
     if need_refresh:
         print("[AI Intel] Fetching latest AI news from %d sources (并发)..." % len(SOURCE_REGISTRY))
         by_region, errors = fetch_all_sources()
+        # 逐源记录本轮抓取结果 -> sources_history 累积, 监控面板的成功率/连败统计才有数据
+        _region_of = {s[0]: s[1] for s in SOURCE_REGISTRY}
+        for name, st in errors.items():
+            record_source_status(cache, name, _region_of.get(name, "int"),
+                                 st["n"], st.get("err", ""), now.isoformat())
         for name in sorted(errors):
             st = errors[name]
             if st['err']:
@@ -1341,6 +1380,7 @@ if __name__ == "__main__":
     cache_sources(cache)          # 固化数据源活跃度状态（成功/失败/失联 + 历史）
 
     # GitHub 热榜: 3 小时 TTL, 失败不影响其他 tab
+    gh_block_err = False
     gh = load_github_cache(cache)
     if gh:
         print("[AI Intel] GitHub 热榜缓存命中: %d 项目" % len(gh["items"]))
@@ -1348,12 +1388,23 @@ if __name__ == "__main__":
         print("[AI Intel] 抓取 GitHub 最热 AI 项目 (gh api, 走代理)...")
         try:
             gh = fetch_github_repos()
+            gh_block_err = bool(gh["errors"])
             for e in gh["errors"]:
                 print("  [WARN] github: %s" % e)
             print("[AI Intel] GitHub 热榜: %d 项目 | %d 组织" % (len(gh["items"]), len(gh["orgs"])))
             cache["github_repos"] = gh
         except Exception as ex:
             print("[AI Intel] GitHub 热榜抓取失败, 保留旧数据: %s" % str(ex)[:80])
+            gh_block_err = True
+    # 监控板块: 本轮管线运行日志 (保留最近 48 条, 渲染层监控中心 tab 消费)
+    _st = cache["meta"].get("sources_status", {})
+    append_run_log(cache,
+                   n_ok=sum(1 for v in _st.values() if v.get("dot") == "good"),
+                   n_total=len(_st),
+                   n_items=len(new_int) + len(new_cn),
+                   gh_n=len(cache.get("github_repos", {}).get("items", [])),
+                   gh_err=gh_block_err,
+                   skipped=not need_refresh)
     save_cache(cache)
     
     html = render_html(cache)
