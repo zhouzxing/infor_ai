@@ -423,7 +423,7 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
 
     # ── 8. 页面骨架 ─────────────────────────────────────────────
     nav = [("news", "资讯聚合"), ("dash", "能力大盘"),
-           ("models", "模型库"), ("agents", "Agent 平台")]
+           ("models", "模型库"), ("agents", "Agent 平台"), ("github", "GitHub 热榜")]
 
     topbar = f'''<header class="topbar">
   <div class="tb-inner">
@@ -582,13 +582,90 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
   </div>
 </section>'''
 
+    # ── 9. GitHub 热榜视图 ───────────────────────────────────
+    gh = cache.get("github_repos") or {}
+    gh_items = gh.get("items", [])
+    LANG_COLORS = {"Python": "#3572A5", "TypeScript": "#3178c6", "JavaScript": "#f1e05a",
+                   "Go": "#00ADD8", "Rust": "#dea584", "C": "#555555", "C++": "#f34b7d",
+                   "C#": "#178600", "Shell": "#89e051", "Jupyter Notebook": "#DA5B0B",
+                   "Java": "#b07219", "Ruby": "#701516", "Haskell": "#8f4ff4",
+                   "PHP": "#4F5D95", "Swift": "#F05138", "Kotlin": "#A97bff"}
+
+    def _gh_lang(lang):
+        c = LANG_COLORS.get(lang, "#6b7280")
+        return f'<span class="gh-lang"><i style="background:{c}"></i>{esc(lang)}</span>'
+
+    def _gh_stars(n):
+        return f"{n / 1000:.1f}k" if n >= 1000 else str(n)
+
+    def github_table():
+        rows = []
+        for i, r in enumerate(gh_items, 1):
+            otype = r.get("owner_type", "user")
+            ob = ('<span class="badge org">组织</span>' if otype == "org"
+                  else '<span class="badge user">个人</span>')
+            rising = '<span class="gh-rising">新星</span>' if r.get("rising") else ""
+            pick = '<span class="gh-pick">精选</span>' if r.get("org_pick") else ""
+            topics = "".join(f'<span class="tag">{esc(t)}</span>' for t in (r.get("topics") or [])[:3])
+            blob = " ".join([r.get("full_name", ""), r.get("lang", ""), r.get("desc", ""),
+                             " ".join(r.get("topics", []))]).lower()
+            rows.append(
+                f'<tr data-region="{otype}" data-search="{esc(blob)}">'
+                f'<td class="c-rank">{i}</td>'
+                f'<td><a class="gh-link" href="{esc(r.get("url"))}" target="_blank" rel="noopener noreferrer">{esc(r.get("full_name"))}</a>{rising}{pick}</td>'
+                f'<td>{ob}</td>'
+                f'<td>{_gh_lang(r.get("lang") or "—")}</td>'
+                f'<td class="c-stars">{_gh_stars(r.get("stars", 0))}</td>'
+                f'<td class="c-dim">{_gh_stars(r.get("forks", 0))}</td>'
+                f'<td class="c-dim">{esc(r.get("pushed") or "—")}</td>'
+                f'<td class="c-desc" title="{esc(r.get("desc"))}">{esc(r.get("desc"))}</td>'
+                f'<td class="c-topics">{topics}</td></tr>')
+        return "\n".join(rows)
+
+    gh_orgs = gh.get("orgs", [])
+    gh_rising_n = sum(1 for r in gh_items if r.get("rising"))
+    gh_langs = len(set(r.get("lang") for r in gh_items if r.get("lang") not in (None, "—")))
+    gh_updated = (gh.get("updated") or "")[:16].replace("T", " ")
+    github_table_html = github_table() if gh_items else \
+        '<tr><td colspan="9" class="c-empty">暂无数据 — 运行 python3 ai_intel_aggregator.py 抓取 GitHub 热榜</td></tr>'
+
+    github_view = f'''<section class="view" id="view-github">
+  <div class="sec-head"><h2>GitHub 最热 AI 项目</h2>
+    <p>{len(gh_items)} 个项目 · {len(gh_orgs)} 个组织 · 主题热榜 / 新星 / 精选组织 · 更新于 {esc(gh_updated)}</p></div>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">{len(gh_items)}</div><div class="kpi-l">收录项目</div><div class="kpi-s">按 stars 降序</div></div>
+    <div class="kpi"><div class="kpi-v">{gh_rising_n}</div><div class="kpi-l">新星项目</div><div class="kpi-s">近 4 个月创建</div></div>
+    <div class="kpi"><div class="kpi-v">{len(gh_orgs)}</div><div class="kpi-l">覆盖组织</div><div class="kpi-s">Community / Org</div></div>
+    <div class="kpi"><div class="kpi-v">{gh_langs}</div><div class="kpi-l">编程语言</div><div class="kpi-s">技术栈分布</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" data-table-filter="github-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="org">组织</button>
+      <button class="seg-btn" data-region-filter="user">个人</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="github-table" placeholder="模糊检索项目 / 语言 / 描述…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(gh_items)}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable" id="github-table">
+      <thead><tr>
+        <th>#</th><th>项目</th><th>类型</th><th>语言</th><th>Stars</th><th>Forks</th><th>最近更新</th><th>简介</th><th>标签</th>
+      </tr></thead>
+      <tbody>{github_table_html}</tbody>
+    </table>
+  </div>
+</section>'''
+
     footer = (f'<footer>AI 情报聚合 v7 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
-              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · 渲染于 {now_str}</footer>')
+              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str}</footer>')
 
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
             "<title>AI 情报聚合 · 模型能力大盘</title>\n<style>\n" + CSS + "\n</style>\n</head>\n<body>\n"
-            + topbar + "<main class=\"wrap\">" + news_view + dash_view + models_view + agents_view
+            + topbar + "<main class=\"wrap\">" + news_view + dash_view + models_view + agents_view + github_view
             + "</main>" + footer + "\n<script>\n" + JS + "\n</script>\n</body>\n</html>")
     return html
 
@@ -801,6 +878,27 @@ a{color:inherit}
 
 footer{max-width:1440px;margin:34px auto 0;padding:22px;color:var(--muted);font-size:.75rem;
   border-top:1px solid var(--border);text-align:center}
+
+/* github tab */
+.gh-lang{display:inline-flex;align-items:center;gap:6px;font-size:.76rem}
+.gh-lang i{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
+.badge.org{background:rgba(124,92,255,.16);color:#b3a1ff;border:1px solid rgba(124,92,255,.4)}
+.badge.user{background:rgba(255,176,32,.14);color:var(--warn);border:1px solid rgba(255,176,32,.4)}
+.gh-rising{display:inline-block;margin-left:8px;font-size:.6rem;font-weight:700;padding:1px 6px;
+  border-radius:5px;background:linear-gradient(135deg,rgba(255,107,107,.3),rgba(255,176,32,.3));
+  color:#ff8f8f;border:1px solid rgba(255,107,107,.4);vertical-align:2px}
+.gh-pick{display:inline-block;margin-left:6px;font-size:.6rem;font-weight:700;padding:1px 6px;
+  border-radius:5px;background:rgba(53,224,161,.13);color:var(--accent);
+  border:1px solid rgba(53,224,161,.35);vertical-align:2px}
+.gh-link{color:var(--accent);font-weight:650}
+.gh-link:hover{text-decoration:underline}
+.c-rank{color:var(--muted);font-variant-numeric:tabular-nums;width:34px}
+.c-stars{color:var(--warn);font-weight:750;font-variant-numeric:tabular-nums}
+.c-dim{color:var(--muted);font-size:.76rem}
+.c-desc{max-width:340px;font-size:.74rem;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-topics{max-width:180px}
+.c-topics .tag{margin:0 4px 4px 0}
+.c-empty{text-align:center;color:var(--muted);padding:40px}
 
 @media(max-width:1080px){
   .layout{grid-template-columns:1fr}

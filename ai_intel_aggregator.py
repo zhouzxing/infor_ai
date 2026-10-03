@@ -748,6 +748,135 @@ def load_cache():
 def save_cache(cache):
     DB_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
 
+# ── GitHub 最热 AI 项目 (gh CLI, 走代理) ──────────────────────
+GITHUB_ORGS = ["openai", "anthropics", "facebook", "google",
+               "mistralai", "deepseek-ai", "huggingface", "NousResearch"]
+# 多 topic 不能 OR (OR 只能连文本词), 逐个查再合并; 纯 topic 过滤噪音最小
+GITHUB_TOPICS = ["llm", "ai", "ai-agents", "genai", "generative-ai"]
+
+def _gh_api(endpoint, timeout=30):
+    """调用 gh api 拉取 GitHub REST API; 成功返回 (data, None), 失败 (None, err)。"""
+    cmd = ["gh", "api", endpoint]
+    try:
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        if p.returncode != 0:
+            return None, (p.stderr or "gh failed").strip()[:120]
+        return json.loads(p.stdout), None
+    except Exception as e:
+        return None, str(e)[:120]
+
+def _gh_search(ghq, per_page=30, sort="stars", timeout=30):
+    """GitHub 搜索 API; ghq 为原始查询(空格用%20, > 用%3E)。
+    sort=None 时用默认相关度排序 (created:/pushed: 等范围过滤禁止 sort:stars)。"""
+    ep = "search/repositories?q=%s&per_page=%d" % (ghq, per_page)
+    if sort:
+        ep += "&sort=%s&order=desc" % sort
+    data, err = _gh_api(ep, timeout)
+    if err:
+        return [], err
+    items = data.get("items", []) if isinstance(data, dict) else []
+    return items, None
+
+def _gh_is_ai(it):
+    """判断仓库是否 AI 相关: name/desc/topics 命中关键词。
+    topic:ai 过宽(会命中 n8n 这类集成 AI 的通用工具), 故对纯 topic 榜结果二次筛。"""
+    blob = " ".join([
+        it.get("full_name") or "", it.get("description") or "",
+        " ".join(it.get("topics") or [])]).lower()
+    for k in ("llm", "ai", "agent", "gpt", "model", "neural", "open-source model", "ml"):
+        if k in blob:
+            return True
+    return False
+
+def _gh_keep(fn, it, via):
+    """保留判定: 来自组织精选/新星的直接保留; 仅来自宽泛 topic 榜的需 AI 相关性命中。"""
+    if "org" in via or "rising" in via:
+        return True
+    return _gh_is_ai(it)
+
+def fetch_github_repos():
+    """抓 GitHub 最热 AI 项目: 各 topic 主题榜(社区/组织/个人混排) + 新星 + 组织精选。
+    返回 {items, orgs, updated, errors}; items 去重后按 stars 降序。"""
+    now = datetime.now()
+    items, via, errors = {}, {}, []
+    # 1) 主题热榜: 逐 topic 拉 stars 榜, 合并去重 (纯 topic 无噪音, OR 仅文本词可用)
+    for tp in GITHUB_TOPICS:
+        raw, err = _gh_search("topic:%s%%20stars:%%3E300" % tp, 40)
+        if err:
+            errors.append("topic:%s: %s" % (tp, err))
+            continue
+        for it in raw:
+            fn = it.get("full_name", "")
+            if fn:
+                items[fn] = it
+                via.setdefault(fn, set()).add("topic")
+        time.sleep(1)
+    # 2) 新星: 近 4 个月创建的 AI 项目 (created: 范围过滤禁止 sort:stars, 用默认相关度拉回再本地筛 stars)
+    raw, err = _gh_search("topic:ai%20created:%3E2026-06-01", 40, sort=None)
+    if err:
+        errors.append("新星: %s" % err)
+    for it in sorted(raw, key=lambda x: -int(x.get("stargazers_count", 0))):
+        fn = it.get("full_name", "")
+        if not fn:
+            continue
+        items.setdefault(fn, it)
+        via.setdefault(fn, set()).add("rising")
+    # 3) 组织精选: 逐个 org 取 stars 最高的 10 个仓库 (google 2869 库, 取 top10 足够)
+    for org in GITHUB_ORGS:
+        raw, err = _gh_search("user:%s%%20stars:%%3E10" % org, 10)
+        if err:
+            errors.append("%s: %s" % (org, err))
+            continue
+        for it in raw:
+            fn = it.get("full_name", "")
+            if not fn:
+                continue
+            items.setdefault(fn, it)
+            via.setdefault(fn, set()).add("org")
+        time.sleep(1)
+    # 归一化 + 噪音过滤
+    merged = []
+    for fn, it in items.items():
+        if not fn or not _gh_keep(fn, it, via.get(fn, set())):
+            continue
+        owner = it.get("owner", {})
+        owner_type = owner.get("type") or it.get("owner_type") or "User"
+        created = (it.get("created_at") or "")[:10]
+        pushed = (it.get("pushed_at") or "")[:10]
+        merged.append({
+            "name": it.get("name", fn),
+            "full_name": fn,
+            "owner": owner.get("login", fn.split("/")[0] if "/" in fn else fn),
+            "owner_type": "org" if owner_type == "Organization" else "user",
+            "lang": it.get("language") or "—",
+            "stars": int(it.get("stargazers_count", 0)),
+            "forks": int(it.get("forks_count", 0)),
+            "created": created,
+            "pushed": pushed,
+            "rising": bool(created >= "2026-06-01"),
+            "org_pick": "org" in via.get(fn, set()),
+            "desc": (it.get("description") or "").strip()[:160],
+            "url": it.get("html_url", ""),
+            "topics": [t for t in (it.get("topics") or [])[:5]],
+        })
+    merged.sort(key=lambda r: -r["stars"])
+    orgs_present = sorted(set(r["owner"] for r in merged if r["owner_type"] == "org"))
+    return {"items": merged[:150], "orgs": orgs_present,
+            "updated": now.isoformat(), "errors": errors}
+
+def load_github_cache(cache):
+    """无则返回 None; 有且 3h 内则返回, 否则 None(需重抓)。"""
+    gh = cache.get("github_repos")
+    if not gh or not gh.get("items"):
+        return None
+    try:
+        dt = datetime.fromisoformat(gh["updated"])
+        if (datetime.now() - dt).total_seconds() > 10800:
+            return None
+        return gh
+    except Exception:
+        return None
+
 def slug(title):
     return re.sub(r"[^\w\s-]", "", title.lower()).strip().replace(" ", "-")[:60]
 
@@ -1210,6 +1339,21 @@ if __name__ == "__main__":
     cache["meta"]["updated"] = now.isoformat()
     seed_sources_history(cache)   # 旧缓存兜底: 从条目反推数据源状态
     cache_sources(cache)          # 固化数据源活跃度状态（成功/失败/失联 + 历史）
+
+    # GitHub 热榜: 3 小时 TTL, 失败不影响其他 tab
+    gh = load_github_cache(cache)
+    if gh:
+        print("[AI Intel] GitHub 热榜缓存命中: %d 项目" % len(gh["items"]))
+    else:
+        print("[AI Intel] 抓取 GitHub 最热 AI 项目 (gh api, 走代理)...")
+        try:
+            gh = fetch_github_repos()
+            for e in gh["errors"]:
+                print("  [WARN] github: %s" % e)
+            print("[AI Intel] GitHub 热榜: %d 项目 | %d 组织" % (len(gh["items"]), len(gh["orgs"])))
+            cache["github_repos"] = gh
+        except Exception as ex:
+            print("[AI Intel] GitHub 热榜抓取失败, 保留旧数据: %s" % str(ex)[:80])
     save_cache(cache)
     
     html = render_html(cache)
