@@ -434,6 +434,10 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     <div class="tb-search" id="global-search-wrap">
       <input id="global-search" type="search" placeholder="模糊检索资讯 / 关键词…" autocomplete="off">
     </div>
+    <a class="gh-badge" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer" title="本站构建者 · GitHub: zhouzxing">
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/></svg>
+      <span>zhouzxing</span>
+    </a>
   </div>
 </header>'''
 
@@ -629,9 +633,23 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     github_table_html = github_table() if gh_items else \
         '<tr><td colspan="9" class="c-empty">暂无数据 — 运行 python3 ai_intel_aggregator.py 抓取 GitHub 热榜</td></tr>'
 
+    gh_author_card = f'''<div class="gh-author">
+    <a class="gh-author-link" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">
+      <span class="gh-author-logo">
+        <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/></svg>
+      </span>
+      <span class="gh-author-info">
+        <b>@zhouzxing</b>
+        <small>本站构建者 · 关注 zhouzxing 的更多开源项目与动态</small>
+      </span>
+    </a>
+    <a class="gh-author-cta" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">在 GitHub 关注 ↗</a>
+  </div>'''
+
     github_view = f'''<section class="view" id="view-github">
   <div class="sec-head"><h2>GitHub 最热 AI 项目</h2>
     <p>{len(gh_items)} 个项目 · {len(gh_orgs)} 个组织 · 主题热榜 / 新星 / 精选组织 · 更新于 {esc(gh_updated)}</p></div>
+  {gh_author_card}
   <div class="kpis">
     <div class="kpi"><div class="kpi-v">{len(gh_items)}</div><div class="kpi-l">收录项目</div><div class="kpi-s">按 stars 降序</div></div>
     <div class="kpi"><div class="kpi-v">{gh_rising_n}</div><div class="kpi-l">新星项目</div><div class="kpi-s">近 4 个月创建</div></div>
@@ -660,7 +678,8 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
 </section>'''
 
     footer = (f'<footer>AI 情报聚合 v7 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
-              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str}</footer>')
+              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str} · '
+              f'由 <a class="footer-gh" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">@zhouzxing</a> 构建 &amp; 维护</footer>')
 
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
@@ -899,6 +918,30 @@ footer{max-width:1440px;margin:34px auto 0;padding:22px;color:var(--muted);font-
 .c-topics{max-width:180px}
 .c-topics .tag{margin:0 4px 4px 0}
 .c-empty{text-align:center;color:var(--muted);padding:40px}
+
+/* zhouzxing 宣传位 */
+.gh-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px 4px 8px;margin-left:4px;
+  border:1px solid var(--border2);border-radius:20px;background:rgba(255,255,255,.04);
+  color:var(--text);font-size:.78rem;font-weight:650;text-decoration:none;transition:.15s}
+.gh-badge svg{color:var(--text);flex:0 0 15px}
+.gh-badge:hover{border-color:var(--accent);color:var(--accent);background:rgba(53,224,161,.09)}
+.gh-author{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 16px;margin-bottom:16px;
+  border:1px solid rgba(53,224,161,.22);border-radius:12px;
+  background:linear-gradient(120deg,rgba(53,224,161,.08),rgba(124,92,255,.08));position:relative;overflow:hidden}
+.gh-author::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.gh-author-link{display:flex;align-items:center;gap:11px;text-decoration:none;flex:1;min-width:220px}
+.gh-author-logo{width:40px;height:40px;flex:0 0 40px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.07);border:1px solid var(--border2);color:var(--text)}
+.gh-author-link:hover .gh-author-logo{color:var(--accent);border-color:rgba(53,224,161,.5)}
+.gh-author-info{display:flex;flex-direction:column;gap:2px}
+.gh-author-info b{font-size:1rem;color:var(--accent);font-weight:750;font-family:ui-monospace,Menlo,monospace}
+.gh-author-info small{font-size:.72rem;color:var(--muted)}
+.gh-author-cta{padding:8px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;
+  background:linear-gradient(135deg,var(--accent),#1fb586);color:#06281c;transition:.15s}
+.gh-author-cta:hover{filter:brightness(1.12)}
+.footer-gh{color:var(--accent);text-decoration:none;font-weight:650;font-family:ui-monospace,Menlo,monospace}
+.footer-gh:hover{text-decoration:underline}
 
 @media(max-width:1080px){
   .layout{grid-template-columns:1fr}
