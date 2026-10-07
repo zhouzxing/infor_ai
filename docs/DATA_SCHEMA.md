@@ -1,121 +1,322 @@
-# 数据契约 — `ai_intel_cache.json` 字段级 schema
+# AI 情报聚合 — 数据契约与 Schema
 
-> 单一事实源。抓取层写、渲染层读。**改任何字段前先读这里 + 对照 `migrate_cache`。**
-> 版本：v7（GitHub 热榜 tab 并入）
+> 面向对象：接入方、二次开发者。
+> 版本：v8（42 源 / 58 Agent / 89 模型；删除 v1 遗留 fetch_from_* 死代码）
+> 最近更新：2026-10-06
 
 ---
 
-## 1. 顶层
+## 0. 总览
 
-| 键 | 类型 | 说明 | 写入者 |
+| 数据资产 | 位置 | 生产者 | 消费者 |
 |---|---|---|---|
-| `entries_int` | `entry[]` | 国际资讯，≤300，按 `(-heat, timestamp)` 排序 | 抓取 |
-| `entries_cn` | `entry[]` | 国内资讯，≤300，同序 | 抓取 |
-| `meta` | object | 元信息 + 数据源状态 | 抓取 |
-| `github_repos` | object | GitHub 热榜（3h TTL） | 抓取 |
-
-### meta
-| 键 | 类型 | 说明 |
-|---|---|---|
-| `updated` | ISO8601 | 本次渲染时间戳 |
-| `last_source_refresh` | ISO8601 | 最近一次 `cache_sources` 固化时间 |
-| `sources_history` | `{源名: hist_ev[]}` | 每源保留最近 48 条抓取结果 |
-| `sources_status` | `{源名: status_obj}` | 由 history 派生的当前活跃度面板数据 |
-| `run_log` | `run_ev[]` | 管线运行日志，保留最近 48 条（`append_run_log`），监控中心 tab 消费 |
-
-`hist_ev`：`{ "t": ISO, "n": int(条目数), "ok": bool, "err": str(≤120) }`
-
-`run_ev`：`{ "t": ISO, "skipped": bool, "src_ok": int, "src_total": int, "items_new": int, "gh_items": int, "gh_err": bool }`
-（`skipped=true` 表示该轮未走 RSS 抓取——缓存 1h TTL 内重复调用或数据新鲜时直接跳过，监控日志上标「跳过抓取」。）
-
-`status_obj`：
-```jsonc
-{ "region":"int|cn","url":str,"total_items":int,
-  "status":"活跃|重试中|失联|待同步", "dot":"good|bad|muted",
-  "last_ok":bool,"last_ok_t":ISO,"last_err":str,"stale":bool,
-  "history_ok":int,"history_total":int,
-  "strategy":str,            // "RSS 直连" / "RSSHub 镜像" / "+ 关键词×N"（_source_strategy 归类）
-  "fmt":"rss2|atom|unknown",  // fetch_rss_feed 运行时探测(_LAST_FORMATS)；skipped 轮沿用上一轮值
-  "streak_fail":int }        // history 末尾连续失败次数（≥2 在监控面板标「连败」）
-```
-判定：`last_ok && !stale`→活跃；`!last_ok && last_err`→重试中；`stale(>24h)`→失联；否则→待同步。
+| `ai_intel_cache.json` | 项目根 | `ai_intel_aggregator.py::save_cache` | `ai_intel_render.py::render_page` |
+| `MODEL_REGISTRY` | `ai_intel_aggregator.py` 模块级字面量 | 人工维护 | 渲染层「模型库」「能力大盘」 |
+| `AGENT_PLATFORMS` | `ai_intel_aggregator.py` 模块级字面量 | 人工维护（v8: 58 平台） | 渲染层「Agent 平台」「能力大盘」 |
+| `SOURCE_REGISTRY` | `ai_intel_aggregator.py` 模块级字面量 | 人工维护（v8: 42 源） | 抓取 + 渲染监控 |
+| `index.html` | 项目根（交付物） | `ai_intel_render.py` | 浏览器（离线可开） |
 
 ---
 
-## 2. 资讯 `entry`
+## 1. `ai_intel_cache.json`（单一事实源）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| `title` | str | ✓ | 已 strip |
-| `summary` | str | ✓ | 清洗后的纯文本摘要（HTML 残片已由 `migrate_cache` 清掉） |
-| `body` | str | ○ | 正文（开头段+结尾段拼接，5W1H） |
-| `url` | str | ✓ | 原文链接；缺失时 `migrate_cache` 从 summary 的 `href=` 反推 |
-| `sources` | `str[]` | ✓ | 命中该条的所有源名（多源累加热度的依据） |
-| `heat` | int | ✓ | 0–5，`bump_heat` cap 5；论文/官方大厂发布初始 3，其余 2 |
-| `timestamp` | ISO | ✓ | 入库时间 |
-| `date` | `YYYY-MM-DD` | ✓ | 归日期 |
-
----
-
-## 3. GitHub `github_repos`
+### 1.1 顶层结构
 
 ```jsonc
-{ "items": gh_item[], "orgs": ["owner_login", …], "updated": ISO, "errors": ["…", …] }
+{
+  "entries_int": [ Entry, ... ],     // 国际资讯，≤300 条
+  "entries_cn":  [ Entry, ... ],     // 国内资讯，≤300 条
+  "meta": {
+    "updated": "2026-10-06T22:35:04.123",  // 上次渲染时间 ISO8601
+    "last_source_refresh": "ISO8601",       // 上次源健康度刷新
+    "schema_version": "v8",                 // 可选，v8 起新增
+    "sources_history": { ... },             // §1.5
+    "sources_status":  { ... }              // §1.6
+  },
+  "github_repos": {                     // §1.7
+    "items": [ GhItem, ... ],           // ≤150 条
+    "orgs":  [ "openai", "anthropics", ... ],
+    "updated": "ISO8601",
+    "errors": [ "..." ]
+  }
+}
 ```
 
-`errors` 非空表示某路抓取失败（3h 内 TTL 命中时直接复用旧数据，不再抓）。
+### 1.2 `Entry`（资讯条目）
 
-### gh_item
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `name` | str | 仓库短名 |
-| `full_name` | str | `owner/repo` |
-| `owner` | str | owner login |
-| `owner_type` | `"org"\|"user"` | 渲染徽章「组织/个人」依据 |
-| `lang` | str | 编程语言，缺失为 `"—"` |
-| `stars` | int | star 数 |
-| `forks` | int | fork 数 |
-| `created` | `YYYY-MM-DD` | 创建日期 |
-| `pushed` | `YYYY-MM-DD` | 最近 push |
-| `rising` | bool | `created >= 2026-06-01`（近 4 月新星） |
-| `org_pick` | bool | 是否命中 8 个精选组织的 top10（渲染「精选」绿标） |
-| `desc` | str | 描述，截断 160 字 |
-| `url` | str | `https://github.com/owner/repo` |
-| `topics` | `str[]` | 前 5 个 topic tag |
+| `title` | string | 清洗后标题（去噪、去换行） |
+| `summary` | string | 50–260 字摘要；正文提取失败时降级到 RSS description |
+| `body` | string | 500–2000 字正文；开头段(2-3) + 结尾段(2-3) 拼接 |
+| `url` | string | 原文 URL（`google.com/rss/articles/…` 属 Google News 跳转，无法直连原文） |
+| `sources` | string[] | 命中源列表；多源重复 +1 到 heat |
+| `heat` | int | 0–5，`bump_heat` 累加（多源 +1，cap 5） |
+| `timestamp` | string ISO8601 | RSS `published/updated` 或抓取时间 |
+| `date` | string YYYY-MM-DD | `timestamp` 的前 10 位 |
 
-> 噪音过滤：`_gh_is_ai` 对「仅来自宽泛 topic 榜」的仓库做 AI 关键词二次筛（命中
-> `llm/ai/agent/gpt/model/neural/ml` 之一才留）；来自组织精选/新星的直接保留。
+**质量保障**：`migrate_cache` 会幂等清洗旧缓存里 `summary/body` 的 HTML 残片（`<section`/`<div` 开头等）。
 
----
+**裁剪规则**（`clean_and_trim`）：
+1. 时间窗 `MAX_DAYS=30`
+2. 每区 `MAX_ENTRIES=300`
+3. ≤100 条全保留；>100 条剔除「3 天外 + heat≤1」
+4. >300 按 `(-heat, -timestamp)` 截前 300
 
-## 4. 静态大表（不进缓存，`ai_intel_aggregator.py` 字面量）
+### 1.3 `Model`（模型条目，来自 `MODEL_REGISTRY[cid]["products"]`）
 
-### MODEL_REGISTRY — 88 模型 / 23 公司
-按**公司**分组，每个产品：`region(int|cn), product, params, context, modalities, license, pricing, free, docs, enterprise, limitations, features, release`。
-渲染层六维打分 `DIM_W = {ctx:.18, mm:.18, open:.16, cost:.22, scale:.12, fresh:.14}`。
-
-### AGENT_PLATFORMS — 29 平台
-每个平台：`region, product, category, pricing, free, models, features, api, docs, ecosystem, enterprise, limitations`。
-
-> 这两张表**人工维护**。增删字段会连带渲染层表格列，需同步改 `ai_intel_render.py`。
-
----
-
-## 5. Schema 演进规则
-
-1. **加字段**：新字段给默认值，`load_cache` 对旧缓存补默认，渲染层用 `.get(k, 默认)` 读。
-2. **改语义 / 删字段**：在 `migrate_cache` 加分支做**幂等**迁移（已迁的不再动）。
-3. **破坏性变更**：加 `meta.schema_version`，`migrate_cache` 按版本路由。
-4. **测试**：迁移函数写完后用旧 `.bak` 缓存跑一遍 `migrate_cache` 验证幂等。
-
----
-
-## 6. 抓取层常量（`ai_intel_aggregator.py` 顶部）
-
-| 常量 | 值 | 含义 |
+| 字段 | 类型 | 说明 |
 |---|---|---|
-| `MAX_ENTRIES` | 300 | 每区上限；>300 按热度截 |
-| `MAX_DAYS` | 30 | 资讯保留窗口 |
-| `PROXY_HTTP` | `http://127.0.0.1:7897` | **必须**，无代理全 403/超时 |
-| `PROXY_SOCKS` | `socks5://…` | 备用 |
-| GitHub TTL | 10800s | `load_github_cache` 3h 命中即不重抓 |
+| `id` | string | 全局唯一，建议格式 `{cid}:{slug}`，如 `anthropic:claude-4-5-sonnet` |
+| `name` | string | 展示名 |
+| `code` | string | 内部代号（可空） |
+| `date` | string YYYY-MM | 首发年月 |
+| `ctx` | int | 上下文长度（token 数；≥1000000 表示 1M+） |
+| `mm` | string[] | 模态列表，取值见 §2 |
+| `open` | bool | 是否开源 |
+| `cost_i` | float | 输入价格，$/1M tokens（0 = 免费） |
+| `cost_o` | float | 输出价格，$/1M tokens |
+| `scale` | int | 参数量（int；`scale_t: true` 表示单位为 T 而非 B） |
+| `scale_t` | bool | 参数量单位标志 |
+| `fresh` | int | 2026 年内迭代代数（1..N） |
+| `tags` | string[] | 标签，如 `agent`/`reasoning`/`safety`/`realtime` |
+
+**维度打分**（`score_product` in aggregator）：
+- `ctx`、`mm`、`open`、`cost`、`scale`、`fresh` 六维各 0–100
+- 权重 `DIM_W = {ctx:.18, mm:.18, open:.16, cost:.22, scale:.12, fresh:.14}`
+- `composite = Σ w_i × s_i`
+
+### 1.4 `AgentPlatform`（Agent 平台条目，来自 `AGENT_PLATFORMS`）
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `region` | "int" \| "cn" | 国际 / 国内 |
+| `product` | string | 产品名；厂商归属可括注，如 `"AutoGen (Microsoft Research)"` |
+| `category` | string | 见 §3 分类枚举 |
+| `pricing` | string | 计费方式，如 `"按Token计费"` / `"订阅制"` / `"开源免费"` |
+| `free` | string | `"有"` / `"有(有限)"` / `"有限"` / `"无"` |
+| `models` | string | 支持模型列表（逗号分隔） |
+| `features` | string | 核心能力（逗号分隔） |
+| `api` | string | API/SDK 名 |
+| `docs` | string | 官方文档 URL |
+| `ecosystem` | string | 生态描述 |
+| `enterprise` | string | 企业版名称（无则填 `"无"`） |
+| `limitations` | string | 已知限制 |
+
+**当前库规模**：58 平台 / 6 大分类（详见 §3）
+
+### 1.5 `meta.sources_history`
+
+```jsonc
+{
+  "<source_name>": [
+    { "t": "ISO8601", "n": 42, "ok": true, "err": "" },
+    ...                       // 每源保留最近 48 条
+  ]
+}
+```
+- `n`：本轮抓取条目数
+- `ok`：本轮是否成功
+- `err`：错误摘要（成功时空串）
+
+### 1.6 `meta.sources_status`（渲染层直接读，无需重算）
+
+```jsonc
+{
+  "<source_name>": {
+    "name":       "String",
+    "region":     "int" | "cn",
+    "url":        "HTTP URL",
+    "total_items": int,       // 历史累计条目数
+    "status":     "active" | "retrying" | "lost" | "pending",
+    "dot":        "green" | "yellow" | "red" | "gray",
+    "last_ok_t":  "ISO8601" | null,
+    "last_err":   "error summary" | "",
+    "stale":      bool,       // >24h 未成功即失联
+    "history_ok": int,
+    "history_total": int
+  }
+}
+```
+
+**状态判定**（`cache_sources` in aggregator）：
+- `active` (green)：最近一次成功
+- `retrying` (yellow)：最近一次失败但历史曾成功
+- `lost` (red)：`>24h` 未成功（`stale=True`）
+- `pending` (gray)：从未抓取
+
+### 1.7 `github_repos.items[]`（`GhItem`）
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `name` | string | repo 短名 |
+| `full_name` | string | `owner/repo` |
+| `owner` | string | 用户名 |
+| `owner_type` | "org" \| "user" | 决定徽章类型 |
+| `lang` | string \| null | 主语言 |
+| `stars` | int | 星数 |
+| `forks` | int | fork 数 |
+| `created` | string YYYY-MM-DD | 建仓日期 |
+| `pushed` | string YYYY-MM-DD | 最近 push |
+| `rising` | bool | 是否新星（近 4 月建仓） |
+| `org_pick` | bool | 是否组织精选 |
+| `desc` | string | README 简介 |
+| `url` | string | 完整 GitHub URL |
+| `topics` | string[] | GitHub topic |
+
+**去重键**：`full_name`
+
+**筛选机制**（`fetch_github_repos`）：
+1. 主题榜 `topic:llm/ai/ai-agents/genai/generative-ai` → `_gh_is_ai` 二次过滤（避免 `topic:ai` 混入 `n8n`/水印工具）
+2. 新星：`created:>2026-06-01`
+3. 组织精选：9 个组织各取 top10
+
+**TTL**：3 小时（`load_github_cache`）。抓取失败保留旧数据 + 记 `errors`，不影响其他 tab。
+
+---
+
+## 2. 枚举与约定
+
+### 2.1 模态 `mm[]` 取值
+`text` / `image` / `audio` / `video` / `speech` / `code` / `tool`
+
+### 2.2 区域 `region`
+- `int`：国际
+- `cn`：国内
+
+### 2.3 源类型（`fetch_rss_feed`）
+- RSS 2.0 / Atom / JSON feed 均支持
+- `<item>` / `<entry>` 双结构
+
+### 2.4 协议徽章（渲染层 `.mfmt`）
+- `rss2` (green)：RSS 2.0
+- `atom` (purple)：Atom
+- `unknown` (gray)：无法识别
+
+---
+
+## 3. `AGENT_PLATFORMS` 分类枚举（v8: 58 平台）
+
+| Category | 代表条目 |
+|---|---|
+| 通用Agent | OpenAI、Anthropic、Google DeepMind、商汤日日新、DeepSeek、智谱、月之暗面、腾讯元器 |
+| 开源Agent | LangChain、CrewAI、Hermes Agent、Agno、SmolAgents、BabyAGI、Camel-AI |
+| LLM应用平台 | LangChain、LlamaIndex、Dify、Dify (中国版) |
+| Agent 编排 | Temporal、Zapier Agents、Make AI、AgentUniverse |
+| 编程Agent | GitHub Copilot、Amazon Q Developer、Aider、Cline、Continue、Pieces、Roo Code、Cursor、Windsurf、Sourcegraph Cody |
+| 企业Agent平台 | Replit |
+| IDE/工作流 | Cursor、Windsurf、Hugging Face |
+| Agent 框架 | Semantic Kernel、Swarm |
+| 通用平台 (微软/亚马逊) | Microsoft、Amazon |
+| 企业Agent | 华为云盘古、字节跳动、阿里巴巴、百度 |
+| 智能设备Agent | 小米超级小爱、荣耀魔法大模型 |
+| 创业Agent | 阶跃星辰、MiniMax |
+| 开源Agent平台 / 知识库Agent | Dify、FastGPT、MaxKB、LangBot、百川 |
+| 行业Agent | 科大讯飞星火 |
+
+> 分类字段是自由文本，不做严格枚举。计数以 `len(AGENT_PLATFORMS)` 为准。
+
+---
+
+## 4. `SOURCE_REGISTRY` 结构（v8: 42 源）
+
+```python
+SOURCE_REGISTRY = [
+    (name: str,       # 展示名，同时是 meta.sources_history 的键
+     region: str,     # "int" | "cn"
+     url: str,        # RSS/Atom/JSON feed URL（国内源多为 rsshub 镜像）
+     keywords: list,  # 空列表 = 垂直 AI 频道不过滤；非空 = 需命中任一
+    ),
+    ...
+]
+```
+
+**v8 新增 4 源**：
+| 源名 | 区域 | URL | 过滤 |
+|---|---|---|---|
+| Reddit r/LocalLLaMA | int | https://www.reddit.com/r/LocalLLaMA/.rss | 空（垂直频道） |
+| Hacker News (hnrss) | int | https://hnrss.org/newest?q=AI+OR+LLM+OR+GPT+OR+agent+OR+model+OR+OpenAI+OR+Claude | 空 |
+| GeekerHub (RSS) | cn | https://www.geekerhub.com/feed | `["AI","人工智能","大模型","OpenAI","ChatGPT","机器学习","算法","开发者","效率","编程","工具","开源","GitHub"]` |
+| arXiv CS.AI | int | https://rss.arxiv.org/rss/cs.AI | 学术 AI 关键词 |
+
+**v8 清理**：删除 9 个 v1 遗留 `fetch_from_*` 函数（`geeker/huxiu/36kr/ithome/leifeng/infoq/hackernews/google_news/arxiv`）。它们的主流程早不调用，导致监控面板与实际抓取路径漂移；删除后监控面板完全对齐实际数据源。
+
+---
+
+## 5. `meta.run_log`（可选，渲染监控中心用）
+
+`list[str]`，每轮 cron 追加一行摘要，保留最近 48 条。
+格式示例：`"2026-10-06 22:35 | int=187 cn=64 | GH=143 | 12/12 sources ok"`
+
+跳过抓取轮：`"2026-10-06 22:00 | skipped (no update needed)"`
+
+---
+
+## 6. `index.html` 契约
+
+- **完全自包含**：内联 CSS（约 60KB）+ JS（约 35KB），无外链
+- **无任何运行时网络请求**：所有数据在生成时写死进 HTML
+- **六个 tab**：`news / dash / models / agents / github / monitor`
+- **通用表格机制**：`data-table-search` 绑搜索框，`data-table-filter` 绑 region 三段按钮，行上 `data-region` 分类
+- **GitHub 榜复用**：行上 `data-region="org"/"user"` 即接入通用过滤，零新增 JS
+
+---
+
+## 7. 迁移与兼容
+
+### 7.1 `migrate_cache`（幂等）
+1. 清洗 `entry.summary/body` 的 HTML 残片（`<section`/`<div`/`<nav` 等开头）
+2. 补全缺失 `url`（用 `entry.sources` 反查）
+3. 补全缺失 `date`（从 `timestamp` 前 10 位）
+
+### 7.2 `seed_sources_history`
+对从未记过状态的旧缓存，用 `sources_status.total_items` 反推一次历史，让监控面板立即显示合理数据。
+
+### 7.3 Schema 演进
+- 加字段：新字段给默认值即可，旧缓存自动兼容
+- 删字段：先在 `migrate_cache` 做降级
+- 大改：加 `meta.schema_version`，`migrate_cache` 按版本增量迁移
+
+---
+
+## 8. 快速校验脚本
+
+```python
+import json
+from pathlib import Path
+
+cache = json.loads(Path('ai_intel_cache.json').read_text(encoding='utf-8'))
+
+assert set(cache) >= {"entries_int","entries_cn","meta"}
+assert "github_repos" in cache
+
+for region in ("entries_int","entries_cn"):
+    for e in cache[region]:
+        assert set(e) >= {"title","summary","url","sources","heat","timestamp"}
+        assert 0 <= e["heat"] <= 5
+
+status = cache["meta"].get("sources_status", {})
+assert len(status) >= 30  # v8: 42 源，允许早期缓存未跑满
+
+if cache.get("github_repos", {}).get("items"):
+    for g in cache["github_repos"]["items"]:
+        assert g["owner_type"] in ("org","user")
+        assert isinstance(g["stars"], int)
+
+print("schema OK")
+```
+
+---
+
+## 9. 字段变更日志
+
+| 版本 | 时间 | 变更 |
+|---|---|---|
+| v8 | 2026-10-06 | SOURCE_REGISTRY 38→42 源；AGENT_PLATFORMS 29→58；删除 9 个 v1 遗留 fetch_from_* 死函数 |
+| v7 | 2026-10-05 | 新增 `meta.run_log`、GitHub 榜三源合并、`_gh_is_ai` 二次过滤 |
+| v6 | 2026-10-04 | 新增 `github_repos`；渲染层加 GitHub 榜 tab |
+| v5 | 2026-10-03 | `entry.body` 引入开头段+结尾段拼接 |
+| v4 | 2026-10-02 | `meta.sources_status` 固化，渲染层不再重算 |
+| v3 | 2026-10-01 | 引入 `bump_heat` 多源累加 |
+| v2 | 2026-09-30 | `migrate_cache` 幂等清洗 HTML 残片 |
+| v1 | 2026-09-28 | 初版 |

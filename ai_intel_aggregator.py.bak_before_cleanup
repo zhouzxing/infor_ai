@@ -502,6 +502,277 @@ def append_run_log(cache, n_ok, n_total, n_items, gh_n, gh_err, skipped=False):
                 "gh_items": gh_n, "gh_err": gh_err})
     del log[:-48]
 
+# ── 国内数据源 ────────────────────────────────────────────────────
+def fetch_from_geeker():
+    """从极客网获取AI新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        urls = ["https://www.geekerhub.com/feed", "https://www.geekpark.net/rss"]
+        results = []
+        
+        for rss_url in urls:
+            try:
+                req = urllib.request.Request(rss_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                    content = resp.read().decode()
+                    import xml.etree.ElementTree as ET
+                    root = ET.fromstring(content)
+                    for item in root.findall(".//item")[:10]:
+                        title = item.findtext("title", "")
+                        link = item.findtext("link", "")
+                        desc = item.findtext("description", "") or ""
+                        if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义']):
+                            results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'GeekerHub', 'region': 'cn'})
+            except Exception as e:
+                print(f"[WARN] Geeker RSS failed: {e}")
+                report_fetch_error('GeekerHub', e)
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] Geeker fetch failed: {e}")
+        report_fetch_error('GeekerHub', e)
+        return []
+
+def fetch_from_huxiu():
+    """从虎嗅获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.huxiu.com/rss.xml", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:10]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义', '文心']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '虎嗅', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] Huxiu RSS failed: {e}")
+            report_fetch_error('虎嗅', e)
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] Huxiu fetch failed: {e}")
+        report_fetch_error('虎嗅', e)
+        return []
+
+def fetch_from_36kr():
+    """从36氪获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://36kr.com/feed-news.xml", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:10]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '36氪', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] 36kr RSS failed: {e}")
+            report_fetch_error('36氪', e)
+        return results[:10]
+    except Exception as e:
+        print(f"[WARN] 36kr fetch failed: {e}")
+        report_fetch_error('36氪', e)
+        return []
+
+def fetch_from_ithome():
+    """从IT之家获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://rsshub.app/ithome/it", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link:
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'IT之家', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] ithome RSS failed: {e}")
+            report_fetch_error('IT之家', e)
+        
+        # 过滤AI相关
+        filtered = [r for r in results if any(kw in r['title'].lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '通义', '文心'])][:10]
+        return filtered
+    except Exception as e:
+        print(f"[WARN] ithome fetch failed: {e}")
+        report_fetch_error('IT之家', e)
+        return []
+
+def fetch_from_leifeng():
+    """从雷锋网获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.leiphone.com/feed", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'deepseek', '机器人', '机器学习', '智能']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': '雷锋网', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] leifeng RSS failed: {e}")
+            report_fetch_error('雷锋网', e)
+        return results[:15]
+    except Exception as e:
+        print(f"[WARN] leifeng fetch failed: {e}")
+        report_fetch_error('雷锋网', e)
+        return []
+
+def fetch_from_infoq():
+    """从InfoQ获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        results = []
+        try:
+            req = urllib.request.Request("https://www.infoq.cn/feed", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                content = resp.read().decode()
+                root = ET.fromstring(content)
+                for item in root.findall(".//item")[:15]:
+                    title = item.findtext("title", "")
+                    link = item.findtext("link", "")
+                    desc = item.findtext("description", "") or ""
+                    if title and link and any(kw in title.lower() for kw in ['ai', '人工智能', '大模型', 'llm', 'machine learning', 'deepseek', 'generative', 'transformer', '神经网络']):
+                        results.append({'title': title, 'url': link, 'desc': desc[:200], 'source': 'InfoQ', 'region': 'cn'})
+        except Exception as e:
+            print(f"[WARN] infoq RSS failed: {e}")
+            report_fetch_error('InfoQ', e)
+        return results[:15]
+    except Exception as e:
+        print(f"[WARN] infoq fetch failed: {e}")
+        report_fetch_error('InfoQ', e)
+        return []
+
+# ── 国际数据源 ────────────────────────────────────────────────────
+def fetch_from_hackernews():
+    """从Hacker News API获取最新AI相关话题"""
+    try:
+        result = subprocess.run(['curl', '-s', '--max-time', '8', '-x', PROXY_HTTP, 'https://hacker-news.firebaseio.com/v0/topstories.json'], capture_output=True, text=True)
+        if result.returncode != 0:
+            return []
+        
+        top_ids = json.loads(result.stdout)
+        ai_keywords = ['ai', 'openai', 'anthropic', 'claude', 'gpt', 'gemini', 'deepseek', 'hugging', 'machine learning', 'llm', 'artificial intelligence', 'neural', 'transformer']
+        results = []
+        
+        for story_id in top_ids[:20]:
+            story_url = f"https://hacker-news.firebaseio.com/v0/item/{story_id}.json"
+            r = subprocess.run(['curl', '-s', '--max-time', '3', '-x', PROXY_HTTP, story_url], capture_output=True, text=True)
+            if r.returncode != 0:
+                continue
+            try:
+                story = json.loads(r.stdout)
+                title = story.get('title', '').lower()
+                if any(kw in title for kw in ai_keywords):
+                    results.append({'title': story.get('title', ''), 'url': story.get('url', f"https://news.ycombinator.com/item?id={story_id}"), 'points': story.get('points', 0), 'source': 'Hacker News', 'region': 'int'})
+            except:
+                continue
+        return results
+    except Exception as e:
+        print(f"[WARN] HN fetch failed: {e}")
+        report_fetch_error('Hacker News', e)
+        return []
+
+def fetch_from_google_news():
+    """从Google News RSS获取AI相关新闻"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        rss_urls = [
+            "https://news.google.com/rss/search?q=AI+artificial+intelligence&hl=en-US&gl=US&ceid=US:en",
+            "https://news.google.com/rss/search?q=OpenAI+Anthropic&hl=en-US&gl=US&ceid=US:en",
+            "https://news.google.com/rss/search?q=AI+machine+learning&hl=en-US&gl=US&ceid=US:en",
+        ]
+        results = []
+        
+        for rss_url in rss_urls:
+            try:
+                req = urllib.request.Request(rss_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                    content = resp.read().decode()
+                    root = ET.fromstring(content)
+                    for item in root.findall(".//item")[:8]:
+                        title = item.findtext("title", "")
+                        link = item.findtext("link", "")
+                        desc = item.findtext("description", "")[:200]
+                        if title and link:
+                            results.append({'title': title, 'url': link, 'desc': desc, 'source': 'Google News', 'region': 'int'})
+            except Exception as e:
+                print(f"[WARN] Google News fetch failed: {e}")
+                report_fetch_error('Google News', e)
+        return results[:20]
+    except Exception as e:
+        print(f"[WARN] Google News failed: {e}")
+        report_fetch_error('Google News', e)
+        return []
+
+def fetch_from_arxiv():
+    """从arXiv获取最新AI论文"""
+    try:
+        import urllib.request
+        import ssl
+        import xml.etree.ElementTree as ET
+        ctx = ssl.create_default_context()
+        
+        arxiv_url = "http://rss.arxiv.org/rss/cs.AI"
+        req = urllib.request.Request(arxiv_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+            content = resp.read().decode()
+            root = ET.fromstring(content)
+            results = []
+            for item in root.findall(".//item")[:10]:
+                title = item.findtext("title", "")
+                link = item.findtext("link", "")
+                desc = item.findtext("description", "")[:300]
+                results.append({'title': title, 'url': link, 'desc': desc, 'source': 'arXiv CS.AI', 'region': 'int'})
+            return results
+    except Exception as e:
+        print(f"[WARN] arXiv fetch failed: {e}")
+        report_fetch_error('arXiv CS.AI', e)
+        return []
 
 # ── cache management ─────────────────────────────────────────────
 def load_cache():
