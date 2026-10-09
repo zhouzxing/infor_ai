@@ -33,6 +33,15 @@ DIM_W = {"ctx": .18, "mm": .18, "open": .16, "cost": .22, "scale": .12, "fresh":
 
 
 # ── 解析与打分 ──────────────────────────────────────────────────────
+def _pricing_nums(pricing):
+    """'$1.25/$10 per 1M tok' -> (1.25, 10.0); 'Open (...)'/'免费' -> None"""
+    t = str(pricing or "").lower()
+    if "open" in t or "free" in t or "免费" in t:
+        return None
+    nums = [float(x) for x in re.findall(r"\$?\s*(\d+(?:\.\d+)?)", t) if float(x) > 0]
+    return tuple(nums[:2]) if nums else None
+
+
 def _ctx_tokens(s):
     t = str(s or "").lower().replace(",", "")
     m = re.search(r"(\d+(?:\.\d+)?)\s*m\b", t)
@@ -186,7 +195,10 @@ def _radar_svg(models):
 
 
 # ── 主渲染 ──────────────────────────────────────────────────────────
-def render_page(cache, model_registry, agent_platforms, max_entries=300, max_days=30):
+def render_page(cache, model_registry, agent_platforms, max_entries=300, max_days=30,
+                model_benchmarks=None, agent_caps=None):
+    model_benchmarks = model_benchmarks or {}
+    agent_caps = agent_caps or {}
     entries_int = cache.get("entries_int", [])
     entries_cn = cache.get("entries_cn", [])
     meta = cache.get("meta", {}) or {}
@@ -423,7 +435,8 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
 
     # ── 8. 页面骨架 ─────────────────────────────────────────────
     nav = [("news", "资讯聚合"), ("dash", "能力大盘"),
-           ("models", "模型库"), ("agents", "Agent 平台"), ("github", "GitHub 热榜"), ("monitor", "监控中心")]
+           ("perf", "性能对比"), ("models", "模型库"), ("agents", "Agent 平台"),
+           ("agentscmp", "Agent 对比"), ("github", "GitHub 热榜"), ("monitor", "监控中心")]
 
     topbar = f'''<header class="topbar">
   <div class="tb-inner">
@@ -584,6 +597,508 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
       <tbody>{agent_table()}</tbody>
     </table>
   </div>
+</section>'''
+
+    # ══════════════════════════════════════════════════════════════
+    # 7b. 性能对比视图 — 基准 × 训练 × 推理 + 智能/价格象限
+    # ══════════════════════════════════════════════════════════════
+    BENCH_KEYS = ["MMLU-Pro", "GPQA", "AIME25", "SWE-V", "LCB", "TB-Hard", "τ²-bench", "BrowseComp"]
+    BENCH_LABELS = {"MMLU-Pro": "MMLU-Pro", "GPQA": "GPQA", "AIME25": "AIME25",
+                    "SWE-V": "SWE-V", "LCB": "LCB", "TB-Hard": "TB-Hard",
+                    "τ²-bench": "τ²-bench", "BrowseComp": "BrowseComp"}
+    bench_rows = []
+    for m in model_rows:
+        b = model_benchmarks.get(m["product"].get("name", ""), {})
+        if not b:
+            continue
+        bench_rows.append({
+            "name": m["product"].get("name", ""),
+            "company": m["company"], "region": m["region"],
+            "bench": b.get("bench", {}),
+            "tps": b.get("tps"), "ttft": b.get("ttft"),
+            "train": b.get("train") or {},
+            "pricing": m["product"].get("pricing", ""),
+            "license": m["product"].get("license", ""),
+        })
+    bench_rows.sort(key=lambda r: -sum(r["bench"].values()))
+
+    def _cell(v, maxi=100.0):
+        if v is None:
+            return '<span class="bmv dim">—</span>'
+        cls = ("bmv hot" if v >= 80 else
+               "bmv good" if v >= 60 else
+               "bmv mid" if v >= 40 else
+               "bmv low")
+        return f'<span class="{cls}">{v:g}</span>'
+
+    def _hm(val, best):
+        """热度背景: val/best 越高越绿"""
+        if val is None or not best:
+            return "hm-n"
+        r = val / best
+        if r >= .92: return "hm-9"
+        if r >= .80: return "hm-8"
+        if r >= .68: return "hm-7"
+        if r >= .55: return "hm-6"
+        if r >= .42: return "hm-5"
+        if r >= .30: return "hm-4"
+        if r >= .18: return "hm-3"
+        if r > 0:    return "hm-2"
+        return "hm-n"
+
+    best_tps = max((r["tps"] for r in bench_rows if r["tps"]), default=0)
+    best_ttft = min((r["ttft"] for r in bench_rows if r["ttft"]), default=0)
+
+    def _train_cell(tr, key, fmt="{:g}"):
+        v = tr.get(key)
+        if v is None:
+            return '<span class="bmv dim">未披露</span>'
+        return f'<span class="bmv">{fmt.format(v)}</span>'
+
+    def bench_matrix():
+        rows = []
+        for r in bench_rows:
+            cells = "".join(
+                f'<td class="hcell {_hm(r["bench"].get(k), 100)}">{_cell(r["bench"].get(k))}</td>'
+                for k in BENCH_KEYS)
+            reg = "国际" if r["region"] == "int" else "国内"
+            blob = " ".join([r["name"], r["company"], reg,
+                             " ".join(f'{k} {v}' for k, v in r["bench"].items())]).lower()
+            avg = round(sum(r["bench"].values()) / len(BENCH_KEYS), 1) if r["bench"] else 0
+            rows.append(
+                f'<tr data-region="{r["region"]}" data-search="{esc(blob)}">'
+                f'<td class="c-name">{esc(r["name"])}<em>{esc(r["company"])} · {reg}</em></td>'
+                f'{cells}'
+                f'<td class="c-avg"><b>{avg:.1f}</b></td></tr>')
+        return "\n".join(rows)
+
+    # ── 智能×价格 散点 (SVG, 自适应) ─────────────────────────────
+    SC_W, SC_H, SC_PAD = 860, 420, 52
+    scatter = []
+    for r in bench_rows:
+        nums = _pricing_nums(r["pricing"])
+        if not nums:
+            continue
+        blend = (nums[0] * 3 + nums[1]) / 4
+        avg = sum(r["bench"].values()) / max(1, len(r["bench"]))
+        scatter.append({"name": r["name"], "region": r["region"],
+                        "intel": round(avg, 1), "price": round(blend, 3),
+                        "in_" + r["region"]: True})
+    for s in scatter:
+        s["is_int"] = s["region"] == "int"
+
+    sx_max = max((s["price"] for s in scatter), default=1) * 1.18
+    sx_max = max(sx_max, 1.0)
+    sy_lo = max(0, min((s["intel"] for s in scatter), default=30) - 6)
+    sy_hi = min(100, max((s["intel"] for s in scatter), default=80) + 6)
+    if sy_hi - sy_lo < 10:
+        sy_hi = min(100, sy_lo + 10)
+
+    def _sx(p): return SC_PAD + (p / sx_max) * (SC_W - SC_PAD - 16)
+    def _sy(v): return (SC_H - 40) - ((v - sy_lo) / (sy_hi - sy_lo)) * (SC_H - 40 - SC_PAD + 18)
+
+    sc_parts = [f'<svg viewBox="0 0 {SC_W} {SC_H}" class="scatter">']
+    # 网格 + X 轴刻度
+    for frac in (0, .25, .5, .75, 1):
+        x = _sx(sx_max * frac)
+        sc_parts.append(f'<line x1="{x:.1f}" y1="{SC_PAD-18:.1f}" x2="{x:.1f}" y2="{SC_H-40:.1f}" class="sc-grid"/>')
+        sc_parts.append(f'<text x="{x:.1f}" y="{SC_H-22:.1f}" text-anchor="middle" class="sc-tick">${sx_max*frac:.1f}</text>')
+    for frac in (0, .25, .5, .75, 1):
+        v = sy_lo + (sy_hi - sy_lo) * frac
+        y = _sy(v)
+        sc_parts.append(f'<line x1="{SC_PAD-14:.1f}" y1="{y:.1f}" x2="{SC_W-16:.1f}" y2="{y:.1f}" class="sc-grid"/>')
+        sc_parts.append(f'<text x="{SC_PAD-20:.1f}" y="{y+4:.1f}" text-anchor="end" class="sc-tick">{v:.0f}</text>')
+    # 轴标签
+    sc_parts.append(f'<text x="{(SC_W+SC_PAD)/2:.0f}" y="{SC_H-4:.0f}" text-anchor="middle" class="sc-axis">混合价格 (输入×3+输出)÷4 · $/1M tokens →</text>')
+    sc_parts.append(f'<text x="16" y="{(SC_H-40+SC_PAD)/2:.0f}" text-anchor="middle" class="sc-axis" transform="rotate(-90 16 {(SC_H-40+SC_PAD)/2:.0f})">8 基准均分 →</text>')
+    # 象限参考线 (中位)
+    if scatter:
+        med_p = sorted(s["price"] for s in scatter)[len(scatter)//2]
+        med_i = sorted(s["intel"] for s in scatter)[len(scatter)//2]
+        sc_parts.append(f'<line x1="{_sx(med_p):.1f}" y1="{SC_PAD-18:.1f}" x2="{_sx(med_p):.1f}" y2="{SC_H-40:.1f}" class="sc-med"/>')
+        sc_parts.append(f'<line x1="{SC_PAD-14:.1f}" y1="{_sy(med_i):.1f}" x2="{SC_W-16:.1f}" y2="{_sy(med_i):.1f}" class="sc-med"/>')
+        # 象限标注
+        sc_parts.append(f'<text x="{_sx(med_p)-10:.1f}" y="{SC_PAD-6:.1f}" text-anchor="end" class="sc-q q-good">质优价廉 ↑</text>')
+        sc_parts.append(f'<text x="{_sx(med_p)+10:.1f}" y="{SC_PAD-6:.1f}" text-anchor="start" class="sc-q q-bad">高价高能 →</text>')
+        sc_parts.append(f'<text x="{_sx(med_p)-10:.1f}" y="{SC_H-46:.1f}" text-anchor="end" class="sc-q q-mid">低分低价</text>')
+        sc_parts.append(f'<text x="{_sx(med_p)+10:.1f}" y="{SC_H-46:.1f}" text-anchor="start" class="sc-q q-bad">溢价区</text>')
+    # 散点 + 标签
+    for s in sorted(scatter, key=lambda x: x["intel"], reverse=True):
+        x, y = _sx(s["price"]), _sy(s["intel"])
+        color = "#35e0a1" if s["is_int"] else "#ff7a59"
+        sc_parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{color}" fill-opacity=".85" stroke="{color}" stroke-width="1.4"><title>{esc(s["name"])} · ${s["price"]:.2f} · {s["intel"]:.1f}分</title></circle>')
+        label_side = "start" if x < SC_W * .62 else "end"
+        sc_parts.append(f'<text x="{x + (10 if label_side == "start" else -10):.1f}" y="{y - 9:.1f}" text-anchor="{label_side}" class="sc-lb">{esc(s["name"])}</text>')
+    sc_parts.append(f'<circle cx="{SC_W-190:.1f}" cy="{SC_PAD+8:.1f}" r="6" fill="#35e0a1" fill-opacity=".85"/><text x="{SC_W-178:.1f}" y="{SC_PAD+12:.1f}" class="sc-tick">国际</text>')
+    sc_parts.append(f'<circle cx="{SC_W-120:.1f}" cy="{SC_PAD+8:.1f}" r="6" fill="#ff7a59" fill-opacity=".85"/><text x="{SC_W-108:.1f}" y="{SC_PAD+12:.1f}" class="sc-tick">国内</text>')
+    sc_parts.append("</svg>")
+    scatter_svg = "".join(sc_parts)
+
+    # ── 训练投入对比条 (成本 log 尺度) ──────────────────────────
+    TRAIN_KEYS = ["gpu_h", "cost_m", "tokens"]
+    TRAIN_LABELS = {"gpu_h": ("GPU 时 (M)", "百万 H100 等效"), "cost_m": ("训练成本 ($M)", "百万美元"),
+                    "tokens": ("训练 Tokens (T)", "万亿")}
+    trained = [r for r in bench_rows if r["train"].get("cost_m") is not None]
+    trained.sort(key=lambda r: -(r["train"].get("cost_m") or 0))
+    open_scaled = 0
+    for r in trained:
+        lic = str(r["license"]).lower()
+        if any(t in lic for t in ("apache", "mit", "llama", "cc-by", "社区", "community")):
+            open_scaled += 1
+    bar_max_cost = max((r["train"].get("cost_m") or 0) for r in trained) if trained else 1
+    train_html = "".join(
+        f'<div class="cmp-row">'
+        f'<div class="cmp-label" title="{esc(r["company"])}">{esc(r["name"][:12])}</div>'
+        f'<div class="cmp-bars"><div class="cmp-bar"><span style="width:{max(1.5, math.log10(max(r["train"]["cost_m"], 0.01)) / math.log10(bar_max_cost) * 100):.1f}%"></span></div></div>'
+        f'<div class="cmp-val">${r["train"]["cost_m"]:g}M</div></div>'
+        for r in trained) or '<p class="muted">暂无数据</p>'
+
+    train_stats_html = ""
+    for k in TRAIN_KEYS:
+        label, unit = TRAIN_LABELS[k]
+        vals = [(r["name"], r["train"].get(k)) for r in bench_rows if r["train"].get(k) is not None]
+        if not vals:
+            continue
+        if k == "tokens":
+            def _tok_num(v):
+                m = re.match(r"\s*(\d+(?:\.\d+)?)", str(v or ""))
+                return float(m.group(1)) if m else 0.0
+            top = sorted(vals, key=lambda x: -_tok_num(x[1]))[:3]
+            txt = " · ".join(f'{esc(n[:10])} {esc(str(v)[:8])}' for n, v in top)
+            train_stats_html += f'<div class="tstat"><b>{label}</b><span>{txt}</span></div>'
+        else:
+            best = max(vals, key=lambda x: x[1] or 0)
+            least = min(vals, key=lambda x: x[1] or 0)
+            train_stats_html += (f'<div class="tstat"><b>{label}</b>'
+                                 f'<span>最多 {esc(best[0][:12])} {best[1]:g}</span>'
+                                 f'<span>最少 {esc(least[0][:12])} {least[1]:g}</span></div>')
+
+    # ── 推理性能表 ─────────────────────────────────────────────
+    def infer_table():
+        rows = []
+        ranked = sorted(bench_rows, key=lambda r: -(r["tps"] or 0))
+        for i, r in enumerate(ranked, 1):
+            tps_c = _cell(r["tps"], best_tps)
+            tps_c = (f'<span class="bmv {"hot" if r["tps"] == best_tps else "good" if (r["tps"] or 0) >= best_tps*.6 else "mid"}">{r["tps"]}</span>'
+                     if r["tps"] else '<span class="bmv dim">—</span>')
+            ttft_c = (f'<span class="bmv {"hot" if r["ttft"] == best_ttft else "good" if (r["ttft"] or 9) <= best_ttft*1.5 else "mid"}">{r["ttft"]:.1f}s</span>'
+                      if r["ttft"] else '<span class="bmv dim">—</span>')
+            intel = round(sum(r["bench"].values()) / max(1, len(r["bench"])), 1)
+            eff = (f'<b class="bmv hot">{(r["tps"] or 0) * intel / 100:.0f}</b>'
+                   if r["tps"] else '<span class="bmv dim">—</span>')
+            reg = "国际" if r["region"] == "int" else "国内"
+            blob = f'{r["name"]} {r["company"]} {reg}'.lower()
+            rows.append(
+                f'<tr data-region="{r["region"]}" data-search="{esc(blob)}">'
+                f'<td class="c-rank">{i}</td>'
+                f'<td class="c-name">{esc(r["name"])}<em>{esc(r["company"])} · {reg}</em></td>'
+                f'<td>{tps_c}</td><td>{ttft_c}</td><td>{eff}</td>'
+                f'<td class="c-lic">{esc(r["license"])}</td></tr>')
+        return "\n".join(rows)
+
+    _all_bench_vals = [v for r in bench_rows if r["bench"] for v in r["bench"].values()]
+    best_single = max(_all_bench_vals, default=0)
+    best_single_model = next((r["name"] for r in bench_rows if r["bench"]
+                              and max(r["bench"].values(), default=0) == best_single), "")
+    best_single_bench = next((k for r in bench_rows if r["bench"] for k, v in r["bench"].items()
+                              if v == best_single), "")
+
+    perf_view = f'''<section class="view" id="view-perf">
+  <div class="sec-head"><h2>模型性能对比 — 训练 × 推理 × 基准</h2>
+    <p>{len(bench_rows)} 个模型 · 8 项基准热力矩阵 · 智能×价格象限 · 训练投入 · 推理速度 (tok/s) · 数值为公开口径估算</p></div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">{len(bench_rows)}</div><div class="kpi-l">评测模型</div><div class="kpi-s">覆盖国际/国内旗舰</div></div>
+    <div class="kpi"><div class="kpi-v">{best_single or "—"}</div><div class="kpi-l">单项最高分</div><div class="kpi-s">{esc(best_single_bench)} · {esc(best_single_model)}</div></div>
+    <div class="kpi"><div class="kpi-v">{best_tps or "—"}</div><div class="kpi-l">最快输出 tok/s</div><div class="kpi-s">第三方实测口径</div></div>
+    <div class="kpi"><div class="kpi-v">{open_scaled}/{len(trained)}</div><div class="kpi-l">开放权重/已披露训练</div><div class="kpi-s">Apache/MIT/Llama 等</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg" data-table-filter="bench-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="int">国际</button>
+      <button class="seg-btn" data-region-filter="cn">国内</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="bench-table" placeholder="模糊检索模型 / 厂商 / 基准…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(bench_rows)}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable heatmap" id="bench-table">
+      <thead><tr>
+        <th>模型</th><th>{'</th><th>'.join(BENCH_LABELS[k] for k in BENCH_KEYS)}</th><th>均分</th>
+      </tr></thead>
+      <tbody>{bench_matrix()}</tbody>
+    </table>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>智能 × 价格 象限</h2>
+    <p>横轴混合价格 (输入×3+输出)÷4 越右越贵 · 纵轴 8 基准均分越高越强 · 虚线为收录模型中位 · 仅含 API 计费模型</p></div>
+  <div class="panel"><div class="scatter-wrap">{scatter_svg}</div></div>
+
+  <div class="dash-grid" style="margin-top:16px">
+    <div class="panel">
+      <div class="panel-h"><span>训练投入对比 (按成本, log 尺度)</span>
+        <span class="muted">{len(trained)} 个已披露/估算 · 条长=成本量级</span></div>
+      {train_html}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>训练投入速览</span><span class="muted">公开口径</span></div>
+      {train_stats_html or '<p class="muted">暂无数据</p>'}
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>推理性能榜</h2>
+    <p>输出速度 (tokens/s) · 首 token 延迟 (TTFT) · 性价比 = 速度 × 基准均分 ÷ 100 · 实测口径为估算</p></div>
+  <div class="toolbar">
+    <div class="seg" data-table-filter="infer-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="int">国际</button>
+      <button class="seg-btn" data-region-filter="cn">国内</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="infer-table" placeholder="模糊检索模型…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(bench_rows)}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable" id="infer-table">
+      <thead><tr><th>#</th><th>模型</th><th>tok/s ↓</th><th>TTFT</th><th>速度×智能</th><th>许可证</th></tr></thead>
+      <tbody>{infer_table()}</tbody>
+    </table>
+  </div>
+</section>'''
+
+    # ══════════════════════════════════════════════════════════════
+    # 7c. Agent 对比视图 — 八维能力 × 特色 × 区别
+    # ══════════════════════════════════════════════════════════════
+    AGENT_DIMS = [
+        ("orch", "编排"), ("tools", "工具"), ("auto", "自主"), ("mem", "记忆"),
+        ("mm", "多模态"), ("collab", "多Agent"), ("eco", "生态"), ("cost", "成本"),
+    ]
+    # Agent 八维与模型六维共用 composite 权重思路: 平均
+    agent_rows = []
+    for n, a in agent_platforms.items():
+        c = agent_caps.get(n)
+        if not c:
+            continue
+        dims = c.get("dims", {})
+        avg = round(sum(dims.values()) / len(AGENT_DIMS), 1) if dims else 0
+        agent_rows.append({"name": n, "info": a, "dims": dims, "avg": avg,
+                           "caps": c, "region": a.get("region")})
+    agent_rows.sort(key=lambda r: -r["avg"])
+    # 评估范围内的类别/区域分布 (口径: 仅 AGENT_CAPS 覆盖的 24 个平台)
+    agent_cap_cats = {r["info"].get("category", "其他") for r in agent_rows}
+    agent_cmp_int = sum(1 for r in agent_rows if r["region"] == "int")
+    agent_cmp_cn = sum(1 for r in agent_rows if r["region"] == "cn")
+    top_agent = agent_rows[0] if agent_rows else None
+
+    def _acell(v):
+        if v is None:
+            return '<span class="bmv dim">—</span>'
+        cls = ("bmv hot" if v >= 85 else
+               "bmv good" if v >= 70 else
+               "bmv mid" if v >= 50 else
+               "bmv low")
+        return f'<span class="{cls}">{v}</span>'
+
+    def agent_matrix():
+        rows = []
+        for r in agent_rows:
+            cells = "".join(
+                f'<td class="hcell {_hm(r["dims"].get(k), 100)}">{_acell(r["dims"].get(k))}</td>'
+                for k, _l in AGENT_DIMS)
+            reg = "国际" if r["region"] == "int" else "国内"
+            blob = " ".join([r["name"], r["info"].get("product", ""), reg, r["caps"].get("hl", ""),
+                             " ".join(f'{k} {v}' for k, v in r["dims"].items())]).lower()
+            rows.append(
+                f'<tr data-region="{r["region"]}" data-search="{esc(blob)}">'
+                f'<td class="c-name">{esc(r["info"].get("product") or r["name"])}<em>{esc(r["name"])} · {reg}</em></td>'
+                f'{cells}'
+                f'<td class="c-avg"><b>{r["avg"]:.1f}</b></td></tr>')
+        return "\n".join(rows)
+
+    # 雷达对比: 预置三组 (国际巨头/编排框架/国内平台), JS 端可切换 6 个以内
+    def _agent_radar(r, color):
+        return (r["info"].get("product") or r["name"][:10], r["dims"], color)
+
+    radar_sets = {}
+    _int_big = next((r for r in agent_rows if r["name"] == "OpenAI"), agent_rows[0] if agent_rows else None)
+    _int_big2 = next((r for r in agent_rows if r["name"] == "Anthropic"), None)
+    _int_big3 = next((r for r in agent_rows if r["name"] == "Google DeepMind"), None)
+    if _int_big and _int_big2 and _int_big3:
+        radar_sets["国际巨头"] = [_agent_radar(_int_big, "#35e0a1"), _agent_radar(_int_big2, "#7c5cff"),
+                                  _agent_radar(_int_big3, "#4db8ff")]
+    _fr = [r for r in agent_rows if r["name"] in ("LangChain", "CrewAI", "AutoGen")]
+    if len(_fr) >= 2:
+        radar_sets["编排框架"] = [_agent_radar(_fr[0], "#35e0a1"), _agent_radar(_fr[1], "#7c5cff"),
+                                  _agent_radar(_fr[2], "#4db8ff")] if len(_fr) >= 3 else \
+                                 [_agent_radar(_fr[0], "#35e0a1"), _agent_radar(_fr[1], "#7c5cff")]
+    _cn = [r for r in agent_rows if r["region"] == "cn"][:3]
+    if _cn:
+        radar_sets["国内平台"] = [_agent_radar(r, c) for r, c in zip(_cn, ("#ff7a59", "#ffb020", "#f06ef2"))]
+
+    # 单个 Agent 雷达 SVG (八边形)
+    def _radar8_svg(models):
+        cx = cy = 150
+        R = 100
+        n = len(AGENT_DIMS)
+        parts = ['<svg viewBox="0 0 300 300" class="radar">']
+        for lv in (0.25, 0.5, 0.75, 1.0):
+            ring = []
+            for i in range(n):
+                ang = -math.pi / 2 + 2 * math.pi * i / n
+                ring.append(f"{cx + R * lv * math.cos(ang):.1f},{cy + R * lv * math.sin(ang):.1f}")
+            parts.append(f'<polygon points="{" ".join(ring)}" class="radar-ring"/>')
+        for i, (k, label) in enumerate(AGENT_DIMS):
+            ang = -math.pi / 2 + 2 * math.pi * i / n
+            x, y = cx + R * math.cos(ang), cy + R * math.sin(ang)
+            parts.append(f'<line x1="{cx}" y1="{cy}" x2="{x:.1f}" y2="{y:.1f}" class="radar-axis"/>')
+            lx, ly = cx + (R + 24) * math.cos(ang), cy + (R + 24) * math.sin(ang)
+            anchor = "middle"
+            if lx > cx + 8:
+                anchor = "start"
+            elif lx < cx - 8:
+                anchor = "end"
+            parts.append(f'<text x="{lx:.1f}" y="{ly:.1f}" text-anchor="{anchor}" dominant-baseline="middle" class="radar-txt">{esc(label)}</text>')
+        for label, dims, color in models:
+            pts = []
+            for i, (k, _l) in enumerate(AGENT_DIMS):
+                ang = -math.pi / 2 + 2 * math.pi * i / n
+                v = max(0.06, (dims.get(k) or 0) / 100.0)
+                pts.append(f"{cx + R * v * math.cos(ang):.1f},{cy + R * v * math.sin(ang):.1f}")
+            parts.append(f'<polygon points="{" ".join(pts)}" class="radar-area" style="stroke:{color};fill:{color}"/>')
+        parts.append("</svg>")
+        return "".join(parts)
+
+    agent_radar_html = ""
+    agent_radar_tabs = ""
+    for i, (set_name, models) in enumerate(radar_sets.items()):
+        svg = _radar8_svg(models)
+        legend = "".join(f'<span><i style="background:{c}"></i>{esc(l)}</span>' for l, _s, c in models)
+        agent_radar_html += (f'<div class="aradar-set{" active" if i == 0 else ""}" data-radar-set="{esc(set_name)}">'
+                             f'{svg}<div class="radar-lg">{legend}</div></div>')
+        agent_radar_tabs += f'<button class="seg-btn{" active" if i == 0 else ""}" data-radar-tab="{esc(set_name)}">{esc(set_name)}</button>'
+
+    # Agent 基准榜 (有 bench 的)
+    ab_rows = [(r, r["caps"].get("bench", {})) for r in agent_rows if r["caps"].get("bench")]
+    AB_KEYS = ["SWE-V", "τ²-bench", "BrowseComp", "GAIA", "OSWorld", "AIME25", "GPQA"]
+    ab_table_rows = []
+    for r, b in sorted(ab_rows, key=lambda x: -sum(x[1].values())):
+        cells = "".join(
+            f'<td class="hcell {_hm(b.get(k), 100)}">{_cell(b.get(k))}</td>' for k in AB_KEYS)
+        reg = "国际" if r["region"] == "int" else "国内"
+        blob = f'{r["name"]} {r["info"].get("product","")} {reg}'.lower()
+        ab_table_rows.append(
+            f'<tr data-region="{r["region"]}" data-search="{esc(blob)}">'
+            f'<td class="c-name">{esc(r["info"].get("product") or r["name"])}<em>{esc(r["name"])} · {reg}</em></td>'
+            f'{cells}</tr>')
+    ab_html = ("\n".join(ab_table_rows)) or \
+        '<tr><td colspan="8" class="c-empty">暂无 Agent 基准数据</td></tr>'
+
+    # 特色卡
+    hl_cards = "".join(
+        f'<div class="hl-card" data-region="{r["region"]}" data-search="{esc((r["name"] + " " + r["info"].get("product","") + " " + r["caps"].get("hl","")).lower())}">'
+        f'<div class="hl-head"><b>{esc(r["info"].get("product") or r["name"])}</b>'
+        f'<span class="chip reg-{r["region"]}">{"国际" if r["region"] == "int" else "国内"}</span>'
+        f'<span class="hl-score">{r["avg"]:.0f}</span></div>'
+        f'<p class="hl-hl">★ {esc(r["caps"].get("hl", ""))}</p>'
+        f'<p class="hl-diff"><b>关键区别:</b> {esc(r["caps"].get("diff", ""))}</p>'
+        f'<p class="hl-power"><b>代表模型:</b> {esc(r["caps"].get("power", "—"))}</p></div>'
+        for r in agent_rows) or '<p class="muted">暂无数据</p>'
+
+    agentscmp_view = f'''<section class="view" id="view-agentscmp">
+  <div class="sec-head"><h2>Agent 能力数据大盘</h2>
+    <p>{len(agent_rows)} 个平台 · 八维能力评估 (编排/工具/自主/记忆/多模态/多Agent协作/生态/成本) · 估算口径 · 一眼看懂各平台最大特色与区别</p></div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">{len(agent_rows)}</div><div class="kpi-l">评估平台</div><div class="kpi-s">覆盖 {len(agent_cap_cats)} 大类别 · 全库 {len(agents)} 个</div></div>
+    <div class="kpi"><div class="kpi-v">{esc(top_agent["info"].get("product") or top_agent["name"]) if top_agent else "—"}</div><div class="kpi-l">综合八维最高</div><div class="kpi-s">{top_agent["avg"]:.1f} 分 · {esc(top_agent["name"])} · 估算口径</div></div>
+    <div class="kpi"><div class="kpi-v">{len(ab_rows)}</div><div class="kpi-l">公开基准覆盖</div><div class="kpi-s">SWE-V / τ² / GAIA 等</div></div>
+    <div class="kpi"><div class="kpi-v">{agent_cmp_int}<small>·{agent_cmp_cn}</small></div><div class="kpi-l">国际 · 国内</div><div class="kpi-s">评估范围内 (全库 {agent_int}·{agent_cn})</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg" data-table-filter="agentcap-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="int">国际</button>
+      <button class="seg-btn" data-region-filter="cn">国内</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="agentcap-table" placeholder="模糊检索平台 / 特色…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(agent_rows)}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable heatmap" id="agentcap-table">
+      <thead><tr>
+        <th>平台</th><th>{'</th><th>'.join(l for _k, l in AGENT_DIMS)}</th><th>八维均分</th>
+      </tr></thead>
+      <tbody>{agent_matrix()}</tbody>
+    </table>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>八维能力雷达</h2>
+    <p>切换对比组 · 绿=国际 · 紫/蓝=对比项 · 覆盖越多边形越大, 缺角即短板</p></div>
+  <div class="dash-grid">
+    <div class="panel">
+      <div class="panel-h"><span>雷达对比</span>
+        <div class="seg" id="agent-radar-tabs">{agent_radar_tabs}</div></div>
+      <div class="radar-wrap">{agent_radar_html}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>维度说明</span></div>
+      <div class="dimdoc">
+        <div><b>编排</b><span>工作流/状态机/任务分解能力</span></div>
+        <div><b>工具</b><span>函数调用/MCP/代码执行深度</span></div>
+        <div><b>自主</b><span>长任务自主执行, 无需人监督</span></div>
+        <div><b>记忆</b><span>跨会话持久记忆与知识沉淀</span></div>
+        <div><b>多模态</b><span>视觉/语音/文件理解</span></div>
+        <div><b>多Agent</b><span>多角色协作与任务交接</span></div>
+        <div><b>生态</b><span>连接器/插件/社区规模</span></div>
+        <div><b>成本</b><span>100=最友好 (开源/自托管/低价)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>Agent 公开基准</h2>
+    <p>搭载旗舰模型 + 官方工作流口径 · 空白=未公开/不适用 · 数值为估算</p></div>
+  <div class="toolbar">
+    <div class="seg" data-table-filter="agentbench-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="int">国际</button>
+      <button class="seg-btn" data-region-filter="cn">国内</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="agentbench-table" placeholder="模糊检索平台…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(ab_rows)}</b> 个</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable heatmap" id="agentbench-table">
+      <thead><tr>
+        <th>平台</th><th>{'</th><th>'.join(AB_KEYS)}</th>
+      </tr></thead>
+      <tbody>{ab_html}</tbody>
+    </table>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px"><h2>最大特色 · 一图看懂区别</h2>
+    <p>★ 最大特色 · 关键区别 · 代表模型 — 按八维均分降序</p></div>
+  <div class="toolbar">
+    <div class="seg" data-hl-filter>
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="int">国际</button>
+      <button class="seg-btn" data-region-filter="cn">国内</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" id="hl-search" placeholder="模糊检索平台 / 特色…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount" id="hl-count">{len(agent_rows)}</b> 个</span>
+  </div>
+  <div class="hl-grid">{hl_cards}</div>
 </section>'''
 
     # ── 9. GitHub 热榜视图 ───────────────────────────────────
@@ -838,14 +1353,14 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
   </div>
 </section>'''
 
-    footer = (f'<footer>AI 情报聚合 v7 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
-              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str} · '
+    footer = (f'<footer>AI 情报聚合 v9 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
+              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(bench_rows)} 个模型基准评测 · {len(agent_rows)} 个 Agent 八维评估 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str} · '
               f'由 <a class="footer-gh" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">@zhouzxing</a> 构建 &amp; 维护</footer>')
 
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
             "<title>AI 情报聚合 · 模型能力大盘</title>\n<style>\n" + CSS + "\n</style>\n</head>\n<body>\n"
-            + topbar + "<main class=\"wrap\">" + news_view + dash_view + models_view + agents_view + github_view + monitor_view
+            + topbar + "<main class=\"wrap\">" + news_view + dash_view + perf_view + models_view + agents_view + agentscmp_view + github_view + monitor_view
             + "</main>" + footer + "\n<script>\n" + JS + "\n</script>\n</body>\n</html>")
     return html
 
@@ -1130,6 +1645,74 @@ footer{max-width:1440px;margin:34px auto 0;padding:22px;color:var(--muted);font-
 #view-monitor .cmp-row{grid-template-columns:96px 1fr 40px}
 #view-monitor .cmp-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
+/* ── 性能对比 / Agent 对比 (heatmap + scatter + 特色卡) ────────── */
+.dtable.heatmap{min-width:1260px}
+.dtable.heatmap td.hcell{text-align:center;padding:8px 6px}
+.bmv{display:inline-block;min-width:38px;font-variant-numeric:tabular-nums;font-weight:700;
+  font-size:.82rem;padding:3px 7px;border-radius:8px}
+.bmv.hot{color:#06281c;background:linear-gradient(135deg,#35e0a1,#7ce8bd)}
+.bmv.good{color:#0b2e1f;background:rgba(53,224,161,.28)}
+.bmv.mid{color:#d9b45b;background:rgba(255,176,32,.16)}
+.bmv.low{color:#c77e6f;background:rgba(255,107,107,.13)}
+.bmv.dim{color:var(--muted);font-weight:400;background:rgba(255,255,255,.03)}
+.c-avg b{color:var(--accent);font-size:.9rem}
+/* 热力背景梯度: 越绿越强 */
+.hm-2{background:rgba(53,224,161,.04)}
+.hm-3{background:rgba(53,224,161,.08)}
+.hm-4{background:rgba(53,224,161,.13)}
+.hm-5{background:rgba(53,224,161,.19)}
+.hm-6{background:rgba(53,224,161,.26)}
+.hm-7{background:rgba(53,224,161,.34)}
+.hm-8{background:rgba(53,224,161,.44)}
+.hm-9{background:rgba(53,224,161,.56)}
+.hm-n{background:transparent}
+
+/* 散点象限图 */
+.scatter-wrap{padding:6px 2px 0}
+.scatter{width:100%;height:auto;display:block}
+.sc-grid{stroke:rgba(255,255,255,.07)}
+.sc-med{stroke:rgba(255,255,255,.28);stroke-dasharray:5 5}
+.sc-tick{fill:var(--muted);font-size:11px}
+.sc-axis{fill:var(--dim);font-size:11.5px}
+.sc-lb{fill:var(--text);font-size:11px;font-weight:600}
+.sc-q{font-size:11px;font-weight:700}
+.sc-q.q-good{fill:var(--accent)}
+.sc-q.q-bad{fill:var(--danger)}
+.sc-q.q-mid{fill:var(--warn)}
+
+/* 训练投入速览 */
+.tstat{display:flex;flex-direction:column;gap:2px;padding:8px 11px;margin-bottom:7px;
+  border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.02)}
+.tstat b{font-size:.8rem;color:var(--warn)}
+.tstat span{font-size:.74rem;color:var(--dim)}
+
+/* Agent 对比: 雷达 tab + 特色卡 */
+#agent-radar-tabs .seg-btn{padding:4px 10px;font-size:.74rem}
+.aradar-set{display:none;flex-direction:column;align-items:center;gap:8px;width:100%}
+.aradar-set.active{display:flex}
+.dimdoc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dimdoc>div{display:flex;flex-direction:column;gap:1px;padding:8px 10px;border:1px solid var(--border);
+  border-radius:10px;background:rgba(255,255,255,.02)}
+.dimdoc b{font-size:.78rem;color:var(--accent)}
+.dimdoc span{font-size:.7rem;color:var(--muted);line-height:1.45}
+
+.hl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:13px;margin-top:2px}
+.hl-card{background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border);
+  border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;
+  overflow:hidden;transition:.2s}
+.hl-card::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent);opacity:.3}
+.hl-card[data-region="cn"]::before{background:var(--cn)}
+.hl-card:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:var(--shadow)}
+.hl-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hl-head b{font-size:.92rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hl-score{font-size:.78rem;font-weight:800;color:var(--accent);border:1px solid rgba(53,224,161,.32);
+  background:rgba(53,224,161,.1);border-radius:8px;padding:1px 8px}
+.hl-hl{font-size:.8rem;color:#bfe9d8;line-height:1.55}
+.hl-diff{font-size:.76rem;color:var(--dim);line-height:1.55}
+.hl-diff b{color:var(--warn)}
+.hl-power{font-size:.72rem;color:var(--muted)}
+.hl-power b{color:var(--dim)}
+
 @media(max-width:1080px){
   .layout{grid-template-columns:1fr}
   .col-side{position:static;flex-direction:row;flex-wrap:wrap}
@@ -1246,7 +1829,7 @@ JS = r"""
       rows.forEach(function(r){
         var ok=true;
         if(state.region!=='all'&&r.dataset.region!==state.region)ok=false;
-        if(ok&&state.q&&fuzzy(r.textContent,state.q)<0)ok=false;
+        if(ok&&state.q&&fuzzy(r.dataset.search!==undefined?r.dataset.search:r.textContent,state.q)<0)ok=false;
         r.style.display=ok?'':'none';if(ok)n++;
       });
       if(countEl)countEl.textContent=n;
@@ -1262,5 +1845,45 @@ JS = r"""
     });
     apply();
   });
+
+  /* ---- agent radar tab switching ---- */
+  var radarTabs=q('#agent-radar-tabs');
+  if(radarTabs){
+    qa('.seg-btn',radarTabs).forEach(function(b){
+      b.addEventListener('click',function(){
+        qa('.seg-btn',radarTabs).forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        qa('.aradar-set').forEach(function(s){
+          s.classList.toggle('active',s.dataset.radarSet===b.dataset.radarTab);
+        });
+      });
+    });
+  }
+
+  /* ---- highlight cards filter (Agent 对比 · 最大特色) ---- */
+  var hlGrid=q('.hl-grid');
+  if(hlGrid){
+    var hlCards=qa('.hl-card',hlGrid),hlSearch=q('#hl-search'),hlCount=q('#hl-count');
+    var hlSeg=q('[data-hl-filter]'),hlState={q:'',region:'all'};
+    function hlApply(){
+      var n=0;
+      hlCards.forEach(function(c){
+        var ok=true;
+        if(hlState.region!=='all'&&c.dataset.region!==hlState.region)ok=false;
+        if(ok&&hlState.q&&fuzzy(c.dataset.search||c.textContent,hlState.q)<0)ok=false;
+        c.style.display=ok?'':'none';if(ok)n++;
+      });
+      if(hlCount)hlCount.textContent=n;
+    }
+    var hlDo=debounce(function(v){hlState.q=v;hlApply();},140);
+    hlSearch&&hlSearch.addEventListener('input',function(){hlDo(hlSearch.value);});
+    if(hlSeg)qa('.seg-btn',hlSeg).forEach(function(b){
+      b.addEventListener('click',function(){
+        qa('.seg-btn',hlSeg).forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');hlState.region=b.dataset.regionFilter;hlApply();
+      });
+    });
+    hlApply();
+  }
 })();
 """

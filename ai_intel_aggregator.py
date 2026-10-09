@@ -948,13 +948,186 @@ AGENT_PLATFORMS = {
     "MiniMax": {"region":"cn","product":"MiniMax API","category":"通用Agent","pricing":"按Token计费","free":"有","models":"ABAB, MiniMax-Text-01, Hailuo","features":"API 工具调用, 多模态, 视频生成, 开源权重","api":"MiniMax API","docs":"https://www.minimaxi.com/","ecosystem":"MiniMax 平台, 海螺 AI","enterprise":"MiniMax 企业版","limitations":"平台功能有限"},
 }
 
+# ═══════════════════════════════════════════════════════════════════
+# MODEL_BENCHMARKS — 模型基准评测 × 训练投入 × 推理性能 (「性能对比」tab 数据源)
+# ═══════════════════════════════════════════════════════════════════
+# 口径说明 (人工维护, 数值为厂商官方/第三方公开口径四舍五入):
+#   bench  — 8 项基准 0-100 分: MMLU-Pro(知识) GPQA(科学推理) AIME25(数学)
+#            SWE-V(SWE-bench Verified 编码) LCB(LiveCodeBench) TB-Hard(Terminal-Bench 智能体编码)
+#            τ²-bench(工具调用) BrowseComp(浏览器智能体, Agent 工作流口径)
+#   tps    — 第三方推理平台实测输出速度 (tok/s, 估算口径)
+#   ttft   — 首 token 延迟 (秒, 估算口径)
+#   train  — 训练投入: tokens(训练token量) gpu_h(百万 H100/H800 等效 GPU 时)
+#            cost_m(估算成本, 百万美元) src(披露|估)
+# 键名必须与 MODEL_REGISTRY 里 product 的 "name" 完全一致, 渲染层按 name join。
+
+MODEL_BENCHMARKS = {
+    # ── 国际 ────────────────────────────────────────────────────────
+    "GPT-5":     {"bench": {"MMLU-Pro":87,"GPQA":86,"AIME25":95,"SWE-V":75,"LCB":81,"TB-Hard":57,"τ²-bench":90,"BrowseComp":58}, "tps":105, "ttft":0.9, "train": None},
+    "o3":        {"bench": {"MMLU-Pro":84,"GPQA":83,"AIME25":91,"SWE-V":72,"LCB":77,"TB-Hard":41,"τ²-bench":85,"BrowseComp":52}, "tps":62, "ttft":1.3, "train": None},
+    "o4-mini":   {"bench": {"MMLU-Pro":81,"GPQA":81,"AIME25":92,"SWE-V":68,"LCB":74,"TB-Hard":27,"τ²-bench":83,"BrowseComp":46}, "tps":133, "ttft":1.1, "train": None},
+    "GPT-4.1":   {"bench": {"MMLU-Pro":78,"GPQA":63,"AIME25":40,"SWE-V":55,"LCB":61,"TB-Hard":26,"τ²-bench":74,"BrowseComp":15}, "tps":118, "ttft":0.8, "train": None},
+    "GPT-4o":    {"bench": {"MMLU-Pro":76,"GPQA":54,"AIME25":9,"SWE-V":33,"LCB":37,"TB-Hard":5,"τ²-bench":42,"BrowseComp":2}, "tps":128, "ttft":0.6, "train": None},
+    "Claude Opus 4":   {"bench": {"MMLU-Pro":85,"GPQA":78,"AIME25":86,"SWE-V":73,"LCB":61,"TB-Hard":44,"τ²-bench":82,"BrowseComp":15}, "tps":59, "ttft":1.6, "train": None},
+    "Claude Sonnet 4": {"bench": {"MMLU-Pro":83,"GPQA":77,"AIME25":87,"SWE-V":73,"LCB":55,"TB-Hard":35,"τ²-bench":85,"BrowseComp":12}, "tps":71, "ttft":1.2, "train": None},
+    "Claude Haiku 4":  {"bench": {"MMLU-Pro":80,"GPQA":74,"AIME25":80,"SWE-V":67,"LCB":45,"TB-Hard":22,"τ²-bench":78,"BrowseComp":8}, "tps":211, "ttft":0.9, "train": None},
+    "Gemini 2.5 Pro":  {"bench": {"MMLU-Pro":84,"GPQA":86,"AIME25":88,"SWE-V":64,"LCB":80,"TB-Hard":49,"τ²-bench":89,"BrowseComp":26}, "tps":90, "ttft":1.5, "train": None},
+    "Gemini 2.5 Flash":{"bench": {"MMLU-Pro":80,"GPQA":78,"AIME25":75,"SWE-V":60,"LCB":73,"TB-Hard":26,"τ²-bench":79,"BrowseComp":18}, "tps":256, "ttft":0.8, "train": None},
+    "Grok 3":          {"bench": {"MMLU-Pro":81,"GPQA":78,"AIME25":93,"SWE-V":68,"LCB":60,"TB-Hard":30,"τ²-bench":70,"BrowseComp":21}, "tps":87, "ttft":1.2,
+                       "train": {"tokens":"未披露","gpu_h":300,"cost_m":350,"src":"估"}},
+    "Llama 4 Maverick":{"bench": {"MMLU-Pro":81,"GPQA":69,"AIME25":52,"SWE-V":43,"LCB":43,"TB-Hard":12,"τ²-bench":59,"BrowseComp":6}, "tps":148, "ttft":0.7,
+                       "train": {"tokens":"22T+ (估)","gpu_h":20,"cost_m":60,"src":"估"}},
+    "Llama 3.3 70B":   {"bench": {"MMLU-Pro":76,"GPQA":65,"AIME25":36,"SWE-V":38,"LCB":37,"TB-Hard":8,"τ²-bench":47,"BrowseComp":2}, "tps":137, "ttft":1.0,
+                       "train": {"tokens":"15T+","gpu_h":7.3,"cost_m":15,"src":"估"}},
+    "Mistral Large 2": {"bench": {"MMLU-Pro":78,"GPQA":60,"AIME25":30,"SWE-V":37,"LCB":40,"TB-Hard":10,"τ²-bench":50,"BrowseComp":2}, "tps":102, "ttft":1.1, "train": None},
+    "Phi-4":           {"bench": {"MMLU-Pro":78,"GPQA":56,"AIME25":34,"SWE-V":30,"LCB":33,"TB-Hard":6,"τ²-bench":38,"BrowseComp":1}, "tps":190, "ttft":0.8,
+                       "train": {"tokens":"9.8T 合成","gpu_h":0.35,"cost_m":0.7,"src":"估"}},
+    # ── 国内 ────────────────────────────────────────────────────────
+    "DeepSeek-V3.1":    {"bench": {"MMLU-Pro":81,"GPQA":80,"AIME25":83,"SWE-V":68,"LCB":67,"TB-Hard":36,"τ²-bench":79,"BrowseComp":22}, "tps":105, "ttft":1.4,
+                        "train": {"tokens":"18T (估)","gpu_h":4.5,"cost_m":9,"src":"估"}},
+    "DeepSeek-R1-0528": {"bench": {"MMLU-Pro":81,"GPQA":76,"AIME25":88,"SWE-V":58,"LCB":65,"TB-Hard":32,"τ²-bench":73,"BrowseComp":19}, "tps":38, "ttft":2.1,
+                        "train": {"tokens":"RL 后训练","gpu_h":0.6,"cost_m":1.2,"src":"估"}},
+    "DeepSeek-R1":      {"bench": {"MMLU-Pro":79,"GPQA":72,"AIME25":79,"SWE-V":49,"LCB":59,"TB-Hard":25,"τ²-bench":62,"BrowseComp":13}, "tps":27, "ttft":2.4,
+                        "train": {"tokens":"RL 后训练","gpu_h":0.15,"cost_m":0.3,"src":"估"}},
+    "DeepSeek-V3":      {"bench": {"MMLU-Pro":79,"GPQA":71,"AIME25":40,"SWE-V":42,"LCB":44,"TB-Hard":15,"τ²-bench":56,"BrowseComp":4}, "tps":63, "ttft":1.7,
+                        "train": {"tokens":"14.8T","gpu_h":2.79,"cost_m":5.6,"src":"披露"}},
+    "Kimi K2":          {"bench": {"MMLU-Pro":80,"GPQA":75,"AIME25":75,"SWE-V":66,"LCB":66,"TB-Hard":30,"τ²-bench":75,"BrowseComp":48}, "tps":41, "ttft":1.8,
+                        "train": {"tokens":"15.5T","gpu_h":4.9,"cost_m":10,"src":"估"}},
+    "GLM-4.5":          {"bench": {"MMLU-Pro":79,"GPQA":75,"AIME25":72,"SWE-V":64,"LCB":60,"TB-Hard":28,"τ²-bench":84,"BrowseComp":17}, "tps":55, "ttft":1.6,
+                        "train": {"tokens":"22T","gpu_h":5.0,"cost_m":10,"src":"估"}},
+    "Qwen2.5 72B":      {"bench": {"MMLU-Pro":78,"GPQA":68,"AIME25":43,"SWE-V":43,"LCB":41,"TB-Hard":14,"τ²-bench":55,"BrowseComp":5}, "tps":96, "ttft":1.5,
+                        "train": {"tokens":"18T","gpu_h":3.0,"cost_m":6,"src":"估"}},
+    "Qwen2.5-Coder 72B":{"bench": {"SWE-V":42,"LCB":60}, "tps":88, "ttft":1.4,
+                        "train": {"tokens":"5.5T (估)","gpu_h":1.5,"cost_m":3,"src":"估"}},
+}
+
+# ═══════════════════════════════════════════════════════════════════
+# AGENT_CAPS — Agent 平台能力数据大盘 (「Agent 对比」tab 数据源)
+# ═══════════════════════════════════════════════════════════════════
+# 八维能力为编辑基于公开文档/功能对比的估算 (0-100, 100=最强):
+#   orch 编排 | tools 工具调用 | auto 自主性 | mem 记忆 | mm 多模态
+#   collab 多Agent协作 | eco 生态集成 | cost 成本友好(100=最便宜)
+# bench: 代表性公开基准结果 (搭载旗舰模型+官方工作流口径, 估算/混合口径)
+# hl: 最大特色 | diff: 关键区别 | power: 代表模型
+# 键名必须与 AGENT_PLATFORMS 的键完全一致, 渲染层按键 join。
+
+AGENT_CAPS = {
+    "OpenAI":     {"dims": {"orch":85,"tools":95,"auto":80,"mem":72,"mm":90,"collab":65,"eco":96,"cost":45},
+                   "bench": {"SWE-V":74.9,"τ²-bench":90.1,"BrowseComp":58.2,"GAIA":74.3},
+                   "hl": "Responses API 内置搜索/代码/视觉/文件工具链, 开箱即用工具生态最全",
+                   "diff": "工具与生态最全; 多Agent 编排与跨会话记忆需自建, 无开源自托管",
+                   "power": "GPT-5 / o3 / o4-mini"},
+    "Anthropic":  {"dims": {"orch":82,"tools":92,"auto":85,"mem":70,"mm":78,"collab":60,"eco":88,"cost":50},
+                   "bench": {"SWE-V":72.5,"OSWorld":46.8,"τ²-bench":84.9},
+                   "hl": "Computer Use 真实电脑操作 + MCP 协议开创者",
+                   "diff": "长任务/编程 Agent 最强, MCP 已成行业标准; 原生多Agent 编排缺位",
+                   "power": "Claude Opus 4 / Sonnet 4"},
+    "Google DeepMind": {"dims": {"orch":84,"tools":90,"auto":78,"mem":75,"mm":96,"collab":70,"eco":92,"cost":62},
+                   "bench": {"τ²-bench":89.2,"BrowseComp":56.7,"GAIA":59.8},
+                   "hl": "1M 上下文 + 原生全模态 + Deep Research 深度研究",
+                   "diff": "多模态与长上下文最强; 深度绑定 Google Cloud / Workspace 生态",
+                   "power": "Gemini 2.5 Pro / Flash"},
+    "Microsoft":  {"dims": {"orch":88,"tools":85,"auto":70,"mem":75,"mm":82,"collab":85,"eco":94,"cost":55},
+                   "hl": "Copilot Studio 无代码 + 300 连接器的企业级 Agent 工厂",
+                   "diff": "企业合规与 Office 生态最深的低代码方案; 绑定 Azure, 灵活性低",
+                   "power": "GPT-4o / o3 / 多模型路由"},
+    "Amazon":     {"dims": {"orch":86,"tools":82,"auto":68,"mem":70,"mm":72,"collab":82,"eco":90,"cost":58},
+                   "hl": "Bedrock 多模型路由 + Multi-Agent 协作 + Knowledge Bases 一体化",
+                   "diff": "AWS 云原生集成最深; 模型选择与调试体验一般",
+                   "power": "Claude / Nova / Llama"},
+    "LangChain":  {"dims": {"orch":95,"tools":88,"auto":75,"mem":80,"mm":60,"collab":92,"eco":85,"cost":88},
+                   "hl": "LangGraph 状态图编排, 代码级 Agent 开发事实标准",
+                   "diff": "灵活性与集成数最高 (500+); 抽象层复杂, 调试与生产运维成本高",
+                   "power": "任意 LLM (500+)"},
+    "LlamaIndex": {"dims": {"orch":72,"tools":75,"auto":60,"mem":82,"mm":55,"collab":50,"eco":78,"cost":90},
+                   "hl": "RAG 专家: LlamaParse 文档解析 + 数据连接器最全",
+                   "diff": "检索增强场景第一; 通用 Agent 编排能力弱于 LangChain",
+                   "power": "任意 LLM"},
+    "CrewAI":     {"dims": {"orch":90,"tools":80,"auto":72,"mem":78,"mm":45,"collab":96,"eco":65,"cost":88},
+                   "hl": "角色分工式多 Agent 协作, YAML 即可组建一支团队",
+                   "diff": "多Agent 协作上手最快; 生产稳定性与可观测性尚在补齐",
+                   "power": "任意 LLM"},
+    "AutoGen":    {"dims": {"orch":92,"tools":85,"auto":78,"mem":72,"mm":50,"collab":95,"eco":70,"cost":90},
+                   "hl": "微软研究院多 Agent 对话编排 + AutoGen Studio 可视化",
+                   "diff": "学术与原型验证最强; 生产化运维需自行搭建",
+                   "power": "任意 LLM"},
+    "n8n":        {"dims": {"orch":85,"tools":90,"auto":55,"mem":60,"mm":45,"collab":65,"eco":92,"cost":70},
+                   "hl": "可视化工作流 + 500 连接器, 自托管友好的低代码 Agent",
+                   "diff": "SaaS/自托管集成之王; 深度 Agentic 推理与长任务受限",
+                   "power": "任意 LLM"},
+    "Dify":       {"dims": {"orch":80,"tools":82,"auto":62,"mem":75,"mm":55,"collab":60,"eco":80,"cost":85},
+                   "hl": "开源 LLMOps 全家桶: RAG + Agent + Workflow + 插件市场",
+                   "diff": "可视化与自托管最均衡; Agent 编排深度不及代码框架",
+                   "power": "任意 LLM"},
+    "Hermes Agent": {"dims": {"orch":86,"tools":92,"auto":88,"mem":90,"mm":55,"collab":84,"eco":60,"cost":75},
+                   "hl": "CLI 原生个人 Agent: 浏览器控制 + 持久记忆 + 技能系统 + Kanban 看板",
+                   "diff": "个人工作流自动化维度最全; 面向开发者, 生态规模有限, 无 SaaS 托管版",
+                   "power": "多供应商模型可切换"},
+    "字节跳动 (ByteDance)": {"dims": {"orch":84,"tools":85,"auto":65,"mem":72,"mm":75,"collab":78,"eco":85,"cost":75},
+                   "hl": "扣子 Coze 可视化编排 + 万级插件市场 + 豆包生态",
+                   "diff": "国内插件生态最大; 深度绑定字节系产品",
+                   "power": "豆包 1.5 / Doubao-1.6"},
+    "阿里巴巴 (Alibaba)": {"dims": {"orch":86,"tools":84,"auto":68,"mem":75,"mm":80,"collab":75,"eco":90,"cost":70},
+                   "hl": "百炼企业级 Agent 编排 + Qwen 开源家族双轮驱动",
+                   "diff": "开源模型 + 企业平台组合拳最完整; 绑定阿里云",
+                   "power": "Qwen3 / Qwen2.5 系列"},
+    "百度 (Baidu)": {"dims": {"orch":82,"tools":80,"auto":65,"mem":72,"mm":75,"collab":70,"eco":82,"cost":68},
+                   "hl": "千帆 AppBuilder + 文心行业模型, 政务/能源合规案例最多",
+                   "diff": "国内行业合规方案最深; 绑定百度智能云",
+                   "power": "ERNIE 4.5 / 文心 5.0"},
+    "DeepSeek":   {"dims": {"orch":60,"tools":72,"auto":60,"mem":55,"mm":55,"collab":45,"eco":60,"cost":98},
+                   "bench": {"SWE-V":68.1,"AIME25":82.5,"GPQA":79.9},
+                   "hl": "开源权重 + 极致性价比, Agent 底座成本之王",
+                   "diff": "模型便宜且能打; 无原生 Agent 平台, 编排全靠自建",
+                   "power": "DeepSeek-V3.1 / R1-0528"},
+    "智谱AI (Zhipu AI)": {"dims": {"orch":75,"tools":82,"auto":82,"mem":68,"mm":72,"collab":55,"eco":65,"cost":80},
+                   "bench": {"τ²-bench":84.0,"SWE-V":64.2},
+                   "hl": "AutoGLM 手机/电脑 GUI 自主操作 + 开源 GLM 双线",
+                   "diff": "国内 GUI Agent 先行者; 平台生态规模较小",
+                   "power": "GLM-4.5 / AutoGLM"},
+    "月之暗面 (Moonshot AI)": {"dims": {"orch":65,"tools":75,"auto":72,"mem":78,"mm":60,"collab":40,"eco":62,"cost":85},
+                   "bench": {"SWE-V":65.8,"τ²-bench":75.4,"BrowseComp":47.5},
+                   "hl": "超长上下文 + Kimi Researcher 自主深度研究",
+                   "diff": "长文档/深研场景之王; 平台编排能力有限",
+                   "power": "Kimi K2"},
+    "GitHub Copilot": {"dims": {"orch":70,"tools":88,"auto":80,"mem":65,"mm":45,"collab":72,"eco":92,"cost":62},
+                   "bench": {"SWE-V":54.6},
+                   "hl": "IDE 内置 + PR Agent + 代码评审一条龙",
+                   "diff": "GitHub 工作流集成最深; 绑定微软生态, 仅编程场景",
+                   "power": "GPT-4.1 / Claude / o3"},
+    "Cursor":     {"dims": {"orch":78,"tools":85,"auto":82,"mem":70,"mm":40,"collab":55,"eco":78,"cost":65},
+                   "bench": {"SWE-V":60.0},
+                   "hl": "代码库级语义索引 + 多文件 Agent 编辑",
+                   "diff": "IDE Agent 交互体验最佳; 闭源, 仅编程场景",
+                   "power": "Claude / GPT / Gemini"},
+    "Cline":      {"dims": {"orch":72,"tools":88,"auto":85,"mem":62,"mm":35,"collab":50,"eco":68,"cost":90},
+                   "bench": {"SWE-V":70.0},
+                   "hl": "VS Code 开源 Agent, MCP 工具生态先锋",
+                   "diff": "开源 + BYOK 按量付费最省钱; 依赖 VS Code",
+                   "power": "Claude / DeepSeek 等"},
+    "Aider":      {"dims": {"orch":60,"tools":80,"auto":75,"mem":40,"mm":30,"collab":25,"eco":50,"cost":92},
+                   "bench": {"SWE-V":64.0},
+                   "hl": "终端 Git 原生 pair programming, 每次修改即一次提交",
+                   "diff": "最轻量透明; 无 IDE / 无多模态 / 无多Agent",
+                   "power": "任意 LLM (BYOK)"},
+    "腾讯元器":   {"dims": {"orch":72,"tools":75,"auto":60,"mem":65,"mm":70,"collab":62,"eco":80,"cost":72},
+                   "hl": "微信 + 腾讯生态直达的智能体平台",
+                   "diff": "触达微信用户独一无二; 绑定腾讯生态",
+                   "power": "混元 Hunyuan"},
+    "科大讯飞星火": {"dims": {"orch":70,"tools":72,"auto":58,"mem":65,"mm":78,"collab":55,"eco":70,"cost":70},
+                   "hl": "语音多模态 + 教育/医疗行业深耕",
+                   "diff": "语音交互最强之一; 通用 Agent 编排偏弱",
+                   "power": "星火 X1 / X2"},
+}
+
 # ── render HTML ──────────────────────────────────────────────────
 def render_html(cache):
-    """渲染现代化前端页面 (资讯聚合 + 模型/Agent 能力大盘)。
+    """渲染现代化前端页面 (资讯聚合 + 模型/Agent 能力大盘 + 性能对比)。
     具体实现在同目录的 ai_intel_render 模块中, 此处只做数据注入。"""
     from ai_intel_render import render_page
     return render_page(cache, MODEL_REGISTRY, AGENT_PLATFORMS,
-                       max_entries=MAX_ENTRIES, max_days=MAX_DAYS)
+                       max_entries=MAX_ENTRIES, max_days=MAX_DAYS,
+                       model_benchmarks=MODEL_BENCHMARKS, agent_caps=AGENT_CAPS)
 
 def _esc(s):
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
