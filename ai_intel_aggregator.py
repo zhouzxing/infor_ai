@@ -22,6 +22,35 @@ HTML_FILE = BASE_DIR / "index.html"
 MAX_ENTRIES = 300
 MAX_DAYS = 30
 
+# ── JD 岗位抓取配置 ──────────────────────────────────────────────
+# 历史保留窗口: 最多 15 天; 「最热」窗口: 最近 3 天
+JD_MAX_DAYS   = 15
+JD_HOT_DAYS   = 3
+JD_MAX_ENTRIES = 400
+# AI 应用 / Agent / 大模型 岗位关键词 (逐词搜索后合并去重, 多命中=更热)
+JD_KEYWORDS = [
+    "AI 应用开发", "Agent 开发", "大模型开发", "大模型算法",
+    "LLM", "AIGC", "多模态", "LangChain", "AI 算法工程师",
+]
+# 目标城市 (智联城市编码; 部分编码在无匹配时返回空列表, 自动跳过)
+JD_CITIES = [
+    ("上海", 538), ("北京", 100010000), ("深圳", 763),
+    ("广州", 755), ("杭州", 880),
+]
+# 大厂白名单 (命中则 heat 加权; 智联列表无硬校验, 仅做展示加权)
+JD_BIG_COMPANIES = (
+    "字节跳动","阿里巴巴","腾讯","百度","美团","京东","拼多多","快手","小米",
+    "华为","商汤","旷视","依图","第四范式","月之暗面","智谱","百川智能",
+    "面壁智能","零一万物","阶跃星辰","MiniMax","DeepSeek","科大讯飞",
+    "蚂蚁集团","滴滴","网易","搜狐","联想","中兴",
+)
+# 相关性关键词 (用于过滤智联松散搜索的噪音: 标题/技能/行业命中即保留)
+JD_AI_KEYWORDS = [
+    "agent", "ai", "llm", "gpt", "rag", "多模态", "大模型", "aigc",
+    "langchain", "transformer", "nlp", "机器学习", "算法", "人工智能",
+    "大模型算法", "prompt", "prompt工程", "agent开发", "智能体", "aiforce",
+]
+
 # 代理配置
 PROXY_HTTP = "http://127.0.0.1:7897"
 PROXY_SOCKS = "socks5://127.0.0.1:7897"
@@ -641,6 +670,266 @@ def load_github_cache(cache):
         if (datetime.now() - dt).total_seconds() > 10800:
             return None
         return gh
+    except Exception:
+        return None
+
+
+# ── JD 岗位抓取 (智联招聘 sou.zhaopin.com — 服务端渲染 __INITIAL_STATE__) ──
+# 说明: Boss 直聘 / 猎聘 / 脉脉 均已反爬或强制登录 (Boss 跳登录页、脉脉 302 登录、
+# 猎聘列表 JS 渲染无服务端数据), 经多实例 RSSHub 探测亦不可用。智联招聘搜索页为
+# 服务端渲染, __INITIAL_STATE__.positionList 内含完整字段 (职位名/公司/薪资/城市/
+# 技能/发布时间), 故采用智联作为唯一可稳定抓取的 JD 数据源。
+def _extract_initial_state(html):
+    """从智联搜索页 HTML 中提取 __INITIAL_STATE__ JSON 对象。
+    用括号配对扫描 (考虑字符串内转义), 避免正则误截断。"""
+    i = html.find("__INITIAL_STATE__=")
+    if i < 0:
+        return None
+    start = html.find("{", i)
+    if start < 0:
+        return None
+    depth = 0
+    end = None
+    in_str = False
+    esc = False
+    for j in range(start, len(html)):
+        c = html[j]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+        else:
+            if c == '"':
+                in_str = True
+            elif c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    end = j + 1
+                    break
+    if end is None:
+        return None
+    try:
+        return json.loads(html[start:end])
+    except Exception:
+        return None
+
+
+def _zp_http_get(url, timeout=20):
+    """智联招聘专用 HTTP GET — 必须用 urllib (requests 会被反爬拦截返回 Security Verification)。
+    走自定义 SSL 上下文 (check_hostname=False), 代理从 os.environ 自动继承。
+    注意: 智联反爬基于 TLS 指纹, Python 3.11 可通过, 3.12+ 会被拦截 —
+    cron 应使用 venv Python 3.11 (见 crontab 注释)。
+    返回 (text, error)。"""
+    import urllib.request
+    import ssl
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:
+            raw = resp.read()
+            enc = resp.headers.get_content_charset() or "utf-8"
+            return raw.decode(enc, errors="replace"), ""
+    except Exception as ex:
+        return "", str(ex)[:120]
+
+
+def _zp_fetch(keyword, jl, timeout=20):
+    """访问智联搜索页 sou.zhaopin.com, 跟随重定向到 www.zhaopin.com/sou/...,
+    解析 __INITIAL_STATE__, 返回 (positionList, error)。jl 为城市编码。"""
+    import urllib.parse as _up
+    url = "https://sou.zhaopin.com/?jl=%d&kw=%s&kt=3" % (jl, _up.quote(keyword))
+    text, err = _zp_http_get(url, timeout=timeout)
+    if err:
+        return [], err
+    if not text:
+        return [], "empty response"
+    if "Security Verification" in text[:300]:
+        return [], "anti-bot challenge"
+    state = _extract_initial_state(text)
+    if not state:
+        return [], "no __INITIAL_STATE__"
+    pl = state.get("positionList") or []
+    return pl, None
+
+
+def _zp_skills(job):
+    """job.jobSkillTags -> ['C语言', ...] 最多 6 个。"""
+    tags = []
+    for t in (job.get("jobSkillTags") or []):
+        nm = (t.get("name") or "").strip() if isinstance(t, dict) else str(t)
+        if nm and nm not in tags:
+            tags.append(nm)
+    return tags[:6]
+
+
+def _zp_is_ai_job(name, skills, industry):
+    """相关性过滤: 智联搜索松散 (搜"大模型"返回全岗位), 需二次筛除非 AI 岗位。
+    标题/技能/行业 命中 JD_AI_KEYWORDS 任一即保留。"""
+    blob = " ".join([name or "", " ".join(skills or []), industry or ""]).lower()
+    for k in JD_AI_KEYWORDS:
+        if k.lower() in blob:
+            return True
+    return False
+
+
+def _zp_heat(name, company, skills, kw_hits, city, salary):
+    """打分: 多关键词命中 +3/词(cap 9); 大厂 +2; 薪资 +1; 城市一线 +1。"""
+    h = 0
+    h += min(kw_hits, 3) * 3
+    co = (company or "").lower()
+    for big in JD_BIG_COMPANIES:
+        if big.lower() in co:
+            h += 2
+            break
+    if (salary or "").strip():
+        h += 1
+    if city in ("北京", "上海", "深圳", "杭州", "广州"):
+        h += 1
+    return min(h, 8)
+
+
+def fetch_jd_jobs():
+    """抓取 AI 应用/Agent/大模型岗位。逐关键词 × 逐城市搜索, 合并去重。
+    返回 {items, updated, errors, sources, hot_count, big_count, cities}。
+    items 字段: title, company, salary, salary_raw, city, district, skills[],
+      exp, education, worktype, industry, publish_time, url, source,
+      big_company(bool), heat, keyword_hits, days_old, is_hot。"""
+    now = datetime.now()
+    errors = []
+    seen = {}
+    city_counter = {}
+    sources = set()
+    for kw in JD_KEYWORDS:
+        for cname, jl in JD_CITIES:
+            jobs, err = _zp_fetch(kw, jl)
+            time.sleep(0.3)  # 温和节流, 避免触发反爬
+            if err:
+                errors.append("%s/%s: %s" % (kw, cname, err))
+                continue
+            if not jobs:
+                continue
+            sources.add(cname)
+            for job in jobs:
+                name = (job.get("name") or "").strip()
+                if not name:
+                    continue
+                company = (job.get("companyName") or "").strip()
+                city = (job.get("workCity") or cname).strip()
+                district = (job.get("cityDistrict") or "").strip()
+                # 薪资: salary60 (人类可读) + salaryReal (精确)
+                salary_raw = (job.get("salaryReal") or "").strip()
+                salary60 = (job.get("salary60") or "").strip()
+                salary = salary60 or salary_raw
+                if not salary and salary_raw:
+                    salary = salary_raw
+                skills = _zp_skills(job)
+                exp = (job.get("workingExp") or "").strip()
+                edu = (job.get("education") or "").strip()
+                wt = (job.get("workType") or "全职").strip()
+                ind = (job.get("industryName") or "").strip()
+                pt = (job.get("publishTime") or "").strip()
+                url = job.get("positionUrl") or job.get("positionURL") or ""
+                if url and not url.startswith("http"):
+                    url = "https://" + url
+                # 相关性过滤: 智联搜索松散, 筛除非 AI 岗位
+                if not _zp_is_ai_job(name, skills, ind):
+                    continue
+                # 发布时间解析
+                days_old = None
+                is_hot = False
+                try:
+                    pub_dt = datetime.strptime(pt[:19], "%Y-%m-%d %H:%M:%S")
+                    days_old = max(0, (now - pub_dt).days)
+                    is_hot = days_old <= JD_HOT_DAYS
+                except Exception:
+                    days_old = None
+                # 大厂判定
+                co_low = company.lower()
+                big = any(b.lower() in co_low for b in JD_BIG_COMPANIES)
+                # 关键词命中计数 (标题或技能命中即算)
+                kw_hits = 0
+                for k in JD_KEYWORDS:
+                    kl = k.lower()
+                    if kl in name.lower() or any(kl in s.lower() for s in skills):
+                        kw_hits += 1
+                # 去重键: 职位名 + 公司
+                key = (name + "|" + company).lower().replace(" ", "")
+                if key in seen:
+                    # 已存在则累加命中, 热度取较大
+                    seen[key]["keyword_hits"] = max(seen[key]["keyword_hits"], kw_hits)
+                    seen[key]["heat"] = max(seen[key]["heat"], _zp_heat(name, company, skills, kw_hits, city, salary))
+                    seen[key]["is_hot"] = seen[key]["is_hot"] or is_hot
+                    continue
+                heat = _zp_heat(name, company, skills, kw_hits, city, salary)
+                item = {
+                    "title": name,
+                    "company": company,
+                    "salary": salary,
+                    "salary_raw": salary_raw,
+                    "city": city,
+                    "district": district,
+                    "skills": skills,
+                    "exp": exp,
+                    "education": edu,
+                    "worktype": wt,
+                    "industry": ind,
+                    "publish_time": pt,
+                    "url": url,
+                    "source": cname,
+                    "big_company": big,
+                    "heat": heat,
+                    "keyword_hits": kw_hits,
+                    "days_old": days_old,
+                    "is_hot": is_hot,
+                }
+                seen[key] = item
+                city_counter[city] = city_counter.get(city, 0) + 1
+    items = list(seen.values())
+    # 历史裁剪: 超过 15 天的剔除
+    items = [it for it in items
+             if it["days_old"] is None or it["days_old"] <= JD_MAX_DAYS]
+    # 排序: 先 is_hot 优先, 再 heat, 再发布新
+    items.sort(key=lambda x: (0 if x["is_hot"] else 1, -x["heat"],
+                               x["publish_time"] or ""))
+    if len(items) > JD_MAX_ENTRIES:
+        items = items[:JD_MAX_ENTRIES]
+    hot_count = sum(1 for it in items if it["is_hot"])
+    big_in_items = sum(1 for it in items if it["big_company"])
+    return {
+        "items": items,
+        "updated": now.isoformat(),
+        "errors": errors,
+        "sources": sorted(sources),
+        "cities": sorted(city_counter, key=lambda c: -city_counter[c]),
+        "hot_count": hot_count,
+        "big_count": big_in_items,
+        "keyword_count": len(JD_KEYWORDS),
+        "max_days": JD_MAX_DAYS,
+        "hot_days": JD_HOT_DAYS,
+    }
+
+
+def load_jd_cache(cache):
+    """无则 None; 有且 6h 内则返回, 否则 None(需重抓)。"""
+    jd = cache.get("jd_jobs")
+    if not jd or not jd.get("items"):
+        return None
+    try:
+        dt = datetime.fromisoformat(jd["updated"])
+        if (datetime.now() - dt).total_seconds() > 21600:
+            return None
+        return jd
     except Exception:
         return None
 
@@ -1351,6 +1640,25 @@ if __name__ == "__main__":
         except Exception as ex:
             print("[AI Intel] GitHub 热榜抓取失败, 保留旧数据: %s" % str(ex)[:80])
             gh_block_err = True
+
+    # JD 岗位: 6 小时 TTL, 独立于资讯刷新 (失败不影响其他 tab, 保留旧数据)
+    print("[AI Intel] 抓取 AI 应用/Agent/大模型岗位 (智联招聘, 走代理)...")
+    try:
+        jd = load_jd_cache(cache)
+        if jd:
+            print("[AI Intel] JD 岗位缓存命中: %d 条" % len(jd["items"]))
+        else:
+            jd = fetch_jd_jobs()
+            for e in jd["errors"][:8]:
+                print("  [WARN] jd: %s" % e)
+            if jd["errors"]:
+                print("  [WARN] jd: 共 %d 个失败请求 (城市/关键词组合)" % len(jd["errors"]))
+            print("[AI Intel] JD 岗位: %d 条 | 近3天最热 %d | 大厂 %d | 覆盖城市 %d"
+                  % (len(jd["items"]), jd["hot_count"], jd["big_count"], len(jd["cities"])))
+            cache["jd_jobs"] = jd
+    except Exception as ex:
+        print("[AI Intel] JD 岗位抓取失败, 保留旧数据: %s" % str(ex)[:80])
+
     # 监控板块: 本轮管线运行日志 (保留最近 48 条, 渲染层监控中心 tab 消费)
     _st = cache["meta"].get("sources_status", {})
     append_run_log(cache,
@@ -1361,11 +1669,13 @@ if __name__ == "__main__":
                    gh_err=gh_block_err,
                    skipped=not need_refresh)
     save_cache(cache)
-    
+
     html = render_html(cache)
     HTML_FILE.write_text(html, encoding="utf-8")
-    
+
     print(f"[AI Intel] 国际: {len(cache['entries_int'])}条 | 国内: {len(cache['entries_cn'])}条")
+    if cache.get("jd_jobs"):
+        print(f"[AI Intel] JD 岗位: {len(cache['jd_jobs']['items'])}条 | 近3天最热 {cache['jd_jobs']['hot_count']} | 大厂 {cache['jd_jobs']['big_count']}")
     print(f"[AI Intel] Updated: {cache['meta']['updated']}")
     print(f"[AI Intel] HTML written to {HTML_FILE}")
     if new_int:

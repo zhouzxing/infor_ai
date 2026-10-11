@@ -436,7 +436,8 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     # ── 8. 页面骨架 ─────────────────────────────────────────────
     nav = [("news", "资讯聚合"), ("dash", "能力大盘"),
            ("perf", "性能对比"), ("models", "模型库"), ("agents", "Agent 平台"),
-           ("agentscmp", "Agent 对比"), ("github", "GitHub 热榜"), ("monitor", "监控中心")]
+           ("agentscmp", "Agent 对比"), ("github", "GitHub 热榜"),
+           ("jobs", "AI 岗位"), ("monitor", "监控中心")]
 
     topbar = f'''<header class="topbar">
   <div class="tb-inner">
@@ -1192,6 +1193,175 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
   </div>
 </section>'''
 
+    # ── 9b. JD 岗位视图 (智联招聘: AI 应用/Agent/大模型) ──────────
+    jd = cache.get("jd_jobs", {}) or {}
+    jd_items = jd.get("items", []) or []
+    jd_updated = (jd.get("updated") or "")[:16].replace("T", " ")
+    jd_hot = jd.get("hot_count", 0) or 0
+    jd_big = jd.get("big_count", 0) or 0
+    jd_cities = jd.get("cities", []) or []
+    jd_keywords_n = jd.get("keyword_count", 0) or 0
+    jd_max_days = jd.get("max_days", 15) or 15
+    jd_hot_days = jd.get("hot_days", 3) or 3
+
+    def _jd_days_badge(d):
+        """发布天数徽章: 0=今天, ≤3=热, >3=历史。"""
+        if d is None:
+            return ""
+        if d == 0:
+            return '<span class="jd-day jd-today">今天</span>'
+        if d <= jd_hot_days:
+            return f'<span class="jd-day jd-hot">{d}天前</span>'
+        return f'<span class="jd-day jd-old">{d}天前</span>'
+
+    def _jd_salary_fmt(s):
+        """薪资格式化: 万→万/月, 元/天→实习, 面议。"""
+        s = (s or "").strip()
+        if not s:
+            return '—'
+        return s
+
+    def _jd_city_rank(city, n):
+        return f'{city} <em>{n}</em>'
+
+    def jd_table():
+        rows = []
+        for i, r in enumerate(jd_items, 1):
+            is_hot = r.get("is_hot")
+            big = r.get("big_company")
+            hot_tag = '<span class="jd-hot-tag">热</span>' if is_hot else ""
+            big_tag = '<span class="jd-big-tag">大厂</span>' if big else ""
+            day_badge = _jd_days_badge(r.get("days_old"))
+            city_label = f'{esc(r.get("city",""))}'
+            if r.get("district"):
+                city_label += f' <span class="jd-district">{esc(r["district"])}</span>'
+            skills_html = "".join(
+                f'<span class="jd-skill">{esc(s)}</span>' for s in (r.get("skills") or [])[:5])
+            kw_hits = r.get("keyword_hits", 0) or 0
+            kw_tag = f'<span class="jd-kw-tag">{kw_hits}词</span>' if kw_hits >= 2 else ""
+            title_html = (f'<a class="jd-link" href="{esc(r.get("url",""))}" '
+                          f'target="_blank" rel="noopener noreferrer">{esc(r.get("title",""))}</a>')
+            blob = " ".join([
+                r.get("title",""), r.get("company",""), r.get("industry",""),
+                r.get("city",""), r.get("salary",""),
+                " ".join(r.get("skills",[]) or []),
+                r.get("exp",""), r.get("education",""),
+            ]).lower()
+            rows.append(
+                f'<tr data-region="{esc("hot" if is_hot else "old")}" '
+                f'data-big="{esc("1" if big else "0")}" '
+                f'data-search="{esc(blob)}">'
+                f'<td class="c-rank">{i}</td>'
+                f'<td><div class="jd-title-cell">{title_html}{hot_tag}{big_tag}{kw_tag}</div>'
+                f'<div class="jd-company">{esc(r.get("company",""))}</div></td>'
+                f'<td class="jd-salary">{esc(_jd_salary_fmt(r.get("salary")))}{day_badge}</td>'
+                f'<td>{city_label}</td>'
+                f'<td>{esc(r.get("exp","—"))}</td>'
+                f'<td>{esc(r.get("education","—"))}</td>'
+                f'<td class="jd-skills">{skills_html or "—"}</td>'
+                f'<td class="jd-industry">{esc(r.get("industry","—"))}</td>'
+                f'<td class="jd-time">{esc((r.get("publish_time","") or "")[:16])}</td>'
+                f'</tr>')
+        return "\n".join(rows)
+
+    # 城市分布
+    from collections import Counter as _JC
+    _city_counts = _JC(it.get("city","") for it in jd_items)
+    _city_top = _city_counts.most_common(8)
+    _city_html = "".join(
+        f'<span class="jd-city-chip">{esc(c)} <b>{n}</b></span>'
+        for c, n in _city_top)
+    # 技能分布
+    _skill_counts = _JC(s for it in jd_items for s in (it.get("skills") or []))
+    _skill_top = _skill_counts.most_common(12)
+    _skill_html = "".join(
+        f'<span class="jd-skill-chip">{esc(s)} <b>{n}</b></span>'
+        for s, n in _skill_top)
+    # 薪资区间分布 (粗分: <1万 / 1-2万 / 2-4万 / 4万+ / 面议)
+    def _salary_bin(s):
+        """薪资格式分桶: 处理 '2-4万·15薪' / '1.8-3.5万' / '6000-8000元' / '200-250元/天' / '面议'。"""
+        s = (s or "").strip()
+        if not s:
+            return "面议"
+        if "面议" in s:
+            return "面议"
+        # 判断单位: 有"万"则前段数值×10000
+        if "万" in s:
+            before_wan = s.split("万")[0]
+            wan_nums = [float(n) for n in re.findall(r"\d+\.?\d*", before_wan)]
+            lo = wan_nums[0] * 10000 if wan_nums else 0
+        else:
+            vals = [float(n) for n in re.findall(r"\d+\.?\d*", s)]
+            lo = vals[0] if vals else 0
+        if lo < 10000:
+            return "<1万"
+        if lo < 20000:
+            return "1-2万"
+        if lo < 40000:
+            return "2-4万"
+        return "4万+"
+    _sal_bins = []
+    for it in jd_items:
+        _sal_bins.append(_salary_bin(it.get("salary","")))
+    _sal_counts = _JC(_sal_bins)
+    _sal_order = ["<1万","1-2万","2-4万","4万+","面议"]
+    _sal_max = max(_sal_counts.values()) if _sal_counts else 1
+    _sal_html = "".join(
+        f'<div class="jd-sal-row"><span class="jd-sal-k">{b}</span>'
+        f'<span class="jd-sal-bar"><span style="width:{_sal_counts.get(b,0)/_sal_max*100:.0f}%"></span></span>'
+        f'<b>{_sal_counts.get(b,0)}</b></div>'
+        for b in _sal_order)
+
+    jd_table_html = jd_table() if jd_items else \
+        '<tr><td colspan="9" class="c-empty">暂无数据 — 运行 python3 ai_intel_aggregator.py 抓取岗位</td></tr>'
+
+    jd_view = f'''<section class="view" id="view-jobs">
+  <div class="sec-head"><h2>AI 应用 / Agent / 大模型 岗位</h2>
+    <p>智联招聘实时抓取 · {jd_keywords_n} 个关键词 × {len(jd_cities)} 城市 · 近 {jd_hot_days} 天最热 {jd_hot} 条 · 大厂 {jd_big} 条 · 历史保留 {jd_max_days} 天 · 更新于 {esc(jd_updated)}</p></div>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">{len(jd_items)}</div><div class="kpi-l">收录岗位</div><div class="kpi-s">按热度+时间排序</div></div>
+    <div class="kpi"><div class="kpi-v">{jd_hot}</div><div class="kpi-l">近 {jd_hot_days} 天最热</div><div class="kpi-s">最新发布</div></div>
+    <div class="kpi"><div class="kpi-v">{jd_big}</div><div class="kpi-l">大厂岗位</div><div class="kpi-s">白名单企业</div></div>
+    <div class="kpi"><div class="kpi-v">{len(jd_cities)}</div><div class="kpi-l">覆盖城市</div><div class="kpi-s">长三角/珠三角</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" data-table-filter="jd-table">
+      <button class="seg-btn active" data-region-filter="all">全部</button>
+      <button class="seg-btn" data-region-filter="hot">近 {jd_hot_days} 天</button>
+      <button class="seg-btn" data-region-filter="old">历史</button>
+    </div>
+    <div class="tb-search inline">
+      <input type="search" data-table-search="jd-table" placeholder="模糊检索职位 / 公司 / 技能 / 城市…" autocomplete="off">
+    </div>
+    <span class="count"><b class="tcount">{len(jd_items)}</b> 条</span>
+  </div>
+  <div class="table-wrap">
+    <table class="dtable jd-table" id="jd-table">
+      <thead><tr>
+        <th>#</th><th>职位 / 公司</th><th>薪资</th><th>城市</th><th>经验</th><th>学历</th><th>技能</th><th>行业</th><th>发布时间</th>
+      </tr></thead>
+      <tbody>{jd_table_html}</tbody>
+    </table>
+  </div>
+  <div class="jd-extra">
+    <div class="jd-extra-block">
+      <div class="jd-extra-h">城市分布</div>
+      <div class="jd-chips">{_city_html or '<span class="muted">暂无</span>'}</div>
+    </div>
+    <div class="jd-extra-block">
+      <div class="jd-extra-h">薪资分布</div>
+      <div class="jd-sal-list">{_sal_html or '<span class="muted">暂无</span>'}</div>
+    </div>
+    <div class="jd-extra-block">
+      <div class="jd-extra-h">热门技能</div>
+      <div class="jd-chips">{_skill_html or '<span class="muted">暂无</span>'}</div>
+    </div>
+  </div>
+  <div class="jd-note">
+    <b>数据源说明:</b> Boss 直聘 / 猎聘 / 脉脉均已反爬或强制登录 (Boss 跳登录页、脉脉 302 登录、猎聘列表 JS 渲染无服务端数据), 经多实例 RSSHub 探测亦不可用。当前采用 <b>智联招聘</b> (sou.zhaopin.com) 服务端渲染搜索数据, 覆盖上海/深圳等一线城市。数据每小时自动刷新, 失败时保留上次数据。
+  </div>
+</section>'''
+
     # ── 10. 监控中心视图 ───────────────────────────────────────
     mon = cache.get("meta", {}) or {}
     mon_src_status = mon.get("sources_status", {}) or {}
@@ -1360,7 +1530,7 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
             "<title>AI 情报聚合 · 模型能力大盘</title>\n<style>\n" + CSS + "\n</style>\n</head>\n<body>\n"
-            + topbar + "<main class=\"wrap\">" + news_view + dash_view + perf_view + models_view + agents_view + agentscmp_view + github_view + monitor_view
+            + topbar + "<main class=\"wrap\">" + news_view + dash_view + perf_view + models_view + agents_view + agentscmp_view + github_view + jd_view + monitor_view
             + "</main>" + footer + "\n<script>\n" + JS + "\n</script>\n</body>\n</html>")
     return html
 
@@ -1592,6 +1762,51 @@ footer{max-width:1440px;margin:34px auto 0;padding:22px;color:var(--muted);font-
 .c-dim{color:var(--muted);font-size:.76rem}
 .c-desc{max-width:340px;font-size:.74rem;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .c-topics{max-width:180px}
+
+/* jd tab (AI 岗位) */
+.jd-table{min-width:1240px}
+.jd-title-cell{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.jd-link{color:var(--accent);font-weight:650;font-size:.82rem}
+.jd-link:hover{text-decoration:underline}
+.jd-company{color:var(--muted);font-size:.74rem;margin-top:2px}
+.jd-salary{font-family:ui-monospace,Menlo,monospace;font-size:.76rem;color:var(--warn);white-space:nowrap}
+.jd-district{color:var(--muted);font-size:.7rem;margin-left:4px}
+.jd-skills{max-width:220px}
+.jd-skill{display:inline-block;font-size:.66rem;padding:1px 6px;margin:1px 2px;border-radius:5px;
+  background:rgba(124,92,255,.14);color:#b3a1ff;border:1px solid rgba(124,92,255,.32)}
+.jd-industry{color:var(--dim);font-size:.74rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jd-time{color:var(--muted);font-size:.72rem;white-space:nowrap}
+.jd-hot-tag{display:inline-block;font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:5px;
+  background:linear-gradient(135deg,rgba(255,107,107,.3),rgba(255,176,32,.3));
+  color:#ff8f8f;border:1px solid rgba(255,107,107,.4);vertical-align:2px}
+.jd-big-tag{display:inline-block;font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:5px;
+  background:rgba(53,224,161,.14);color:var(--accent);border:1px solid rgba(53,224,161,.36);vertical-align:2px}
+.jd-kw-tag{display:inline-block;font-size:.56rem;font-weight:600;padding:1px 4px;border-radius:5px;
+  background:rgba(124,92,255,.12);color:#b3a1ff;border:1px solid rgba(124,92,255,.3);vertical-align:2px}
+.jd-day{display:inline-block;font-size:.6rem;font-weight:600;padding:1px 5px;border-radius:5px;margin-left:4px;vertical-align:2px}
+.jd-today{background:rgba(255,107,107,.18);color:#ff8f8f;border:1px solid rgba(255,107,107,.4)}
+.jd-hot{background:rgba(255,176,32,.16);color:var(--warn);border:1px solid rgba(255,176,32,.36)}
+.jd-old{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border2)}
+.jd-extra{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:16px;margin-top:18px}
+.jd-extra-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.jd-extra-h{font-size:.72rem;color:var(--dim);margin-bottom:10px;font-weight:650}
+.jd-chips{display:flex;flex-wrap:wrap;gap:6px}
+.jd-city-chip{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;padding:3px 10px;border-radius:20px;
+  background:rgba(53,224,161,.08);border:1px solid var(--border2)}
+.jd-city-chip b{color:var(--accent);font-variant-numeric:tabular-nums}
+.jd-skill-chip{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;padding:2px 9px;border-radius:14px;
+  background:rgba(124,92,255,.1);border:1px solid rgba(124,92,255,.3)}
+.jd-skill-chip b{color:#b3a1ff;font-variant-numeric:tabular-nums}
+.jd-sal-list{display:flex;flex-direction:column;gap:6px}
+.jd-sal-row{display:grid;grid-template-columns:50px 1fr 30px;gap:8px;align-items:center;font-size:.74rem}
+.jd-sal-k{color:var(--dim)}
+.jd-sal-bar{height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.jd-sal-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.jd-sal-row b{text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
+.jd-note{margin-top:16px;padding:12px 16px;background:rgba(255,176,32,.06);border:1px solid rgba(255,176,32,.2);
+  border-radius:var(--r);font-size:.74rem;color:var(--dim);line-height:1.6}
+.jd-note b{color:var(--warn)}
+@media(max-width:900px){.jd-extra{grid-template-columns:1fr}}
 .c-topics .tag{margin:0 4px 4px 0}
 .c-empty{text-align:center;color:var(--muted);padding:40px}
 
