@@ -674,6 +674,195 @@ def load_github_cache(cache):
         return None
 
 
+# ── arXiv 前沿论文动向 (按研究方向聚合「当前研究者都在做什么」) ──────
+# arXiv API ~1 req/3s 限速, 故节流 + 6h TTL, 独立于资讯刷新 (失败不影响其他 tab)
+ARXIV_MAX_DAYS = 14      # 保留窗口: 近 14 天的论文
+ARXIV_MAX_PAPERS = 240   # 论文上限
+ARXIV_PER_DIR = 18       # 每个研究方向抓取数
+ARXIV_HOT_DAYS = 3       # 「近期热」窗口: 提交 ≤3 天
+# (中文名, 标签, arXiv 查询, 方向释义)
+ARXIV_DIRECTIONS = [
+    ("LLM 推理与强化学习", "reasoning",
+     "cat:cs.LG AND all:reinforcement learning AND all:reasoning",
+     "RLVR / GRPO / 过程奖励 / 思维链蒸馏 — 用强化学习驱动 LLM 推理与解题"),
+    ("Agent 与工具使用", "agent",
+     "cat:cs.AI AND all:agent AND all:tool use",
+     "多智能体协作、规划、工具调用、记忆与长程任务执行"),
+    ("多模态与视觉语言", "multimodal",
+     "cat:cs.CV AND (all:multimodal OR all:vision language)",
+     "VLM / 视觉推理 / 视频理解 / 图文理解与生成"),
+    ("世界模型与具身智能", "embodied",
+     "cat:cs.RO AND (all:embodied OR all:world model OR all:manipulation)",
+     "VLA / 仿真到真实 / 机器人操作 / 具身智能与世界模型"),
+    ("效率与可扩展性", "efficiency",
+     "cat:cs.LG AND all:inference AND all:efficient",
+     "MoE / 蒸馏 / 量化 / 长上下文 / 推理加速与 KV cache"),
+    ("对齐与安全", "alignment",
+     "cat:cs.AI AND (all:alignment OR all:reinforcement learning from human feedback)",
+     "RLHF / 对齐 / 可解释性 / 安全与幻觉缓解"),
+    ("AI 科学发现", "ai4science",
+     "cat:cs.LG AND (all:protein OR all:materials OR all:molecular)",
+     "AI for Science：蛋白质结构、材料发现、分子生成与科学推理"),
+    ("生成模型", "generative",
+     "cat:cs.CV AND all:diffusion AND all:generation",
+     "扩散模型 / 视频生成 / 可控生成"),
+]
+# 顶会接收信号: comment 命中即加分 (说明是正式发表, 非预印本草稿)
+ARXIV_VENUES = ("neurips", "icml", "iclr", "cvpr", "iccv", "eccv",
+                "acl", "emnlp", "aaai", "colm")
+
+def _arxiv_query(query, max_results=18):
+    """调用 arXiv export API; 成功返回 (rows, None), 失败 (None, err)。
+    返回 rows 为归一化论文 dict 列表。arXiv 限速 ~1req/3s, 调用方负责节流。"""
+    import urllib.parse
+    import urllib.request
+    import xml.etree.ElementTree as ET
+    params = urllib.parse.urlencode({
+        "search_query": query, "start": 0, "max_results": max_results,
+        "sortBy": "submittedDate", "sortOrder": "descending",
+    })
+    url = "https://export.arxiv.org/api/query?" + params
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read()
+        root = ET.fromstring(raw)
+    except Exception as e:
+        return [], str(e)[:120]
+    ns = {"a": "http://www.w3.org/2005/Atom",
+          "arxiv": "http://arxiv.org/schemas/atom"}
+    out = []
+    for entry in root.findall("a:entry", ns):
+        id_el = entry.find("a:id", ns)
+        if id_el is None or not (id_el.text or "").strip():
+            continue
+        raw_id = id_el.text.strip()
+        if "/abs/" not in raw_id:
+            continue
+        arxiv_id = raw_id.split("/abs/")[-1]
+        if not arxiv_id:
+            continue
+        base_id = arxiv_id.split("v")[0]
+        title = " ".join((entry.findtext("a:title", "", namespaces=ns) or "").split())
+        if not title:
+            continue
+        summary = " ".join((entry.findtext("a:summary", "", namespaces=ns) or "").split())
+        published = (entry.findtext("a:published", "", namespaces=ns) or "")[:10]
+        authors = [a.findtext("a:name", "", namespaces=ns) for a in entry.findall("a:author", ns)]
+        authors = [a.strip() for a in authors if a and a.strip()]
+        pc = entry.find("arxiv:primary_category", ns)
+        primary = pc.get("term") if pc is not None else ""
+        cats = [c.get("term") for c in entry.findall("a:category", ns) if c.get("term")]
+        comment = " ".join((entry.findtext("arxiv:comment", "", namespaces=ns) or "").split())
+        out.append({
+            "arxiv_id": arxiv_id,
+            "base_id": base_id,
+            "title": title,
+            "summary": summary,
+            "published": published,
+            "authors": authors[:6],
+            "primary_category": primary,
+            "categories": cats[:6],
+            "comment": comment[:160],
+            "abs_url": "https://arxiv.org/abs/" + base_id,
+            "pdf_url": "https://arxiv.org/pdf/" + arxiv_id,
+        })
+    return out, None
+
+def fetch_arxiv_papers():
+    """按 8 个前沿研究方向各抓一批最新论文, 合并去重, 算热度排序。
+    返回 {items, directions, top_authors, updated, errors, hot_count, days_window}。"""
+    now = datetime.now()
+    seen = {}
+    errors = []
+    for name, tag, query, desc in ARXIV_DIRECTIONS:
+        rows, err = _arxiv_query(query, ARXIV_PER_DIR)
+        if err:
+            errors.append("%s: %s" % (name, err))
+        for r in rows:
+            r["direction"] = name
+            r["direction_tag"] = tag
+            r["direction_desc"] = desc
+            base = r["base_id"]
+            if base in seen:
+                # 同一论文命中多个方向 -> 累加命中 (跨域热门信号)
+                seen[base].setdefault("direction_hits", []).append(name)
+                seen[base].setdefault("direction_tags", []).append(tag)
+                continue
+            r["direction_hits"] = [name]
+            r["direction_tags"] = [tag]
+            seen[base] = r
+        time.sleep(2)  # arXiv 限速 ~1req/3s, 保守节流
+    # 热度计算 + 时效过滤
+    items = []
+    author_counter = {}
+    dir_counter = {d[0]: 0 for d in ARXIV_DIRECTIONS}
+    for r in seen.values():
+        heat = 1 + len(r["direction_hits"])  # 基础 + 跨方向命中
+        r["is_hot"] = False
+        r["days_old"] = None
+        try:
+            pub = datetime.strptime(r["published"], "%Y-%m-%d")
+            days_old = max(0, (now - pub).days)
+            r["days_old"] = days_old
+            if days_old <= ARXIV_HOT_DAYS:
+                heat += 2
+                r["is_hot"] = True
+            elif days_old <= 7:
+                heat += 1
+        except Exception:
+            pass
+        cl = (r.get("comment") or "").lower()
+        if any(v in cl for v in ARXIV_VENUES):
+            heat += 1  # 顶会接收 -> 正式发表, 更可信
+        if any(c in ("cs.LG", "cs.AI", "cs.CL", "cs.CV") for c in r.get("categories", [])):
+            heat += 1  # 核心 AI 子域
+        r["heat"] = min(heat, 6)
+        # 时效窗口外剔除
+        if r["days_old"] is not None and r["days_old"] > ARXIV_MAX_DAYS:
+            continue
+        items.append(r)
+        for a in r["authors"]:
+            author_counter[a] = author_counter.get(a, 0) + 1
+    # 排序: 热度降序 -> 提交越新越前 (days_old 升序)
+    items.sort(key=lambda x: (-x["heat"], x.get("days_old") or 0, x["published"]))
+    if len(items) > ARXIV_MAX_PAPERS:
+        items = items[:ARXIV_MAX_PAPERS]
+    # 方向计数 (按去重论文归属, 跨方向命中的计入每个命中方向)
+    for r in items:
+        for d in r["direction_hits"]:
+            dir_counter[d] = dir_counter.get(d, 0) + 1
+    directions = [{"name": d[0], "tag": d[1], "desc": d[3],
+                   "count": dir_counter.get(d[0], 0)}
+                  for d in ARXIV_DIRECTIONS]
+    top_authors = [{"name": n, "papers": c}
+                   for n, c in sorted(author_counter.items(), key=lambda x: -x[1])[:24]]
+    return {
+        "items": items,
+        "directions": directions,
+        "top_authors": top_authors,
+        "updated": now.isoformat(),
+        "errors": errors,
+        "hot_count": sum(1 for it in items if it["is_hot"]),
+        "days_window": ARXIV_MAX_DAYS,
+        "direction_count": len(ARXIV_DIRECTIONS),
+    }
+
+def load_arxiv_cache(cache):
+    """无则返回 None; 有且 6h 内则返回, 否则 None(需重抓)。
+    arXiv 限速严格, 论文更新以天计, 6h TTL 足够。"""
+    ar = cache.get("arxiv_papers")
+    if not ar or not ar.get("items"):
+        return None
+    try:
+        dt = datetime.fromisoformat(ar["updated"])
+        if (datetime.now() - dt).total_seconds() > 21600:
+            return None
+        return ar
+    except Exception:
+        return None
+
+
 # ── JD 岗位抓取 (智联招聘 sou.zhaopin.com — 服务端渲染 __INITIAL_STATE__) ──
 # 说明: Boss 直聘 / 猎聘 / 脉脉 均已反爬或强制登录 (Boss 跳登录页、脉脉 302 登录、
 # 猎聘列表 JS 渲染无服务端数据), 经多实例 RSSHub 探测亦不可用。智联招聘搜索页为
@@ -1659,6 +1848,28 @@ if __name__ == "__main__":
     except Exception as ex:
         print("[AI Intel] JD 岗位抓取失败, 保留旧数据: %s" % str(ex)[:80])
 
+    # arXiv 前沿论文动向: 6 小时 TTL, 独立于资讯刷新 (失败不影响其他 tab, 保留旧数据)
+    ar_block_err = False
+    print("[AI Intel] 抓取 arXiv 前沿论文动向 (8 个研究方向, 走代理)...")
+    try:
+        ar = load_arxiv_cache(cache)
+        if ar:
+            print("[AI Intel] arXiv 论文缓存命中: %d 篇" % len(ar["items"]))
+        else:
+            ar = fetch_arxiv_papers()
+            for e in ar["errors"][:6]:
+                print("  [WARN] arxiv: %s" % e)
+            if ar["errors"]:
+                print("  [WARN] arxiv: 共 %d 个方向请求失败" % len(ar["errors"]))
+            ar_block_err = bool(ar["errors"])
+            print("[AI Intel] arXiv 论文: %d 篇 | 近3天热 %d | 方向 %d | 活跃作者 %d"
+                  % (len(ar["items"]), ar["hot_count"], ar["direction_count"],
+                     len(ar["top_authors"])))
+            cache["arxiv_papers"] = ar
+    except Exception as ex:
+        print("[AI Intel] arXiv 论文抓取失败, 保留旧数据: %s" % str(ex)[:80])
+        ar_block_err = True
+
     # 监控板块: 本轮管线运行日志 (保留最近 48 条, 渲染层监控中心 tab 消费)
     _st = cache["meta"].get("sources_status", {})
     append_run_log(cache,
@@ -1676,6 +1887,9 @@ if __name__ == "__main__":
     print(f"[AI Intel] 国际: {len(cache['entries_int'])}条 | 国内: {len(cache['entries_cn'])}条")
     if cache.get("jd_jobs"):
         print(f"[AI Intel] JD 岗位: {len(cache['jd_jobs']['items'])}条 | 近3天最热 {cache['jd_jobs']['hot_count']} | 大厂 {cache['jd_jobs']['big_count']}")
+    if cache.get("arxiv_papers"):
+        _ar = cache["arxiv_papers"]
+        print(f"[AI Intel] arXiv 论文: {len(_ar['items'])}篇 | 近3天热 {_ar['hot_count']} | 方向 {_ar['direction_count']} | 活跃作者 {len(_ar['top_authors'])}")
     print(f"[AI Intel] Updated: {cache['meta']['updated']}")
     print(f"[AI Intel] HTML written to {HTML_FILE}")
     if new_int:

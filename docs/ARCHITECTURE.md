@@ -1,9 +1,9 @@
 # AI 情报聚合 — 架构设计与实现文档
 
 > 面向对象：后期维护者、架构升级者。
-> 版本：v8（Agent 库扩展到 58 平台；数据源扩展到 42；清理 v1 遗留 fetch_from_* 死代码）
+> 版本：v9（新增 JD 岗位 tab — 智联招聘实时抓取 AI 应用/Agent/大模型岗位）
 > 代码目录：`infor_ai_lab/`
-> 最近更新：2026-10-06
+> 最近更新：2026-10-12
 
 ---
 
@@ -39,36 +39,43 @@
 ## 2. 数据流总览
 
 ```
-                    ┌─────────────────────────────────────────────┐
-   42 个 RSS 源       │            ai_intel_aggregator.py           │
-  ┌──────────┐      │                                               │
-  │RSS/Atom │──────▶│  fetch_all_sources()  并发 10 线程            │
-  │42 源     │      │        │                                      │
-  ├──────────┤      │        ▼  命中缓存/420s 时间预算               │
-  │Hacker   │      │  extract_article_body()  正文预抓(并发)+重试     │
-  │News/     │──────▶  build_summary/build_body  摘要质量清洗        │
-  │arXiv     │      │        │                                      │
-  └──────────┘      │        ▼                                      │
-  ┌──────────┐      │  clean_and_trim + sort_entries  热度/时间排序   │
-  │GitHub    │      │        │  (heat: 多源累加, ≤100全保留, >300截)  │
-  │search API│──────▶  fetch_github_repos()  主题榜+新星+组织精选     │
-  └──────────┘      │        │                                      │
-                    │        ▼  record/cache_sources  数据源活跃度     │
-                    │   save_cache(cache) ────────────┐             │
-                    └─────────────────────────────────┼─────────────┘
-                                                      ▼
-                                            ai_intel_cache.json
-                          { entries_int, entries_cn, meta, github_repos }
-                                                      │
-                                                      ▼  render_page(cache, ...)
-                    ┌─────────────────────────────────┴─────────────┐
-                    │            ai_intel_render.py                 │
-                    │  资讯流 + 能力大盘 + 模型库 + Agent库 + GitHub榜 + 监控中心 │
-                    │  + 内联 CSS/JS + 6 个 nav tab                  │
-                    └─────────────────────────────────┬─────────────┘
-                                                      ▼
-                                            index.html (自包含, 离线)
-```
+                    ``                    ┌─────────────────────────────────────────────┐
+                       42 个 RSS 源       │            ai_intel_aggregator.py           │
+                      ┌──────────┐      │                                               │
+                      │RSS/Atom │──────▶│  fetch_all_sources()  并发 10 线程            │
+                      │42 源     │      │        │                                      │
+                      ├──────────┤      │        ▼  命中缓存/420s 时间预算               │
+                      │Hacker   │      │  extract_article_body()  正文预抓(并发)+重试     │
+                      │News/     │──────▶  build_summary/build_body  摘要质量清洗        │
+                      │arXiv     │      │        │                                      │
+                      └──────────┘      │        ▼                                      │
+                      ┌──────────┐      │  clean_and_trim + sort_entries  热度/时间排序   │
+                      │GitHub    │      │        │  (heat: 多源累加, ≤100全保留, >300截)  │
+                      │search API│──────▶  fetch_github_repos()  主题榜+新星+组织精选     │
+                      └──────────┘      │        │                                      │
+                      ┌──────────┐      │        ▼  record/cache_sources  数据源活跃度     │
+                      │智联招聘   │      │   fetch_jd_jobs()  9关键词×5城市 岗位抓取       │
+                      │sou.zhaopin│─────▶   _zp_http_get()  urllib(TLS指纹通过)          │
+                      └──────────┘      │   _zp_fetch()  __INITIAL_STATE__解析           │
+                                        │   _zp_is_ai_job()  20词相关性过滤              │
+                                        │        │                                      │
+                                        │        ▼  append_run_log  管线运行日志          │
+                                        │   save_cache(cache) ────────────┐             │
+                                        └─────────────────────────────────┼─────────────┘
+                                                                          ▼
+                                                                ai_intel_cache.json
+                                              { entries_int, entries_cn, meta, github_repos, jd_jobs }
+                                                                          │
+                                                                          ▼  render_page(cache, ...)
+                                        ┌─────────────────────────────────┴─────────────┐
+                                        │            ai_intel_render.py                 │
+                                        │  资讯流 + 能力大盘 + 模型库 + Agent库 + GitHub榜  │
+                                        │  + JD岗位 + 监控中心 + 内联 CSS/JS              │
+                                        │  + 9 个 nav tab                               │
+                                        └─────────────────────────────────┬─────────────┘
+                                                                          ▼
+                                                                index.html (自包含, 离线)
+                    ```
 
 ---
 

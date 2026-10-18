@@ -436,7 +436,8 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     # ── 8. 页面骨架 ─────────────────────────────────────────────
     nav = [("news", "资讯聚合"), ("dash", "能力大盘"),
            ("perf", "性能对比"), ("models", "模型库"), ("agents", "Agent 平台"),
-           ("agentscmp", "Agent 对比"), ("github", "GitHub 热榜"),
+           ("agentscmp", "Agent 对比"), ("papers", "前沿论文动向"),
+           ("github", "GitHub 热榜"),
            ("jobs", "AI 岗位"), ("monitor", "监控中心")]
 
     topbar = f'''<header class="topbar">
@@ -1105,6 +1106,7 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     # ── 9. GitHub 热榜视图 ───────────────────────────────────
     gh = cache.get("github_repos") or {}
     gh_items = gh.get("items", [])
+    total_arxiv = len(cache.get("arxiv_papers", {}).get("items", [])) if cache.get("arxiv_papers") else 0
     LANG_COLORS = {"Python": "#3572A5", "TypeScript": "#3178c6", "JavaScript": "#f1e05a",
                    "Go": "#00ADD8", "Rust": "#dea584", "C": "#555555", "C++": "#f34b7d",
                    "C#": "#178600", "Shell": "#89e051", "Jupyter Notebook": "#DA5B0B",
@@ -1192,6 +1194,74 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
     </table>
   </div>
 </section>'''
+
+    # ── 10. arXiv 前沿论文动向视图 ─────────────────────────────────
+    arxiv = cache.get("arxiv_papers") or {}
+    ar_items = arxiv.get("items", []) if arxiv else []
+    ar_dirs = arxiv.get("directions", []) if arxiv else []
+    ar_authors = arxiv.get("top_authors", []) if arxiv else []
+    ar_updated = (arxiv.get("updated", "") or "")[:16].replace("T", " ")
+    ar_hot = sum(1 for it in ar_items if it.get("is_hot"))
+    ar_days = arxiv.get("days_window", 14) if arxiv else 14
+
+    def _paper_row(it, idx):
+        heat = it.get("heat", 1)
+        stars = "★" * heat + "☆" * max(0, 5 - heat)
+        tags = "".join(f'<span class="ptag">{esc(d)}</span>'
+                        for d in it.get("direction_hits", []))
+        cats = ""
+        for c in ((it.get("primary_category", "") or "") +
+                  (", ".join(it.get("categories", []) or []))):
+            if c:
+                cats += f'<span class="tag cat-row">{esc(c)}</span>'
+        return (f'<tr data-search="{esc(it.get("title","") + " " + str(idx))}">' \
+            f'<td class="c-rank">{idx}</td>' \
+            f'<td><a class="ptitle" href="{esc(it.get("abs_url",""))}" target="_blank" rel="noopener">{esc(it.get("title",""))}</a></td>' \
+            f'<td class="c-meta">{tags}{cats}</td>' \
+            f'<td class="heat-stars"><span class="s-on">{stars.strip()}</span> <b style="color:var(--dim);font-size:.62rem">热度 {heat}/5</b></td>' \
+            f'<td>{esc(it.get("published","") or "")[:10]}</td>' \
+            f'<td class="c-dim">{esc((it.get("comment","") or "")[:80])}</td></tr>')
+
+    ARXIV_DIRS = []
+    for d in ar_dirs:
+        filt = [it for it in ar_items if d["name"] in it.get("direction_hits", [])]
+        if not filt:
+            continue
+        rows = "\n".join(_paper_row(it, i) for i, it in enumerate(filt, 1))
+        col = "".join(['#', '论文', '方向标签', '热度', '提交日', '标注'])
+        tbl = (f'<table class="paper-tbl" id="papers-tbl-{ARXIV_DIRS.__len__()}">\n'
+               f'<thead><tr>{col}\n'
+               f'</thead>\n'
+               f'<tbody>{rows}\n'
+               f'</tbody>\n'
+               f'</table>')
+        ARXIV_DIRS.append({"name": d["name"], "tag": d["tag"], "count": len(filt), "body": tbl})
+
+    if ARXIV_DIRS:
+        tabs_html = "".join(
+            f'<button class="dir-tab" data-dir="{esc(dd["name"])}">' \
+            f'<span>{esc(dd["name"])}</span><span class="dir-count">{dd["count"]}</span></button>'
+            for i, dd in enumerate(ARXIV_DIRS))
+        viewport_html = "".join(
+            f'<div class="panel dir-vp{"( hidden)" if i else ""}" data-physics="papers-tbl-{i}">\n'
+            f'<div class="panel-h"><span>{esc(dd["name"])}<small>{esc(dd["tag"])}</small></span>'
+            f'<span class="muted">{dd["count"]} 篇</span></div>\n'
+            f'<p class="dim">{esc(ar_dirs[i]["desc"])}</p>\n'
+            f'{dd["body"]}\n'
+            f'</div>\n'
+            for i, dd in enumerate(ARXIV_DIRS))
+        default_i = 0
+        paper_view = (f'<section class="view" id="view-papers"><div class="sec-head">'
+                      f'<h2>前沿论文动向</h2>'
+                      f'<p>近 {ar_days} 天 · 热度排序 · 点击「方向」切换论文列表 · '
+                      f'共 {len(ar_items)} 篇 · 热论文 {ar_hot}/{len(ar_items)}</p></div>'
+                      f'<div class="dir-tabs">{tabs_html}</div>'
+                      + viewport_html
+                      + "</section>")
+    else:
+        paper_view = ('<section class="view" id="view-papers"><div class="sec-head">'
+                      '<h2>前沿论文动向 · 无数据</h2>'
+                      '<p>运行 python3 ai_intel_aggregator.py 抓取 arXiv 论文</p></section>')
 
     # ── 9b. JD 岗位视图 (智联招聘: AI 应用/Agent/大模型) ──────────
     jd = cache.get("jd_jobs", {}) or {}
@@ -1523,14 +1593,14 @@ def render_page(cache, model_registry, agent_platforms, max_entries=300, max_day
   </div>
 </section>'''
 
-    footer = (f'<footer>AI 情报聚合 v9 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '
-              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(bench_rows)} 个模型基准评测 · {len(agent_rows)} 个 Agent 八维评估 · {len(gh_items)} 个 GitHub 项目 · 渲染于 {now_str} · '
+    footer = (f'<footer>AI 情报聚合 v9 · 数据每小时自动更新 · 资讯保留最近 {max_days} 天 / 每区最多 {max_entries} 条 · '\
+              f'{total_models} 个模型 · {len(agents)} 个 Agent 平台 · {len(bench_rows)} 个模型基准评测 · {len(agent_rows)} 个 Agent 八维评估 · {len(gh_items)} 个 GitHub 项目 · {total_arxiv} 篇 arXiv 论文 · 渲染于 {now_str} · '\
               f'由 <a class="footer-gh" href="https://github.com/zhouzxing" target="_blank" rel="noopener noreferrer">@zhouzxing</a> 构建 &amp; 维护</footer>')
 
     html = ("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
             "<title>AI 情报聚合 · 模型能力大盘</title>\n<style>\n" + CSS + "\n</style>\n</head>\n<body>\n"
-            + topbar + "<main class=\"wrap\">" + news_view + dash_view + perf_view + models_view + agents_view + agentscmp_view + github_view + jd_view + monitor_view
+            + topbar + "<main class=\"wrap\">" + news_view + dash_view + perf_view + models_view + agents_view + agentscmp_view + paper_view + github_view + jd_view + monitor_view
             + "</main>" + footer + "\n<script>\n" + JS + "\n</script>\n</body>\n</html>")
     return html
 
@@ -1635,6 +1705,36 @@ a{color:inherit}
 .more{margin:18px auto 0;display:block;background:var(--surface);border:1px solid var(--border2);
   color:var(--dim);font:inherit;font-size:.84rem;padding:10px 26px;border-radius:24px;cursor:pointer;transition:.18s}
 .more:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── papers (前沿论文动向) ── */
+.dir-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.dir-tab{font:inherit;font-size:.74rem;padding:4px 10px;border-radius:16px;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface);color:var(--dim);transition:.15s}
+.dir-tab:hover{border-color:var(--accent2);color:var(--text)}
+.dir-tab.active{background:rgba(124,92,255,.18);border-color:var(--accent2);color:#c9b8ff;font-weight:600}
+.dir-count{font-size:.55rem;opacity:.7;margin-left:3px}
+.paper-tbl{width:100%;border-collapse:collapse;font:inherit;font-size:.78rem}
+.paper-tbl th{position:sticky;top:0;background:var(--surface2);text-align:left;font-size:.66rem;
+  color:var(--muted);padding:7px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+.paper-tbl td{padding:7px 9px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+.paper-tbl tr:hover td{background:rgba(124,92,255,.05)}
+.ptitle a{color:var(--accent2);text-decoration:none;font:inherit;font-weight:600}
+.ptitle a:hover{color:#a08fff}
+.ptag{display:inline-block;font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:10px;margin-right:3px;
+  background:rgba(53,224,161,.14);color:#7ff0b0;border:1px solid rgba(53,224,161,.28)}
+.tag.cat-row{font-size:.58rem;color:var(--dim);background:rgba(255,255,255,.05);
+  border:1px solid var(--border);padding:1px 6px;border-radius:6px}
+.heat-stars{font-size:.66rem;letter-spacing:.3px;line-height:1}
+.heat-stars .s-on{color:var(--warn);font-weight:700}
+.heat-stars .s-off{color:rgba(255,255,255,.16)}
+.pg-btn{font:inherit;font-size:.76rem;padding:5px 14px;border-radius:8px;cursor:pointer;
+  background:var(--surface);border:1px solid var(--border2);color:var(--dim);margin-left:6px}
+.pg-btn:hover{border-color:var(--accent);color:var(--accent)}
+.author-dir{display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;align-items:center;padding:0 16px}
+.avatar{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:inherit;font-size:.66rem;
+  color:#fff;font-weight:700;flex:0 0 24px;text-align:center;overflow:hidden}
+.aavg{font-size:.55rem;color:var(--dim);text-align:right}
+.aavg b{color:var(--accent);font-weight:700}
 
 /* panels */
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px}
@@ -2099,6 +2199,26 @@ JS = r"""
       });
     });
     hlApply();
+  }
+
+  /* ---- arXiv papers direction tab switching ---- */
+  var paperTabs=qa('.dir-tabs',document);
+  if(paperTabs.length){
+    papState={i:0};
+    function papSwitch(n){
+      papState.i=n;
+      qa('.dir-tab',paperTabs).forEach(function(b){
+        b.classList.toggle('active',+b.dataset.dir===+(n||'all'));
+      });
+      qa('[data-physics]',paperTabs).forEach(function(d){
+        var idx=parseInt(String(d.getAttribute('data-physics')).split('-')[1],10);
+        d.classList.toggle('hidden',idx!==papState.i);
+      });
+    }
+    qa('.dir-tab',paperTabs).forEach(function(b){
+      b.addEventListener('click',function(){papSwitch(+b.dataset.dir);});
+    });
+    papSwitch(0); // show first table by default
   }
 })();
 """
