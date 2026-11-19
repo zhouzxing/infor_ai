@@ -1,0 +1,7 @@
+[
+  {"name": "arXiv CS.CL", "url": "https://rss.arxiv.org/rss/cs.CL"},
+  {"name": "arXiv CS.CV", "url": "https://rss.arxiv.org/rss/cs.CV"},
+  {"name": "arXiv CS.RO", "url": "https://rss.arxiv.org/rss/cs.RO"},
+  {"name": "arXiv stat.ML", "url": "https://rss.arxiv.org/rss/stat.ML"},
+  {"name": "arXiv CS.AI", "url": "https://rss.arxiv.org/rss/cs.AI"}
+]

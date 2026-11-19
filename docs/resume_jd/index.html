@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>邢洲 · AI 资深架构师 — 个人主页</title>
+<meta name="description" content="邢洲，10+ 年 IT/AI 系统工程经验，AI 资深架构师。聚焦大模型应用、Agent 框架与组件研发、AI Native 平台架构。">
+<style>
+/* ============================================================
+   Palette & Typography — academic paper × executive profile
+   ============================================================ */
+:root{
+  --paper:#faf9f6;
+  --paper-2:#f3f1ec;
+  --ink:#20272e;
+  --ink-soft:#414c56;
+  --muted:#6f7a84;
+  --line:#cfd2d4;
+  --line-soft:#e3e2dd;
+  --accent:#23594f;        /* deep academic green */
+  --accent-soft:#e7efeb;
+  --gold:#9a7b48;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",Georgia,"Times New Roman",serif;
+  --sans:"Noto Sans CJK SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(900px 500px at 8% -8%,rgba(35,89,79,.05),transparent 60%),
+    radial-gradient(700px 400px at 100% 0%,rgba(154,123,72,.05),transparent 55%);
+}
+::selection{background:var(--accent-soft);color:var(--accent)}
+a{color:inherit;text-decoration:none}
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead{
+  max-width:1080px;margin:0 auto;padding:54px 32px 30px;
+  text-align:center;position:relative;
+}
+.masthead::after{
+  content:"";display:block;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line) 12%,var(--ink) 50%,var(--line) 88%,transparent);
+  margin-top:30px;
+}
+.eyebrow{
+  font-family:var(--sans);font-size:.72rem;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:18px;
+}
+.masthead h1{
+  font-size:3.5rem;line-height:1.15;font-weight:700;letter-spacing:.14em;
+  text-indent:.14em;color:var(--ink);
+}
+.masthead .title{
+  font-family:var(--sans);font-size:1rem;letter-spacing:.12em;
+  color:var(--accent);margin-top:12px;font-weight:600;
+}
+.masthead .title span{color:var(--gold);margin:0 .5em}
+.contact{
+  font-family:var(--sans);font-size:.82rem;color:var(--muted);
+  margin-top:20px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px 22px;
+}
+.contact a{border-bottom:1px solid transparent;transition:.2s}
+.contact a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.quote{
+  font-style:italic;color:var(--ink-soft);margin-top:24px;
+  font-size:1rem;letter-spacing:.02em;
+}
+.quote::before,.quote::after{content:"“ " ;color:var(--line)}
+.quote::after{content:" ”"}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.layout{
+  max-width:1080px;margin:0 auto;padding:36px 32px 80px;
+  display:grid;grid-template-columns:300px 1fr;gap:56px;
+  align-items:start;
+}
+.rail{position:sticky;top:30px}
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr;gap:40px}
+  .rail{position:static}
+}
+
+/* ============================================================
+   Section scaffolding with academic numbering
+   ============================================================ */
+section{margin-bottom:46px}
+.sec-head{
+  display:flex;align-items:baseline;gap:12px;
+  border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:20px;
+}
+.sec-num{
+  font-family:var(--mono);font-size:.78rem;color:var(--accent);
+  font-weight:700;letter-spacing:.05em;
+}
+.sec-title{
+  font-size:1.25rem;font-weight:700;letter-spacing:.08em;color:var(--ink);
+}
+.sec-en{
+  margin-left:auto;font-family:var(--sans);font-size:.66rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+}
+
+/* ============================================================
+   Rail blocks
+   ============================================================ */
+.block{margin-bottom:30px}
+.block h3{
+  font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:12px;
+  border-bottom:1px solid var(--line-soft);padding-bottom:6px;
+}
+.interest-list{display:flex;flex-wrap:wrap;gap:6px}
+.interest-list span{
+  font-family:var(--sans);font-size:.74rem;padding:3px 9px;
+  border:1px solid var(--line);border-radius:2px;color:var(--ink-soft);
+  background:var(--paper-2);
+}
+.kv{font-size:.86rem;line-height:1.7}
+.kv div{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dotted var(--line)}
+.kv div:last-child{border-bottom:0}
+.kv .k{color:var(--muted)}
+.kv .v{color:var(--ink);font-weight:600;text-align:right}
+.cred-list{list-style:none;font-size:.85rem}
+.cred-list li{padding:6px 0;border-bottom:1px solid var(--line-soft);position:relative;padding-left:14px}
+.cred-list li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+.cred-list .yr{font-family:var(--mono);font-size:.74rem;color:var(--muted);float:right}
+
+/* ============================================================
+   Abstract (academic)
+   ============================================================ */
+.abstract{
+  background:var(--paper-2);border:1px solid var(--line-soft);
+  border-left:3px solid var(--accent);
+  padding:22px 26px;font-size:.96rem;color:var(--ink-soft);
+}
+.abstract .lbl{
+  font-family:var(--sans);font-size:.68rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--accent);font-weight:700;
+  display:block;margin-bottom:10px;
+}
+.abstract p{margin-bottom:10px;text-align:justify}
+.abstract p:last-child{margin-bottom:0}
+.abstract strong{color:var(--ink)}
+
+/* ============================================================
+   Competency matrix (managerial)
+   ============================================================ */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}
+@media(max-width:560px){.matrix{grid-template-columns:1fr}}
+.matrix .row{padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.matrix .row .name{font-weight:700;font-size:.92rem;color:var(--ink)}
+.matrix .row .desc{font-family:var(--sans);font-size:.78rem;color:var(--muted);line-height:1.6;margin-top:2px}
+.matrix .row .tag{
+  font-family:var(--mono);font-size:.62rem;color:var(--accent);
+  border:1px solid var(--accent);padding:0 5px;margin-left:8px;vertical-align:2px;
+}
+
+/* ============================================================
+   Timeline (executive career)
+   ============================================================ */
+.timeline{position:relative;padding-left:22px}
+.timeline::before{
+  content:"";position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:var(--line);
+}
+.job{position:relative;margin-bottom:30px}
+.job::before{
+  content:"";position:absolute;left:-22px;top:9px;width:9px;height:9px;
+  background:var(--paper);border:2px solid var(--accent);border-radius:50%;
+}
+.job .meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;align-items:baseline}
+.job .role{font-size:1.05rem;font-weight:700;color:var(--ink)}
+.job .period{font-family:var(--mono);font-size:.76rem;color:var(--gold)}
+.job .org{font-family:var(--sans);font-size:.84rem;color:var(--accent);margin:2px 0 8px}
+.job ul{list-style:none;padding-left:0}
+.job li{position:relative;padding-left:16px;font-size:.9rem;color:var(--ink-soft);margin-bottom:5px;text-align:justify}
+.job li::before{content:"·";position:absolute;left:2px;color:var(--gold);font-weight:700}
+.job strong{color:var(--ink)}
+
+/* ============================================================
+   Selected works (academic bibliography style)
+   ============================================================ */
+.works{list-style:none;counter-reset:w}
+.works li{
+  counter-increment:w;position:relative;padding:14px 0 14px 42px;
+  border-bottom:1px solid var(--line-soft);
+}
+.works li::before{
+  content:"[" counter(w) "]";position:absolute;left:0;top:14px;
+  font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:700;
+}
+.works .w-title{font-weight:700;font-size:.98rem;color:var(--ink)}
+.works .w-venue{font-style:italic;color:var(--gold);font-size:.86rem}
+.works .w-year{font-family:var(--mono);font-size:.76rem;color:var(--muted);float:right}
+.works .w-desc{font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);margin-top:5px;line-height:1.7}
+
+/* ============================================================
+   Education & Footer
+   ============================================================ */
+.edu{font-size:.92rem}
+.edu .school{font-weight:700}
+.edu .detail{font-family:var(--sans);font-size:.82rem;color:var(--muted)}
+footer{
+  border-top:1px solid var(--ink);max-width:1080px;margin:0 auto;
+  padding:26px 32px 50px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;font-family:var(--sans);font-size:.76rem;color:var(--muted);
+}
+footer a{color:var(--accent)}
+footer .items{display:flex;gap:20px;flex-wrap:wrap}
+
+/* ============================================================
+   Print
+   ============================================================ */
+@media print{
+  body{background:#fff}
+  .masthead{padding-top:0}
+  .rail{position:static}
+  a{text-decoration:none}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="eyebrow">Curriculum Vitae &nbsp;·&nbsp; Personal Profile</div>
+  <h1>邢 洲</h1>
+  <div class="title">AI 资深架构师 <span>·</span> 大模型与 Agent 平台技术负责人 <span>·</span> AI Native 全栈专家</div>
+  <div class="contact">
+    <a href="tel:+8617675616902">+86 176-7561-6902</a>
+    <a href="mailto:geek.yukun@gmail.com">geek.yukun@gmail.com</a>
+    <a href="http://43.139.19.97" target="_blank" rel="noopener">43.139.19.97</a>
+    <a href="https://github.com/zhouzxing" target="_blank" rel="noopener">github.com/zhouzxing</a>
+    <span>广东 · 深圳</span>
+  </div>
+  <p class="quote">把大模型从「能对话」做到「能上线、能交付、能规模化」。</p>
+</header>
+
+<div class="layout">
+
+  <!-- ===================== LEFT RAIL ===================== -->
+  <aside class="rail">
+
+    <div class="block">
+      <h3>Research Interests</h3>
+      <div class="interest-list">
+        <span>大模型应用</span><span>Agent 框架</span><span>多智能体</span>
+        <span>RAG / GraphRAG</span><span>MCP 工具生态</span><span>上下文工程</span>
+        <span>推理优化</span><span>AI Native 架构</span><span>分布式系统</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Core Competencies</h3>
+      <div class="kv">
+        <div><span class="k">AI / 大模型</span><span class="v">Expert</span></div>
+        <div><span class="k">Agent 架构</span><span class="v">Expert</span></div>
+        <div><span class="k">Python / Java</span><span class="v">Expert</span></div>
+        <div><span class="k">分布式 / 高并发</span><span class="v">Advanced</span></div>
+        <div><span class="k">云原生 / DevOps</span><span class="v">Advanced</span></div>
+        <div><span class="k">Go / C++ / TS</span><span class="v">Proficient</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Certifications</h3>
+      <ul class="cred-list">
+        <li>AWS SA – Professional <span class="yr">2022</span></li>
+        <li>AWS Advanced Networking <span class="yr">2023</span></li>
+        <li>AWS Security – Specialty <span class="yr">2022</span></li>
+        <li>CKAD <span class="yr">2020</span></li>
+        <li>HashiCorp Terraform / Consul <span class="yr">2023</span></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Education</h3>
+      <div class="edu">
+        <div class="school">山西大学 · 计算机科学与技术</div>
+        <div class="detail">工学学士 · 2013.09 – 2017.07</div>
+        <div class="detail">主攻服务端开发、网络通讯与数据存储；CET-6，辅修金融学 / 财务会计。</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main>
+
+    <section id="profile">
+      <div class="sec-head">
+        <span class="sec-num">01</span><span class="sec-title">个人简介</span>
+        <span class="sec-en">Abstract</span>
+      </div>
+      <div class="abstract">
+        <span class="lbl">Abstract</span>
+        <p><strong>10+ 年</strong> IT 与 AI 系统工程经验，现任 AI 资深架构师。长期聚焦<strong>大模型应用落地、Agent 框架与组件研发、AI Native 平台架构</strong>，横跨底层系统（Linux、网络、分布式、高并发）与 AI 全栈（RAG、Agent 运行时、多智能体编排、推理优化），具备从需求洞察到规模化上线的全链路交付能力。</p>
+        <p>主导基于 LangChain / LangGraph / Dify 的 Agent 运行时与组件化平台设计，覆盖 ReAct 推理循环、Function Calling / MCP 工具调用、短期上下文工程与长期记忆（RAG + 向量库 + GraphRAG）；熟悉 LoRA / QLoRA 微调与 vLLM / llama.cpp / TensorRT-LLM 推理优化。曾交付 QPS 10W+、TPS 1W+ 的金融级高并发系统，兼具架构视野与工程落地深度。</p>
+      </div>
+    </section>
+
+    <section id="competence">
+      <div class="sec-head">
+        <span class="sec-num">02</span><span class="sec-title">专业能力</span>
+        <span class="sec-en">Competency Matrix</span>
+      </div>
+      <div class="matrix">
+        <div class="row"><div class="name">Agent 框架与组件<span class="tag">CORE</span></div><div class="desc">LangChain / LangGraph / Dify / MCP，运行时、工具网关、多智能体编排</div></div>
+        <div class="row"><div class="name">大模型应用与 RAG</div><div class="desc">混合检索 + Rerank、GraphRAG、上下文工程、模型评测</div></div>
+        <div class="row"><div class="name">工程与架构</div><div class="desc">微服务、分布式事务（Seata）、Redis / Kafka、高并发与性能调优</div></div>
+        <div class="row"><div class="name">AI Infra</div><div class="desc">vLLM / llama.cpp / TensorRT-LLM、量化、KV Cache、动态批处理</div></div>
+        <div class="row"><div class="name">云原生与可观测</div><div class="desc">Docker / K8s / CI-CD、Prometheus / Grafana / OpenTelemetry</div></div>
+        <div class="row"><div class="name">全栈与多端</div><div class="desc">Python / Java / Go / C++ / TypeScript；Vue / React / Uniapp</div></div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="sec-head">
+        <span class="sec-num">03</span><span class="sec-title">工作经历</span>
+        <span class="sec-en">Professional Experience</span>
+      </div>
+      <div class="timeline">
+
+        <div class="job">
+          <div class="meta"><span class="role">AI 应用 &amp; 平台架构师（技术负责人）</span><span class="period">03.2021 — 至今</span></div>
+          <div class="org">垚阳培极科技（深圳） · 深圳 福田</div>
+          <ul>
+            <li>主导「端侧智能体平台 + 业务中台 + DevOps 体系」三条技术主线，统筹需求评审、架构设计与核心交付。</li>
+            <li>基于 Spring Boot / Python 构建大模型应用与 Agent 编排能力，落地对话记忆（RAG + 向量检索）、意图识别、音色 / 角色切换，并设计端云协同方案。</li>
+            <li>设计电商 / OA 微服务中台 20+ 模块（Seata 分布式事务 + Redis 缓存），支撑 <strong>250W 级</strong>行业合同交付。</li>
+            <li>建设 CI/CD 与 Docker / Nginx 标准化交付体系，显著降低发布耗时与线上故障率。</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="meta"><span class="role">高级软件工程师（算法与平台组）</span><span class="period">09.2017 — 12.2020</span></div>
+          <div class="org">雅乐美森 · 服务方：天津大学 / 人民银行数据中心 / 金融科技机构 · 北京 中关村</div>
+          <ul>
+            <li>主导高并发交易转账模块，Redis 分布式锁 + Seata + Crontab 对账，达成 <strong>QPS 10W+ / TPS 1W+</strong>，误差率 0.01。</li>
+            <li>基于 Python / Pandas / Scikit-learn / TensorFlow 完成特征工程、模型训练评估与期货量化策略回归测试。</li>
+            <li>舆情风控 NLP：Scrapy 采集、Goose3 / NLTK 文本处理、VADER / SnowNLP 情感分析、BERTopic 主题建模、Neo4j 图分析。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="works">
+      <div class="sec-head">
+        <span class="sec-num">04</span><span class="sec-title">代表工作</span>
+        <span class="sec-en">Selected Works</span>
+      </div>
+      <ol class="works">
+        <li>
+          <div><span class="w-title">企业级 Agent 运行时与组件化平台</span> <span class="w-year">2025—至今</span></div>
+          <div class="w-venue">核心架构设计与研发 · GitHub: Agent_App_From_Scratch</div>
+          <div class="w-desc">ReAct 循环、Function Calling / MCP 工具网关、LangGraph 图状态机编排、多智能体协作；短期上下文工程与长期记忆（向量 + BM25 + Rerank、GraphRAG）；Agent 沙箱隔离与 OpenTelemetry 可观测。</div>
+        </li>
+        <li>
+          <div><span class="w-title">AI 情报聚合与模型能力大盘</span> <span class="w-year">2025—至今</span></div>
+          <div class="w-venue">全栈研发与数据架构 · 43.139.19.97</div>
+          <div class="w-desc">从 0 到 1 搭建九大模块；多源采集与清洗（9 类关键词 × 2 城市），沉淀 111 条 AI 岗位、模型榜单与 Agent 平台选型数据，数据驱动技术追踪。</div>
+        </li>
+        <li>
+          <div><span class="w-title">小智 ESP32 端侧 AI 智能体平台</span> <span class="w-year">2025—至今</span></div>
+          <div class="w-venue">架构设计与核心研发 · 深圳 南山</div>
+          <div class="w-desc">面向导游、儿童玩具、银发经济等场景的端云协同方案；Spring Boot + Vue 全栈交付，Docker / Nginx 容器化部署，覆盖设备监控、音色定制与对话记录。</div>
+        </li>
+        <li>
+          <div><span class="w-title">舆情与风控大模型智能分析平台</span> <span class="w-year">2018—2020</span></div>
+          <div class="w-venue">算法与平台研发 · 北京 中关村</div>
+          <div class="w-desc">打通采购 / 爬取数据源与内部日志平台，构建文本处理、情感分析、主题建模与图关系分析链路，并以大模型 + RAG 增强报告解析与知识检索。</div>
+        </li>
+        <li>
+          <div><span class="w-title">高并发金融交易转账与量化策略系统</span> <span class="w-year">2017—2018</span></div>
+          <div class="w-venue">核心研发与性能优化 · 北京 中关村</div>
+          <div class="w-desc">QPS 10W+ / TPS 1W+ 转账模块，分布式事务与缓存一致性保障；Jmeter 压测驱动性能优化，数据误差率控制在 0.01。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="contributions">
+      <div class="sec-head">
+        <span class="sec-num">05</span><span class="sec-title">开源与技术沉淀</span>
+        <span class="sec-en">Contributions</span>
+      </div>
+      <div class="matrix">
+        <div class="row"><div class="name">开源实践</div><div class="desc">GitHub（zhouzxing）80+ 公开仓库：Agent 应用、AI 情报聚合、监控平台、在线评测、人脸识别考勤等。</div></div>
+        <div class="row"><div class="name">源码研读</div><div class="desc">Linux 内核、Docker / K8s、Redis / Kafka、JVM 等系统软件源码持续研读。</div></div>
+        <div class="row"><div class="name">知识体系</div><div class="desc">体系化整理 AI / 大模型 / Agent 架构、RAG、推理优化、云原生与性能优化技术笔记。</div></div>
+        <div class="row"><div class="name">能力输出</div><div class="desc">AI 技能培训与技能评测系统的 0-1 设计，覆盖招聘市场洞察与学习路线。</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div>© 2026 邢洲 · AI 资深架构师 &nbsp;|&nbsp; 最后更新：2026 年 11 月</div>
+  <div class="items">
+    <a href="mailto:geek.yukun@gmail.com">Email</a>
+    <a href="https://github.com/zhouzxing" target="_blank" rel="noopener">GitHub</a>
+    <a href="http://43.139.19.97" target="_blank" rel="noopener">Portfolio</a>
+    <a href="./resume.pdf" target="_blank" rel="noopener">Download Résumé (PDF)</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 生态嗅探系统 · 大盘汇报</title>
+<link rel="stylesheet" href="styles.css">
+<link id="theme-css" rel="stylesheet" href="themes/gov.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div>
+      <h1>AI 生态嗅探系统 <span class="sub">资讯 · Agent · JD · 监控 · 大盘</span></h1>
+      <div class="meta-line">数据更新 <span id="data-updated">—</span> · 契约版本 <span id="contract-version">—</span></div>
+    </div>
+    <label class="theme-picker">大盘样式
+      <select id="theme-select" aria-label="切换大盘样式"></select>
+    </label>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+
+  <main>
+    <section class="view active" id="view-overview">
+      <h2>一眼总览</h2>
+      <div class="grid" id="overview-body"></div>
+      <div class="panel" id="overview-notes"></div>
+    </section>
+
+    <section class="view" id="view-opportunity">
+      <h2>投资 / 市场机会</h2>
+      <div class="grid" id="opportunity-body"></div>
+    </section>
+
+    <section class="view" id="view-alerts">
+      <h2>预警与敏感度</h2>
+      <div id="alerts-body"></div>
+    </section>
+
+    <section class="view" id="view-industry">
+      <h2>行业 / 技术动向</h2>
+      <div class="two-col">
+        <div class="panel"><h3>资讯趋势（近 7 日）</h3><div id="industry-trend"></div></div>
+        <div class="panel"><h3>高频关键词</h3><div class="chips" id="industry-keywords"></div></div>
+      </div>
+      <div class="panel"><h3>预判信号</h3><div id="industry-signals"></div></div>
+      <div class="panel"><h3>论文方向分布</h3><div id="research-directions"></div></div>
+    </section>
+
+    <section class="view" id="view-talent">
+      <h2>岗位与人才储备</h2>
+      <div class="grid" id="talent-kpi"></div>
+      <div class="two-col">
+        <div class="panel"><h3>薪资段分布</h3><div id="talent-salary"></div></div>
+        <div class="panel"><h3>热门技能栈</h3><div class="chips" id="talent-skills"></div></div>
+      </div>
+      <div class="panel"><h3>高薪岗位 TOP</h3><div id="talent-salaries"></div></div>
+      <div class="panel"><h3>简历针对性优化建议</h3><div id="talent-resume"></div></div>
+    </section>
+
+    <section class="view" id="view-rankings">
+      <h2>排行榜</h2>
+      <div class="panel"><h3>模型厂商（产品能力六维）</h3><div id="rank-model"></div></div>
+      <div class="panel"><h3>Agent 厂商（功能特性）</h3><div id="rank-agent"></div></div>
+      <div class="panel"><h3>开源社区热度（科研 / 工程 / homelab / 教育培训）</h3><div id="rank-oss"></div></div>
+    </section>
+
+    <section class="view" id="view-monitor">
+      <h2>监控中心</h2>
+      <div class="grid" id="monitor-kpi"></div>
+      <div class="panel"><h3>数据源稳定性（42 渠道）</h3><div id="monitor-channels"></div></div>
+      <div class="panel"><h3>反爬 / 工具改进建议</h3><div id="monitor-improvements"></div></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>前端只读取 <code>api/data.js</code> 契约，不含任何 Python 模板。</span>
+    <span id="footer-time"></span>
+  </footer>
+</div>
+
+<script src="../api/data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

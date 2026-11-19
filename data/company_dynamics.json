@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "purpose": "公司商业与研发动态（人工维护的示例数据）",
+    "source": "notes/docs/算法与数据处理/人工智能/labs/AI生态嗅探系统.md",
+    "verified": false,
+    "note": "数据来自初步文档，未做二次核验；接入实时源后应以抓取数据覆盖，verified 置 true。"
+  },
+  "events": [
+    {
+      "id": "openai-valuation-202611",
+      "vendor": "OpenAI",
+      "region": "int",
+      "event_type": "估值",
+      "headline": "估值约 1.25 万亿美元",
+      "detail": "截至 2026 年 11 月，处于全球厂商第一梯队。",
+      "date": "2026-11",
+      "tags": ["估值", "头部厂商"]
+    },
+    {
+      "id": "anthropic-valuation-ipo-202611",
+      "vendor": "Anthropic",
+      "region": "int",
+      "event_type": "估值/IPO",
+      "headline": "估值约 9650 亿美元，启动 IPO 路演",
+      "detail": "预计登陆纳斯达克；年化营收约 810 亿美元，反超 OpenAI 约 500 亿美元。",
+      "date": "2026-11",
+      "tags": ["估值", "IPO", "营收"]
+    },
+    {
+      "id": "deepseek-valuation-202611",
+      "vendor": "DeepSeek",
+      "region": "cn",
+      "event_type": "估值",
+      "headline": "估值约 890 亿美元（全球第五）",
+      "detail": "极致性价比 + 代码推理，MoE 架构代表。",
+      "date": "2026-11",
+      "tags": ["估值", "开源", "MoE"]
+    },
+    {
+      "id": "moonshot-valuation-202611",
+      "vendor": "月之暗面",
+      "region": "cn",
+      "event_type": "估值",
+      "headline": "估值约 500 亿美元（全球第七）",
+      "detail": "Kimi K3.1 Pro，长文档与低幻觉控制，SuperCLUE 国内第一。",
+      "date": "2026-11",
+      "tags": ["估值", "长上下文"]
+    },
+    {
+      "id": "zhipu-glm-5-202611",
+      "vendor": "智谱AI",
+      "region": "cn",
+      "event_type": "产品线",
+      "headline": "GLM-5.2 / 5.3 迭代",
+      "detail": "长上下文与工程开发，国内开源第一梯队。",
+      "date": "2026-11",
+      "tags": ["产品线", "开源"]
+    },
+    {
+      "id": "tencent-hunyuan-hy4-202611",
+      "vendor": "腾讯",
+      "region": "cn",
+      "event_type": "开源",
+      "headline": "混元 Hy4 开源权重（770B MoE）",
+      "detail": "原生视觉推理与计算机使用能力。",
+      "date": "2026-11",
+      "tags": ["开源", "MoE", "多模态"]
+    },
+    {
+      "id": "meta-muse-wonder-202611",
+      "vendor": "Meta",
+      "region": "int",
+      "event_type": "产品线",
+      "headline": "Muse Wonder 系列，主打长期记忆与消费级 AI",
+      "detail": "面向消费级场景的记忆能力探索。",
+      "date": "2026-11",
+      "tags": ["产品线", "记忆"]
+    },
+    {
+      "id": "baidu-ernie-flash-202611",
+      "vendor": "百度",
+      "region": "cn",
+      "event_type": "产品线",
+      "headline": "文心 ERNIE 5.5 推出 1M 上下文 Flash 版本",
+      "detail": "中文知识、搜索与企业应用方向。",
+      "date": "2026-11",
+      "tags": ["产品线", "长上下文"]
+    },
+    {
+      "id": "gemini-pricing-2026",
+      "vendor": "Google DeepMind",
+      "region": "int",
+      "event_type": "收费变动",
+      "headline": "Gemini 2.5 Flash $0.30/$2.50、2.0 Flash $0.15/$0.60 per 1M tok",
+      "detail": "低价多模态路线；价格以 models.json 中定价字段为准，变动需人工核对官方公告。",
+      "date": "2026",
+      "tags": ["收费变动", "多模态"]
+    },
+    {
+      "id": "deepseek-pricing-2026",
+      "vendor": "DeepSeek",
+      "region": "cn",
+      "event_type": "收费变动",
+      "headline": "V3.1 $0.28/$0.70、R1 $0.55/$2.19 per 1M tok",
+      "detail": "极致性价比路线，开源权重 + MIT 许可。",
+      "date": "2026",
+      "tags": ["收费变动", "开源"]
+    },
+    {
+      "id": "anthropic-claude-code-use-2026",
+      "vendor": "Anthropic",
+      "region": "int",
+      "event_type": "研发动态",
+      "headline": "Claude 4 Sonnet / Opus 强化 Computer Use 与 Tool Use",
+      "detail": "代码与工具调用能力，适合自动操作软件的 Agent。",
+      "date": "2026",
+      "tags": ["研发动态", "Agent", "Tool Use"]
+    },
+    {
+      "id": "hermes-agent-2026",
+      "vendor": "NousResearch",
+      "region": "int",
+      "event_type": "研发动态",
+      "headline": "Hermes Agent：技能系统 + 持久化记忆 + 多 Agent 协作",
+      "detail": "开源 Agent 工程落地代表，GitHub 热度见榜单。",
+      "date": "2026",
+      "tags": ["研发动态", "开源", "Harness"]
+    }
+  ]
+}

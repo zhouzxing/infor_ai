@@ -1,0 +1,21 @@
+/* 看板娘：明亮卡片风，圆角与柔和大色块，适合日常运营浏览 */
+:root {
+  --bg: #f3f5fb;
+  --card: #ffffff;
+  --ink: #24292f;
+  --dim: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ff6b81;
+  --good: #22c55e;
+  --warn: #f59e0b;
+  --bad: #ef4444;
+  --radius: 16px;
+}
+body { background-image: radial-gradient(circle at 10% 0%, #ffe8ed 0, transparent 32%); }
+.topbar { box-shadow: 0 6px 20px rgba(0,0,0,.05); }
+.tab { border-radius: 999px; }
+.tab.active { box-shadow: 0 4px 10px rgba(255,107,129,.4); }
+.card, .panel { box-shadow: 0 4px 16px rgba(0,0,0,.05); }
+.kpi-value { color: var(--accent); }
+h2 { color: #111827; }
+.chip { border-radius: 999px; }

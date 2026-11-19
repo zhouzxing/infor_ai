@@ -1,0 +1,530 @@
+[
+  {
+    "name": "Google News",
+    "region": "int",
+    "url": "https://news.google.com/rss/search?q=AI+OR+LLM+OR+GPT+OR+agent+OR+model+OR+OpenAI+OR+Claude&hl=en-US&gl=US&ceid=US:en",
+    "keywords": [
+      "ai",
+      "llm",
+      "gpt",
+      "chatgpt",
+      "openai",
+      "anthropic",
+      "claude",
+      "gemini",
+      "deepmind",
+      "transformer",
+      "neural",
+      "genai",
+      "machine learning",
+      "agentic",
+      "rag",
+      "mistral",
+      "copilot",
+      "deepseek",
+      "llama"
+    ]
+  },
+  {
+    "name": "TechCrunch AI",
+    "region": "int",
+    "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+    "keywords": []
+  },
+  {
+    "name": "The Verge AI",
+    "region": "int",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
+    "keywords": []
+  },
+  {
+    "name": "Ars Technica",
+    "region": "int",
+    "url": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+    "keywords": [
+      "ai",
+      "llm",
+      "openai",
+      "anthropic",
+      "deepmind",
+      "neural",
+      "robot",
+      "chip",
+      "quantum",
+      "google",
+      "microsoft",
+      "meta",
+      "apple",
+      "amazon",
+      "nvidia",
+      "ai model"
+    ]
+  },
+  {
+    "name": "Wired AI",
+    "region": "int",
+    "url": "https://www.wired.com/feed/tag/ai/latest/rss",
+    "keywords": []
+  },
+  {
+    "name": "MIT Tech Review",
+    "region": "int",
+    "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed/",
+    "keywords": [
+      "ai",
+      "llm",
+      "openai",
+      "anthropic",
+      "deepmind",
+      "neural",
+      "robot",
+      "nvidia",
+      "chip",
+      "ai model"
+    ]
+  },
+  {
+    "name": "VentureBeat AI",
+    "region": "int",
+    "url": "https://venturebeat.com/category/ai/feed/",
+    "keywords": []
+  },
+  {
+    "name": "CNBC AI",
+    "region": "int",
+    "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100006644",
+    "keywords": []
+  },
+  {
+    "name": "CNBC Markets",
+    "region": "int",
+    "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000108",
+    "keywords": [
+      "ai",
+      "llm",
+      "market",
+      "stock",
+      "trade",
+      "crypto",
+      "wall street",
+      "nvidia",
+      "tech"
+    ]
+  },
+  {
+    "name": "IEEE Spectrum",
+    "region": "int",
+    "url": "https://spectrum.ieee.org/rss/fulltext",
+    "keywords": [
+      "ai",
+      "llm",
+      "robot",
+      "chip",
+      "neural",
+      "quantum",
+      "ml",
+      "deep"
+    ]
+  },
+  {
+    "name": "Hugging Face Blog",
+    "region": "int",
+    "url": "https://huggingface.co/blog/feed.xml",
+    "keywords": [
+      "ai",
+      "llm",
+      "model",
+      "transformer",
+      "open",
+      "agent",
+      "rag",
+      "multimodal"
+    ]
+  },
+  {
+    "name": "OpenAI News",
+    "region": "int",
+    "url": "https://openai.com/news/rss.xml",
+    "keywords": []
+  },
+  {
+    "name": "Google DeepMind",
+    "region": "int",
+    "url": "https://deepmind.google/discover/blog/rss.xml",
+    "keywords": []
+  },
+  {
+    "name": "ZDNet AI",
+    "region": "int",
+    "url": "https://www.zdnet.com/topic/artificial-intelligence/rss.xml",
+    "keywords": []
+  },
+  {
+    "name": "CNET Tech",
+    "region": "int",
+    "url": "https://www.cnet.com/rss/news/",
+    "keywords": []
+  },
+  {
+    "name": "Reddit r/MachineLearning",
+    "region": "int",
+    "url": "https://www.reddit.com/r/MachineLearning/.rss",
+    "keywords": []
+  },
+  {
+    "name": "Reddit r/LocalLLaMA",
+    "region": "int",
+    "url": "https://www.reddit.com/r/LocalLLaMA/.rss",
+    "keywords": []
+  },
+  {
+    "name": "Hacker News (hnrss)",
+    "region": "int",
+    "url": "https://hnrss.org/newest?q=AI+OR+LLM+OR+GPT+OR+agent+OR+model+OR+OpenAI+OR+Claude",
+    "keywords": [
+      "ai",
+      "llm",
+      "gpt",
+      "chatgpt",
+      "openai",
+      "anthropic",
+      "claude",
+      "gemini",
+      "deepmind",
+      "deepseek",
+      "llama",
+      "transformer",
+      "machine learning",
+      "neural",
+      "robot",
+      "nvidia",
+      "agi"
+    ]
+  },
+  {
+    "name": "GeekerHub",
+    "region": "int",
+    "url": "https://www.geekerhub.com/feed",
+    "keywords": [
+      "ai",
+      "llm",
+      "openai",
+      "anthropic",
+      "gpt",
+      "claude",
+      "deepseek",
+      "llama",
+      "hugging",
+      "agent"
+    ]
+  },
+  {
+    "name": "Product Hunt AI",
+    "region": "int",
+    "url": "https://www.producthunt.com/topics/artificial-intelligence/feed",
+    "keywords": []
+  },
+  {
+    "name": "The Rundown AI",
+    "region": "int",
+    "url": "https://www.therundown.ai/feed",
+    "keywords": []
+  },
+  {
+    "name": "Import AI",
+    "region": "int",
+    "url": "https://importai.substack.com/feed",
+    "keywords": []
+  },
+  {
+    "name": "Investing.com Tech",
+    "region": "int",
+    "url": "https://www.investing.com/rss/news_285.rss",
+    "keywords": [
+      "ai",
+      "llm",
+      "nvidia",
+      "openai",
+      "tech",
+      "chip",
+      "market"
+    ]
+  },
+  {
+    "name": "CoinDesk (crypto+AI)",
+    "region": "int",
+    "url": "https://www.coindesk.com/arc/outboundfeeds/rss/?outputType=xml",
+    "keywords": [
+      "ai",
+      "llm",
+      "crypto",
+      "btc",
+      "nvidia",
+      "openai",
+      "agentic",
+      "ai trading"
+    ]
+  },
+  {
+    "name": "Yahoo Finance",
+    "region": "int",
+    "url": "https://finance.yahoo.com/rss/topstories",
+    "keywords": [
+      "ai",
+      "llm",
+      "nvidia",
+      "openai",
+      "tech",
+      "market",
+      "stock",
+      "trade"
+    ]
+  },
+  {
+    "name": "arXiv CS.CL",
+    "region": "int",
+    "url": "https://rss.arxiv.org/rss/cs.CL",
+    "keywords": [
+      "llm",
+      "language model",
+      "nlp",
+      "transformer",
+      "alignment",
+      "rag",
+      "agent",
+      "prompt",
+      "reasoning",
+      "neural"
+    ]
+  },
+  {
+    "name": "arXiv CS.CV",
+    "region": "int",
+    "url": "https://rss.arxiv.org/rss/cs.CV",
+    "keywords": [
+      "llm",
+      "vision transformer",
+      "diffusion",
+      "multimodal",
+      "video generation",
+      "generative",
+      "neural",
+      "perception"
+    ]
+  },
+  {
+    "name": "arXiv CS.RO",
+    "region": "int",
+    "url": "https://rss.arxiv.org/rss/cs.RO",
+    "keywords": [
+      "llm",
+      "language model",
+      "vla",
+      "vln",
+      "embodied",
+      "autonomous",
+      "reinforcement learning",
+      "sim2real",
+      "manipulation"
+    ]
+  },
+  {
+    "name": "arXiv stat.ML",
+    "region": "int",
+    "url": "https://rss.arxiv.org/rss/stat.ML",
+    "keywords": [
+      "llm",
+      "large language model",
+      "transformer",
+      "deep learning",
+      "neural",
+      "generative",
+      "alignment",
+      "inference"
+    ]
+  },
+  {
+    "name": "arXiv CS.AI",
+    "region": "int",
+    "url": "https://rss.arxiv.org/rss/cs.AI",
+    "keywords": [
+      "llm",
+      "language model",
+      "agent",
+      "rag",
+      "reinforcement learning",
+      "reasoning",
+      "tool use",
+      "planning",
+      "neural"
+    ]
+  },
+  {
+    "name": "V2EX",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/v2ex/tab/all",
+    "keywords": [
+      "ai",
+      "llm",
+      "gpt",
+      "chatgpt",
+      "openai",
+      "claude",
+      "gemini",
+      "deepseek",
+      "ai model",
+      "gpt-",
+      "codex",
+      "llama"
+    ]
+  },
+  {
+    "name": "Google News 中文",
+    "region": "cn",
+    "url": "https://news.google.com/rss/search?q=AI+OR+LLM+OR+GPT+OR+agent+OR+model+OR+OpenAI+OR+Claude&hl=zh-CN&gl=CN&ceid=CN:zh-CN",
+    "keywords": []
+  },
+  {
+    "name": "量子位 QbitAI",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/qbitai",
+    "keywords": []
+  },
+  {
+    "name": "爱范儿 ifanr",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/ifanr",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "智能",
+      "gpt",
+      "机器人"
+    ]
+  },
+  {
+    "name": "少数派 sspai",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/sspai",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "智能",
+      "gpt",
+      "agent"
+    ]
+  },
+  {
+    "name": "IT之家",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/ithome",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "gpt",
+      "chatgpt",
+      "openai",
+      "机器人",
+      "芯片"
+    ]
+  },
+  {
+    "name": "极客公园",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/geekpark",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "gpt",
+      "openai",
+      "机器人",
+      "智能"
+    ]
+  },
+  {
+    "name": "雷锋网",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/leiphone",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "gpt",
+      "openai",
+      "机器人",
+      "智能",
+      "算法"
+    ]
+  },
+  {
+    "name": "InfoQ 中文",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/infoq",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "gpt",
+      "openai",
+      "机器人",
+      "智能",
+      "算法"
+    ]
+  },
+  {
+    "name": "钛媒体 TMPost",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/tmtpost",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "智能",
+      "gpt",
+      "机器人",
+      "算法"
+    ]
+  },
+  {
+    "name": "虎嗅",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/huxiu",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "智能",
+      "gpt",
+      "机器人",
+      "算法"
+    ]
+  },
+  {
+    "name": "36氪",
+    "region": "cn",
+    "url": "https://rsshub.rssforever.com/36kr",
+    "keywords": [
+      "ai",
+      "人工智能",
+      "大模型",
+      "llm",
+      "智能",
+      "gpt",
+      "机器人",
+      "算法",
+      "融资"
+    ]
+  }
+]

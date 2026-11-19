@@ -1,0 +1,84 @@
+%-------------------------------------------------------------------------------
+\cvsection{核心项目}
+
+%---------------------------------------------------------
+\begin{cventries}
+
+%---------------------------------------------------------
+  \cventry
+    {企业级 Agent 运行时与组件化平台（自研 / 开源）} % title
+    {核心架构设计 \& 研发} % organization
+    {GitHub: Agent\_App\_From\_Scratch} % location
+    {2025 - 至今} % date
+    {
+      \begin{cvitems}
+        \item {目标：验证「Agent 能否取代 OS / 优化 Infra」，以组件化方式从零构建 AI Native 应用架构与多模态应用底座。}
+        \item {运行时：实现 ReAct 推理循环、Function Calling / \textbf{MCP} 工具网关、DAG 工作流与图状态机（LangGraph）编排；支持 Manager-Worker 多智能体、消息总线、断点续传与重试。}
+        \item {记忆系统：短期上下文工程（滑动窗口 / 动态裁剪 / 摘要压缩 / Prompt Cache）+ 长期记忆（RAG 混合检索：向量 + BM25 + Rerank、向量库 Milvus/Qdrant/pgvector、GraphRAG/Neo4j）。}
+        \item {安全与可观测：Agent 沙箱隔离（cgroups / Namespace / Seccomp / gVisor）、HITL 人工审批、权限最小化；OpenTelemetry 全链路追踪编排、Prompt 流转与模型推理。}
+        \item {推理与评测：对比 vLLM / llama.cpp / Ollama / TensorRT-LLM，实践量化、KV Cache、动态批处理；构建模型能力与 Agent 效果评测集，量化延迟 / 吞吐 / 成本。}
+      \end{cvitems}
+    }
+
+%---------------------------------------------------------
+  \vspace{2.5mm}
+  \cventry
+    {AI 情报聚合与模型能力大盘（infor\_ai）}
+    {全栈研发 \& 数据架构}
+    {43.139.19.97} % location
+    {2025 - 至今} % date
+    {
+      \begin{cvitems}
+        \item {从 0 到 1 搭建 AI 情报平台：RSS / 资讯聚合、模型能力大盘、性能对比、模型库、Agent 平台对比、前沿论文、GitHub 热榜与 AI 岗位九大模块。}
+        \item {数据层：多源采集与清洗（9 类关键词 × 2 城市）、去重与热度排序，沉淀 \textbf{111 条} AI 岗位、模型榜单与 Agent 平台选型数据，支持模糊检索与多维筛选。}
+        \item {工程侧：前端可视化 + 后端数据处理 + 容器化部署（Docker / Nginx），以数据驱动方式持续追踪大模型、Agent 与行业岗位技术栈演进。}
+      \end{cvitems}
+    }
+
+%---------------------------------------------------------
+  \vspace{2.5mm}
+  \cventry
+    {小智 ESP32 端侧 AI 智能体平台}
+    {架构设计 \& 核心研发}
+    {深圳 · 南山} % location
+    {03. 2025 - 至今} % date
+    {
+      \begin{cvitems}
+        \item {背景：融资 100W 打造 ESP32 智能音箱，面向导游工具、儿童玩具、银发经济等场景，端云协同提供音色定制、角色切换、对话记录与设备监控。}
+        \item {职责：负责需求评审、系统/架构设计与接口文档；基于 ESP32-Java 项目裁剪二开，完成后端（Spring Boot / MySQL / Redis）与前端（Vue / Ant Design，全端响应式）一体化交付。}
+        \item {工程：Docker 容器化 + Nginx 反代/负载均衡，保障多端设备接入与服务端稳定运行。}
+      \end{cvitems}
+    }
+
+%---------------------------------------------------------
+  \vspace{2.5mm}
+  \cventry
+    {舆情与风控大模型智能分析平台}
+    {算法与平台研发}
+    {北京 · 中关村} % location
+    {12. 2018 - 12. 2020} % date
+    {
+      \begin{cvitems}
+        \item {面向敏感部门舆论监督与系统风险预警，打通采购/爬取数据源与内部日志平台，提供监控、预警与管理闭环。}
+        \item {技术栈：Java / Python / C、Scrapy、Goose3、NLTK、VADER、SnowNLP、BERTopic、Neo4j、Elasticsearch、Kibana / Grafana。}
+        \item {能力：网页正文提取、文本预处理、情感评分与分类、主题建模、图关系分析；以大模型 + RAG 思路增强报告解析与知识检索能力。}
+      \end{cvitems}
+    }
+
+%---------------------------------------------------------
+  \vspace{2.5mm}
+  \cventry
+    {高并发金融交易转账与量化策略系统}
+    {核心研发 \& 性能优化}
+    {北京 · 中关村} % location
+    {09. 2017 - 12. 2018} % date
+    {
+      \begin{cvitems}
+        \item {建设 QPS 10W+ / TPS 1W+ 转账模块：Seata 分布式事务 + Redis 分布式锁 + Crontab 定时对账，Jmeter 压测驱动性能优化，数据误差率控制在 0.01。}
+        \item {量化方向：基于 Python / Matlab / Pandas / NumPy / Scikit-learn / TensorFlow / Keras 完成策略实现、回归测试与历史数据分析。}
+      \end{cvitems}
+    }
+
+%---------------------------------------------------------
+\end{cventries}
+\vspace{4mm}

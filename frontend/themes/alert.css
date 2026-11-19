@@ -1,0 +1,21 @@
+/* 预警大盘：深色高密度，红黄告警色阶突出风险 */
+:root {
+  --bg: #14090a;
+  --card: #241316;
+  --ink: #f5e9ea;
+  --dim: #b8989b;
+  --line: #462227;
+  --accent: #ff7b72;
+  --good: #4ade80;
+  --warn: #fbbf24;
+  --bad: #ff4d4f;
+  --radius: 4px;
+}
+.app { max-width: 1600px; }
+.topbar { border: 1px solid var(--bad); box-shadow: 0 0 18px rgba(255,77,79,.15); }
+.tab { padding: 4px 10px; font-size: 12px; border-radius: 4px; }
+.panel { padding: 10px 12px; }
+table { font-size: 11px; }
+th, td { padding: 5px 6px; }
+.alert-item { border-left-width: 5px; background: rgba(255,77,79,.06); }
+.kpi-value { color: var(--bad); }

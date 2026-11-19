@@ -1,0 +1,35 @@
+{
+  "themes": [
+    {
+      "id": "gov",
+      "name": "政务大盘",
+      "css": "themes/gov.css",
+      "use_case": "领导/主管汇报：稳重配色、指标卡 + 排行 + 风险清单，一眼看清行业动态与投资机会。",
+      "palette": {"bg": "#0b1d33", "card": "#122a49", "accent": "#3fb950", "text": "#e6edf3"}
+    },
+    {
+      "id": "kanban",
+      "name": "看板娘",
+      "css": "themes/kanban.css",
+      "use_case": "日常运营：明亮卡片式布局 + 角色引导位，轻量活泼。",
+      "palette": {"bg": "#f5f7fb", "card": "#ffffff", "accent": "#ff6b81", "text": "#24292f"}
+    },
+    {
+      "id": "alert",
+      "name": "预警大盘",
+      "css": "themes/alert.css",
+      "use_case": "监控值守：深色高密度 + 告警色阶，突出失联源、反爬失败与行业敏感信号。",
+      "palette": {"bg": "#120a0a", "card": "#241414", "accent": "#f85149", "text": "#f0e6e6"}
+    }
+  ],
+  "sections": [
+    {"id": "overview", "title": "一眼总览", "source": "dashboard.kpi"},
+    {"id": "opportunity", "title": "投资/市场机会", "source": "dashboard.opportunities"},
+    {"id": "alerts", "title": "预警与敏感度", "source": "dashboard.alerts"},
+    {"id": "industry", "title": "行业/技术动向", "source": "dashboard.industry_pulse"},
+    {"id": "talent", "title": "岗位与人才储备", "source": "dashboard.talent"},
+    {"id": "rankings", "title": "模型/Agent/开源榜", "source": "dashboard.rankings"},
+    {"id": "monitor", "title": "监控中心", "source": "monitor"}
+  ],
+  "default_theme": "gov"
+}

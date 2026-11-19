@@ -1,0 +1,1028 @@
+{
+  "openai": {
+    "region": "int",
+    "name": "OpenAI",
+    "hq": "San Francisco, USA",
+    "year": 2015,
+    "products": [
+      {
+        "name": "GPT-5",
+        "context": "256K",
+        "modalities": [
+          "text",
+          "vision",
+          "code"
+        ],
+        "pricing": "$1.25/$10",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-08",
+        "evolution": "Unified reasoning, best cost/perf"
+      },
+      {
+        "name": "GPT-4.1",
+        "context": "1M",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$2/$8",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-04",
+        "evolution": "1M context, stronger coding/agentic"
+      },
+      {
+        "name": "GPT-4o",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision",
+          "audio"
+        ],
+        "pricing": "$2.50/$10",
+        "params": "~200B MoE",
+        "license": "Closed",
+        "release": "2024-05",
+        "evolution": "Real-time voice, unified multimodal"
+      },
+      {
+        "name": "o1",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "$15/$60",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-09",
+        "evolution": "First reasoning model"
+      },
+      {
+        "name": "o3",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "code",
+          "vision"
+        ],
+        "pricing": "$10/$40",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-04",
+        "evolution": "Deep reasoning, tool use"
+      },
+      {
+        "name": "o4-mini",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "code",
+          "vision"
+        ],
+        "pricing": "$0.50/$2",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-03",
+        "evolution": "Fastest reasoning, agentic use"
+      }
+    ]
+  },
+  "anthropic": {
+    "region": "int",
+    "name": "Anthropic",
+    "hq": "San Francisco, USA",
+    "year": 2021,
+    "products": [
+      {
+        "name": "Claude Opus 4",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$15/$75",
+        "params": "~500B+",
+        "license": "Closed",
+        "release": "2025-05",
+        "evolution": "Frontier reasoning, strongest coding"
+      },
+      {
+        "name": "Claude Sonnet 4",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$3/$15",
+        "params": "~200B",
+        "license": "Closed",
+        "release": "2025-05",
+        "evolution": "Balanced perf/cost"
+      },
+      {
+        "name": "Claude Haiku 4",
+        "context": "200K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$1/$5",
+        "params": "~50B",
+        "license": "Closed",
+        "release": "2025-05",
+        "evolution": "Fastest Claude"
+      },
+      {
+        "name": "Claude 3.5 Sonnet",
+        "context": "200K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$3/$15",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-06",
+        "evolution": "Vision, computer use"
+      }
+    ]
+  },
+  "google": {
+    "region": "int",
+    "name": "Google DeepMind",
+    "hq": "Mountain View, USA",
+    "year": 2010,
+    "products": [
+      {
+        "name": "Gemini 2.5 Pro",
+        "context": "1M",
+        "modalities": [
+          "text",
+          "vision",
+          "audio",
+          "video"
+        ],
+        "pricing": "$1.25/$10",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-06",
+        "evolution": "Frontier reasoning + multimodal"
+      },
+      {
+        "name": "Gemini 2.5 Flash",
+        "context": "1M",
+        "modalities": [
+          "text",
+          "vision",
+          "audio",
+          "video"
+        ],
+        "pricing": "$0.30/$2.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-06",
+        "evolution": "Best cost/perf"
+      },
+      {
+        "name": "Gemini 2.0 Flash",
+        "context": "1M",
+        "modalities": [
+          "text",
+          "vision",
+          "audio",
+          "video"
+        ],
+        "pricing": "$0.15/$0.60",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-12",
+        "evolution": "Agentic tool use"
+      },
+      {
+        "name": "Gemini 1.5 Pro",
+        "context": "2M",
+        "modalities": [
+          "text",
+          "vision",
+          "video"
+        ],
+        "pricing": "$3.50/$10.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-02",
+        "evolution": "2M context pioneer"
+      }
+    ]
+  },
+  "deepseek": {
+    "region": "cn",
+    "name": "DeepSeek",
+    "hq": "Hangzhou, China",
+    "year": 2023,
+    "products": [
+      {
+        "name": "DeepSeek-V3.1",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "$0.28/$0.70",
+        "params": "685B (37B active, MoE)",
+        "license": "MIT",
+        "release": "2025-03",
+        "evolution": "Hybrid thinking"
+      },
+      {
+        "name": "DeepSeek-R1",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "$0.55/$2.19",
+        "params": "685B (37B active, MoE)",
+        "license": "MIT",
+        "release": "2025-01",
+        "evolution": "Open reasoning model"
+      },
+      {
+        "name": "DeepSeek-V3",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "$0.28/$0.70",
+        "params": "685B (37B active, MoE)",
+        "license": "MIT",
+        "release": "2024-12",
+        "evolution": "Cost-efficient MoE"
+      }
+    ]
+  },
+  "qwen": {
+    "region": "cn",
+    "name": "阿里巴巴 (Alibaba)",
+    "hq": "Hangzhou, China",
+    "year": 2018,
+    "products": [
+      {
+        "name": "Qwen3.6 72B",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open/Free API",
+        "params": "72B",
+        "license": "Apache 2.0",
+        "release": "2025-05",
+        "evolution": "Multilingual reasoning"
+      },
+      {
+        "name": "Qwen2.5 72B",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "72B",
+        "license": "Apache 2.0",
+        "release": "2024-09",
+        "evolution": "Strongest open Chinese 72B"
+      },
+      {
+        "name": "Qwen2.5-Coder 72B",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "72B",
+        "license": "Apache 2.0",
+        "release": "2024-11",
+        "evolution": "Specialized coding"
+      },
+      {
+        "name": "Qwen2.5-VL 72B",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "72B",
+        "license": "Apache 2.0",
+        "release": "2024-12",
+        "evolution": "Open multimodal"
+      }
+    ]
+  },
+  "zhipu": {
+    "region": "cn",
+    "name": "智谱AI (Zhipu AI)",
+    "hq": "Beijing, China",
+    "year": 2019,
+    "products": [
+      {
+        "name": "GLM-4.5",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$0.50",
+        "params": "undisclosed",
+        "license": "MIT/Commercial",
+        "release": "2025-03",
+        "evolution": "128K multimodal open"
+      },
+      {
+        "name": "GLM-4-32B",
+        "context": "8K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "32B",
+        "license": "MIT",
+        "release": "2024-06",
+        "evolution": "Open 32B strong Chinese"
+      },
+      {
+        "name": "GLM-4-9B",
+        "context": "8K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "9B",
+        "license": "MIT",
+        "release": "2024-05",
+        "evolution": "Small open, on-device"
+      }
+    ]
+  },
+  "moonshot": {
+    "region": "cn",
+    "name": "月之暗面 (Moonshot AI)",
+    "hq": "Beijing, China",
+    "year": 2023,
+    "products": [
+      {
+        "name": "Kimi K2",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$0.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-03",
+        "evolution": "128K strong reasoning"
+      },
+      {
+        "name": "Kimi K1.5",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$0.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-10",
+        "evolution": "Multimodal strong Chinese"
+      },
+      {
+        "name": "Kimi Researcher",
+        "context": "200K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Free tier",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-01",
+        "evolution": "Research agent"
+      }
+    ]
+  },
+  "baichuan": {
+    "region": "cn",
+    "name": "百川智能 (Baichuan)",
+    "hq": "Beijing, China",
+    "year": 2023,
+    "products": [
+      {
+        "name": "Baichuan 4",
+        "context": "32K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "undisclosed",
+        "license": "MIT",
+        "release": "2025-01",
+        "evolution": "Strong Chinese open"
+      },
+      {
+        "name": "Baichuan 3",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "13B",
+        "license": "MIT",
+        "release": "2024-05",
+        "evolution": "13B dense open"
+      }
+    ]
+  },
+  "baidu": {
+    "region": "cn",
+    "name": "百度 (Baidu)",
+    "hq": "Beijing, China",
+    "year": 2000,
+    "products": [
+      {
+        "name": "ERNIE 4.5",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$1/$2",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-03",
+        "evolution": "128K multimodal"
+      },
+      {
+        "name": "ERNIE 4.0",
+        "context": "8K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$1/$2",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-04",
+        "evolution": "Stronger reasoning"
+      },
+      {
+        "name": "ERNIE X 1.0",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision",
+          "video"
+        ],
+        "pricing": "$1/$2",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-01",
+        "evolution": "Video support"
+      }
+    ]
+  },
+  "meta": {
+    "region": "int",
+    "name": "Meta AI",
+    "hq": "Menlo Park, USA",
+    "year": 2013,
+    "products": [
+      {
+        "name": "Llama 4 Maverick",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "400B (17B active, MoE)",
+        "license": "CC-BY-NC-4.0",
+        "release": "2025-04",
+        "evolution": "Strongest open MoE"
+      },
+      {
+        "name": "Llama 4 Scout",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "109B (17B active, MoE)",
+        "license": "CC-BY-NC-4.0",
+        "release": "2025-04",
+        "evolution": "First MoE Llama"
+      },
+      {
+        "name": "Llama 3.3 70B",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "70B",
+        "license": "Llama Community",
+        "release": "2024-12",
+        "evolution": "Best open 70B class"
+      },
+      {
+        "name": "Llama 3.1 405B",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "405B",
+        "license": "Llama Community",
+        "release": "2024-07",
+        "evolution": "First 405B open"
+      }
+    ]
+  },
+  "mistral": {
+    "region": "int",
+    "name": "Mistral AI",
+    "hq": "Paris, France",
+    "year": 2023,
+    "products": [
+      {
+        "name": "Mistral Large 2",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$0.50/$1.50",
+        "params": "123B",
+        "license": "Closed/Open-weights",
+        "release": "2024-06",
+        "evolution": "123B dense multilingual"
+      },
+      {
+        "name": "Mistral Medium 2",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$0.40/$1.20",
+        "params": "258B (MoE)",
+        "license": "Closed",
+        "release": "2025-06",
+        "evolution": "MoE medium 14B active"
+      },
+      {
+        "name": "Mistral Small 3",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "24B",
+        "license": "Apache 2.0",
+        "release": "2025-03",
+        "evolution": "Multimodal small open"
+      },
+      {
+        "name": "Codestral 25",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "22B",
+        "license": "Apache 2.0",
+        "release": "2024-09",
+        "evolution": "Best open coding"
+      },
+      {
+        "name": "Pixtral 12B",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "12B",
+        "license": "Apache 2.0",
+        "release": "2024-07",
+        "evolution": "Open multimodal"
+      }
+    ]
+  },
+  "xai": {
+    "region": "int",
+    "name": "xAI",
+    "hq": "San Francisco, USA",
+    "year": 2023,
+    "products": [
+      {
+        "name": "Grok 3",
+        "context": "131K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$3",
+        "params": "~500B+",
+        "license": "Closed",
+        "release": "2025-02",
+        "evolution": "Frontier reasoning 285 GPU"
+      },
+      {
+        "name": "Grok 2",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Free via X",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-09",
+        "evolution": "Free tier via X"
+      }
+    ]
+  },
+  "cohere": {
+    "region": "int",
+    "name": "Cohere",
+    "hq": "Toronto, Canada",
+    "year": 2019,
+    "products": [
+      {
+        "name": "Command R+",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$2.50/$10",
+        "params": "undisclosed",
+        "license": "Closed/Open-weights",
+        "release": "2024-06",
+        "evolution": "128K strong RAG"
+      },
+      {
+        "name": "Command R",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "$0.50/$2",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-03",
+        "evolution": "Enterprise RAG"
+      }
+    ]
+  },
+  "nvidia": {
+    "region": "int",
+    "name": "NVIDIA",
+    "hq": "Santa Clara, USA",
+    "year": 1993,
+    "products": [
+      {
+        "name": "Nemotron-4-340B",
+        "context": "32K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "340B (MoE)",
+        "license": "NVIDIA Open",
+        "release": "2024-01",
+        "evolution": "Early large MoE"
+      },
+      {
+        "name": "Llama-3.1-Nemotron-70B",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "70B",
+        "license": "Llama Community",
+        "release": "2024-11",
+        "evolution": "Enterprise fine-tuned"
+      }
+    ]
+  },
+  "sensetime": {
+    "region": "cn",
+    "name": "商汤科技 (SenseTime)",
+    "hq": "Shanghai, China",
+    "year": 2014,
+    "products": [
+      {
+        "name": "SenseNova 6.8 Flash",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.28/$0.28",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-03",
+        "evolution": "Multimodal strong Chinese"
+      },
+      {
+        "name": "SenseNova 5.6",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Free tier",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-10",
+        "evolution": "Free tier"
+      }
+    ]
+  },
+  "bytedance": {
+    "region": "cn",
+    "name": "字节跳动 (ByteDance)",
+    "hq": "Beijing, China",
+    "year": 2012,
+    "products": [
+      {
+        "name": "Doubao 1.6 Pro",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.28/$0.28",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-03",
+        "evolution": "Strong reasoning vision"
+      },
+      {
+        "name": "Doubao 1.5 Pro 32K",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision",
+          "code"
+        ],
+        "pricing": "$0.28/$0.28",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2024-11",
+        "evolution": "32K context code support"
+      }
+    ]
+  },
+  "minimax": {
+    "region": "cn",
+    "name": "MiniMax",
+    "hq": "Shanghai, China",
+    "year": 2021,
+    "products": [
+      {
+        "name": "MiniMax-Text-01",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$1.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-01",
+        "evolution": "API tool use multimodal"
+      }
+    ]
+  },
+  "stepfun": {
+    "region": "cn",
+    "name": "阶跃星辰",
+    "hq": "Shanghai, China",
+    "year": 2023,
+    "products": [
+      {
+        "name": "Step-2",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "$0.50/$1.50",
+        "params": "undisclosed",
+        "license": "Closed",
+        "release": "2025-01",
+        "evolution": "API tool use multimodal"
+      }
+    ]
+  },
+  "modelbest": {
+    "region": "cn",
+    "name": "面壁智能 (ModelBest)",
+    "hq": "Beijing, China",
+    "year": 2022,
+    "products": [
+      {
+        "name": "MiniCPM 3.0",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "undisclosed",
+        "license": "Apache 2.0",
+        "release": "2025-01",
+        "evolution": "Efficient multimodal on-device"
+      },
+      {
+        "name": "MiniCPM 2.6",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "8B",
+        "license": "Apache 2.0",
+        "release": "2024-08",
+        "evolution": "8B multimodal on-device"
+      }
+    ]
+  },
+  "ibm": {
+    "region": "int",
+    "name": "IBM Research",
+    "hq": "Armonk, USA",
+    "year": 1911,
+    "products": [
+      {
+        "name": "Granite 3.0 8B/22B",
+        "context": "128K",
+        "modalities": [
+          "text",
+          "vision"
+        ],
+        "pricing": "Open",
+        "params": "8B/22B",
+        "license": "Apache 2.0",
+        "release": "2024-12",
+        "evolution": "Multimodal open"
+      }
+    ]
+  },
+  "databricks": {
+    "region": "int",
+    "name": "Databricks",
+    "hq": "San Francisco, USA",
+    "year": 2013,
+    "products": [
+      {
+        "name": "DBRX",
+        "context": "32K",
+        "modalities": [
+          "text",
+          "code"
+        ],
+        "pricing": "Open",
+        "params": "132B (36B active, MoE)",
+        "license": "Apache 2.0",
+        "release": "2024-05",
+        "evolution": "Open MoE"
+      }
+    ]
+  },
+  "microsoft": {
+    "region": "int",
+    "name": "Microsoft Research",
+    "hq": "Redmond, USA",
+    "year": 1975,
+    "products": [
+      {
+        "name": "Phi-4",
+        "context": "16K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Azure Free",
+        "params": "14B",
+        "license": "MIT",
+        "release": "2024-11",
+        "evolution": "Strongest 14B synthetic data"
+      },
+      {
+        "name": "Phi-3.5-mini",
+        "context": "128K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "3.8B",
+        "license": "MIT",
+        "release": "2024-08",
+        "evolution": "3.8B 128K on-device"
+      }
+    ]
+  },
+  "bflds": {
+    "region": "int",
+    "name": "Black Forest Labs",
+    "hq": "Berlin, Germany",
+    "year": 2023,
+    "products": [
+      {
+        "name": "FLUX 1.1 Pro",
+        "context": "N/A",
+        "modalities": [
+          "image"
+        ],
+        "pricing": "API + Open",
+        "params": "12B",
+        "license": "FLUX Community",
+        "release": "2024-11",
+        "evolution": "High-quality image gen"
+      },
+      {
+        "name": "FLUX.1 Schnell",
+        "context": "N/A",
+        "modalities": [
+          "image"
+        ],
+        "pricing": "Open",
+        "params": "12B",
+        "license": "Apache 2.0",
+        "release": "2024-08",
+        "evolution": "Fastest 4-step"
+      }
+    ]
+  },
+  "stability": {
+    "region": "int",
+    "name": "Stability AI",
+    "hq": "San Francisco, USA",
+    "year": 2020,
+    "products": [
+      {
+        "name": "SD 3.5 Large/Turbo",
+        "context": "N/A",
+        "modalities": [
+          "image",
+          "video"
+        ],
+        "pricing": "Open weights",
+        "params": "8B",
+        "license": "Stability Community",
+        "release": "2024-10",
+        "evolution": "Stronger prompt adherence"
+      },
+      {
+        "name": "SDXL",
+        "context": "N/A",
+        "modalities": [
+          "image"
+        ],
+        "pricing": "Open weights",
+        "params": "2.6B",
+        "license": "Stability Community",
+        "release": "2023-07",
+        "evolution": "High-res image gen"
+      }
+    ]
+  },
+  "baai": {
+    "region": "cn",
+    "name": "智源研究院 (BAAI)",
+    "hq": "Beijing, China",
+    "year": 2018,
+    "products": [
+      {
+        "name": "SenseNova 1.0",
+        "context": "32K",
+        "modalities": [
+          "text"
+        ],
+        "pricing": "Open",
+        "params": "~100B",
+        "license": "Apache 2.0",
+        "release": "2023-10",
+        "evolution": "Chinese open-source"
+      }
+    ]
+  }
+}

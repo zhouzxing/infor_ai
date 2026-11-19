@@ -1,0 +1,1 @@
+/home/geeker/arch/code_repo/awesome-cv/Awesome-CV/awesome-cv.cls

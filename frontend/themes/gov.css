@@ -1,0 +1,19 @@
+/* 政务大盘：深蓝稳重，指标卡大字号、表格紧凑 */
+:root {
+  --bg: #081526;
+  --card: #102a43;
+  --ink: #e8f1fb;
+  --dim: #9db4c8;
+  --line: #1d3c5c;
+  --accent: #35c1f1;
+  --good: #2ecc71;
+  --warn: #f1c40f;
+  --bad: #ff6b6b;
+  --radius: 6px;
+}
+.topbar { border-left: 4px solid var(--accent); }
+h1 { letter-spacing: 1px; }
+.kpi-value { font-size: 30px; color: #fff; }
+.kpi-label { text-transform: none; }
+.table-row-odd { background: rgba(255,255,255,.02); }
+.panel { box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }

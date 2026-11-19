@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+output/
+api/data.js
+api/contract.json
+api/manifest.json

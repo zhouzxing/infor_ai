@@ -1,0 +1,53 @@
+{
+  "keywords": [
+    "AI 应用开发",
+    "Agent 开发",
+    "大模型开发",
+    "大模型算法",
+    "LLM",
+    "AIGC",
+    "多模态",
+    "LangChain",
+    "AI 算法工程师"
+  ],
+  "cities": [
+    "北京",
+    "上海",
+    "深圳",
+    "广州",
+    "杭州"
+  ],
+  "relevance": [
+    "大模型",
+    "LLM",
+    "Agent",
+    "AIGC",
+    "多模态",
+    "RAG",
+    "微调",
+    "训练",
+    "推理",
+    "部署",
+    "Prompt",
+    "LangChain",
+    "AutoGen",
+    "CrewAI",
+    "向量数据库",
+    "知识图谱",
+    "多智能体",
+    "工具调用",
+    "Function Calling",
+    "Transformer",
+    "Attention",
+    "MoE",
+    "RLHF",
+    "DPO",
+    "GRPO",
+    "推理加速",
+    "KV Cache",
+    "量化",
+    "蒸馏",
+    "LoRA",
+    "QLoRA"
+  ]
+}

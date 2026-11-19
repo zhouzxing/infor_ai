@@ -1,0 +1,120 @@
+[
+  {
+    "name": "LLM 推理与强化学习",
+    "tag": "reasoning",
+    "desc": "RLVR / GRPO / 过程奖励 / 思维链蒸馏 — 用强化学习驱动 LLM 推理与解题",
+    "keywords": [
+      "reasoning",
+      "rlvr",
+      "grpo",
+      "chain of thought",
+      "cot",
+      "process reward",
+      "reinforcement learning",
+      "inference"
+    ]
+  },
+  {
+    "name": "Agent 与工具使用",
+    "tag": "agent",
+    "desc": "多智能体协作、规划、工具调用、记忆与长程任务执行",
+    "keywords": [
+      "agent",
+      "multi-agent",
+      "tool use",
+      "planning",
+      "memory",
+      "tool calling",
+      "function calling",
+      "autonomous"
+    ]
+  },
+  {
+    "name": "多模态与视觉语言",
+    "tag": "multimodal",
+    "desc": "VLM / 视觉推理 / 视频理解 / 图文理解与生成",
+    "keywords": [
+      "vision language",
+      "vlm",
+      "multimodal",
+      "video understanding",
+      "image",
+      "visual reasoning",
+      "clip",
+      "siglip"
+    ]
+  },
+  {
+    "name": "世界模型与具身智能",
+    "tag": "embodied",
+    "desc": "VLA / 仿真到真实 / 机器人操作 / 具身智能与世界模型",
+    "keywords": [
+      "world model",
+      "embodied",
+      "vla",
+      "robot",
+      "sim2real",
+      "manipulation",
+      "embodied ai",
+      "robotics"
+    ]
+  },
+  {
+    "name": "效率与可扩展性",
+    "tag": "efficiency",
+    "desc": "MoE / 蒸馏 / 量化 / 长上下文 / 推理加速与 KV cache",
+    "keywords": [
+      "moe",
+      "mixture of experts",
+      "distillation",
+      "quantization",
+      "long context",
+      "kv cache",
+      "inference acceleration",
+      "sparse"
+    ]
+  },
+  {
+    "name": "对齐与安全",
+    "tag": "alignment",
+    "desc": "RLHF / 对齐 / 可解释性 / 安全与幻觉缓解",
+    "keywords": [
+      "alignment",
+      "rlhf",
+      "safety",
+      "interpretability",
+      "hallucination",
+      "constitutional ai",
+      "red teaming"
+    ]
+  },
+  {
+    "name": "AI 科学发现",
+    "tag": "ai4science",
+    "desc": "AI for Science：蛋白质结构、材料发现、分子生成与科学推理",
+    "keywords": [
+      "protein",
+      "molecule",
+      "material",
+      "drug discovery",
+      "scientific discovery",
+      "alpha fold",
+      "chemistry",
+      "biology"
+    ]
+  },
+  {
+    "name": "生成模型",
+    "tag": "generative",
+    "desc": "扩散模型 / 视频生成 / 可控生成",
+    "keywords": [
+      "diffusion",
+      "video generation",
+      "image generation",
+      "generative model",
+      "sora",
+      "flow matching",
+      "rectified flow"
+    ]
+  }
+]

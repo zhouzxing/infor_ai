@@ -1,0 +1,67 @@
+{
+  "_meta": {
+    "purpose": "评分权重、预判信号词、开源热度分类等算法参数（与实现分离，调参不改代码）",
+    "note": "dim_weights 之和必须为 1.0；修改后运行 make data-validate。"
+  },
+  "dim_weights": {
+    "ctx": 0.18,
+    "mm": 0.18,
+    "open": 0.16,
+    "cost": 0.22,
+    "scale": 0.12,
+    "fresh": 0.14
+  },
+  "signal_keywords": {
+    "新市场": ["新市场", "蓝海", "赛道", "万亿", "千亿", "爆发", "起量", "商业化落地", "new market"],
+    "产品形态": ["Agent", "智能体", "多模态", "具身", "机器人", "硬件", "终端", "眼镜", "手机", "PC", "操作系统", "AI 硬件"],
+    "功能特性": ["推理", "思维链", "长上下文", "1M", "2M", "工具调用", "Function Calling", "MCP", "记忆", "规划", "自主", "reasoning"],
+    "行业敏感度": ["融资", "上市", "IPO", "估值", "并购", "收购", "裁员", "重组", "政策", "监管", "合规", "出海", "exports"]
+  },
+  "oss_categories": {
+    "科研算法": {
+      "desc": "科研算法 / 模型参数 / benchmark / 论文复现",
+      "keywords": ["paper", "research", "arxiv", "benchmark", "sota", "reasoning", "moe", "mixture of experts", "distillation", "quantization", "rlhf", "grpo", "dataset", "eval", "transformer", "training", "algorithm", "llm"]
+    },
+    "工程落地": {
+      "desc": "工程框架 / 社区组织 / Agent Harness（如 Hermes）",
+      "keywords": ["framework", "agent", "harness", "mcp", "rag", "langchain", "langgraph", "workflow", "production", "api", "sdk", "deploy", "inference", "vllm", "tool", "server", "hermes", "plugin"]
+    },
+    "homelab": {
+      "desc": "个人 / 本地部署 / 家庭实验室",
+      "keywords": ["ollama", "self-host", "selfhost", "local", "homelab", "home-lab", "nas", "docker", "raspberry", "rtx", "4090", "offline", "private", "llama.cpp"]
+    },
+    "教育培训": {
+      "desc": "教育培训 / LLM from scratch / 教程与课程",
+      "keywords": ["tutorial", "course", "from scratch", "from-scratch", "learn", "education", "guide", "bootcamp", "textbook", "教程", "入门", "课程", "llm from scratch"]
+    }
+  },
+  "github_ai_keywords": [
+    "llm", "ai", "agent", "gpt", "claude", "gemini", "transformer",
+    "machine learning", "deep learning", "neural", "generative",
+    "rag", "embedding", "fine-tun", "finetun", "lora", "qlora",
+    "inference", "vllm", "ollama", "langchain", "autogen", "crewai",
+    "copilot", "coding", "codegen", "diffusion", "stable diffusion",
+    "multimodal", "vision", "audio", "speech", "tokenizer",
+    "dataset", "benchmark", "eval", "alignment", "rlhf", "dpo",
+    "moe", "mixture of expert", "quantization", "distillation",
+    "mcp", "model context protocol", "function calling", "tool use"
+  ],
+  "big_companies": [
+    "字节", "阿里", "腾讯", "百度", "美团", "京东", "拼多多", "华为", "小米",
+    "商汤", "旷视", "依图", "云从", "智谱", "百川", "月之暗面", "阶跃", "MiniMax", "智源"
+  ],
+  "thresholds": {
+    "news_hot_heat": 4,
+    "jd_hot_heat": 10,
+    "jd_high_salary_k": 50,
+    "jd_max_days": 15,
+    "arxiv_hot_heat": 10,
+    "source_stale_hours": 24,
+    "source_history_keep": 48
+  },
+  "news_stopwords": [
+    "的", "了", "在", "是", "和", "与", "或", "为", "于", "以", "及", "等",
+    "AI", "ai", "大模型", "模型", "一个", "我们", "可以", "进行", "使用"
+  ],
+  "feed_parsers": ["feedparser (可选，标准库 XML 解析为默认路径)"]
+}

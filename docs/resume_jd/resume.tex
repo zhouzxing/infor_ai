@@ -1,0 +1,56 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% Awesome CV LaTeX Template — AI 架构师简历
+% 编译：xelatex -interaction=nonstopmode resume.tex && xelatex -interaction=nonstopmode resume.tex
+
+\documentclass[11pt, a4paper]{awesome-cv}
+
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage[UTF8]{ctex}
+\usepackage{etoolbox}
+\patchcmd{\cventries}{\vspace*{0.5\baselineskip}}{\vspace*{0.6\baselineskip}}{}{}
+
+\setmainfont{Noto Sans CJK SC}
+\setCJKmainfont[
+  SmallCapsFont=*
+]{Noto Serif CJK SC}
+\xeCJKsetup{PunctStyle=plain}
+
+\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.6cm, footskip=.5cm}
+
+% 主题色：紫（科技感）；可改为 awesome-emerald / awesome-skyblue / awesome-red
+\colorlet{awesome}{awesome-nephritis}
+\setbool{acvSectionColorHighlight}{true}
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+%%-------------------------------------------------------------------------------
+%% 个人信息
+%%-------------------------------------------------------------------------------
+\name{邢}{洲}
+\position{AI 资深架构师{\enskip\cdotp\enskip}大模型 \& Agent 平台技术负责人{\enskip\cdotp\enskip}AI Native 全栈专家}
+\address{广东 · 深圳}
+\mobile{(+86) 176-7561-6902}
+\email{geek.yukun@gmail.com}
+\homepage{43.139.19.97}
+\github{zhouzxing}
+\quote{``把大模型从「能对话」做到「能上线、能交付、能规模化」。"}
+
+\begin{document}
+
+\makecvheader[C]
+
+\makecvfooter
+  {\today}
+  {邢洲 ~~~·~~~ AI 架构师简历}
+  {\thepage}
+
+%%-------------------------------------------------------------------------------
+\input{sections/summary}
+\input{sections/skills}
+\input{sections/experience}
+\input{sections/projects}
+\input{sections/certificates}
+\input{sections/education}
+
+\end{document}
